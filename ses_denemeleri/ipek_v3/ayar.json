@@ -1,0 +1,18 @@
+{
+  "sayfa_adi": "İpek'in Sesi",
+  "karakter": "ipek",
+  "klasor": "ses_denemeleri/ipek_v3",
+  "baslik": "İpek'in sesi hangisi olsun?",
+  "aciklama": "Cilveli, neşeli ve ince tonlu 8 aday var; hepsi aynı cümleyi okuyor. Dinle, beğendiğinin numarasını yaz.",
+  "cumle_html": "<span class=\"cue\">[kıkırdar]</span> Kız sus! <span class=\"cue\">[heyecanlı]</span> Bana yazdı, inanamıyorum! <span class=\"cue\">[cilveli]</span> \"Uyudun mu?\" diyor... Uyumadım tabii ki, seni bekliyordum canım. <span class=\"cue\">[güler]</span>",
+  "sesler": [
+    ["01", "Gökçe Deniz", "oPC5I9GKjMReiaM29gjY", "Neşeli, enerjik, duygusal; tatlı tonda.", "", "01_Gokce_Deniz"],
+    ["02", "Gözde", "rtnDjO8siSxeTEeTVczO", "Seslendirme sanatçısı; eğlenceli, enerjik, tatlı.", "", "02_Gozde"],
+    ["03", "Damla", "A2XgcJ6lQVEFeIaIUyrc", "Çok enerjik, vlog / içerik üreticisi tonu.", "", "03_Damla"],
+    ["04", "Çağlayan", "sJ0xHHPzz1LOio4QNlB0", "Neşeli, canlı, biraz çizgi film karakteri gibi.", "", "04_Caglayan"],
+    ["05", "Zeynep Ece", "ZK5xkctF4yGYZxzqEfRg", "Genç, doğal, Z kuşağı tonu.", "", "05_Zeynep_Ece"],
+    ["06", "Aslıhan", "Et3hA9mm8aHhswBL5jmC", "Genç, ince ve net.", "", "06_Aslihan"],
+    ["07", "Melek", "xgYIZvUB5h2eFY3HUFNj", "Enerjik ama yumuşak, tatlı melodili.", "", "07_Melek"],
+    ["08", "Ada", "ZivZXVpoFLcsQkdFKXPJ", "Sıcak, neşeli, tatlı tonda.", "", "08_Ada"]
+  ]
+}

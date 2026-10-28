@@ -25,7 +25,7 @@ Ana referans görsel: `referans/ana_sahne.png` (941x1672, dikey 9:16)
 - Altın halka küpe
 - Elini yanağına dayamış, sıkılmış/bezgin bakış
 - Kişilik: _(ilk senaryodan sonra doldurulacak)_
-- ElevenLabs sesi: **Gülsu Çağıran** — `bGmbiluBMaeupKCFxoOk` (genç, İstanbul aksanı — kullanıcının kulağına göre **bezgin** tonda; Derya bezgin olan)
+- ElevenLabs sesi: **Mel Ross** — `LDb18ybzyBBJNGLUnm0l` (tok, rahat, biraz alaycı; Derya bezgin olan)
 
 ## Sahne (Mutfak, Gece)
 
@@ -42,6 +42,15 @@ Ana referans görsel: `referans/ana_sahne.png` (941x1672, dikey 9:16)
 
 - 9:16 dikey, Instagram Reels
 - Seslendirme: ElevenLabs (her karaktere sabit ses)
+
+## Ses Kuralları (her zaman)
+
+- Model: **`eleven_v3`** — `eleven_multilingual_v2` robotik çıkıyor, kullanılmaz.
+- Ayar: `stability: 0.5` (Natural)
+- Replikler duygu etiketleriyle yazılır: `[sighs]`, `[bored]`, `[tired]`, `[laughs]`, `[giggles]`, `[excited]`, `[playfully]`, `[whispers]` vb.
+- Metin konuşur gibi yazılır: "ya", "kız", "yani", üç nokta ile duraksama.
+- Hesap limiti: aynı anda en fazla 3 istek.
+- Ses denemeleri için: `araclar/ses_sayfasi.py` (dinlenebilir HTML sayfası üretir)
 - Efektler: aspiratör ışığında hafif titreme/parlama, konuşana göre hafif zoom, altyazı
 - Altyazı stili: _(belirlenecek)_
 
