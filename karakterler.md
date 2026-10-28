@@ -25,7 +25,7 @@ Ana referans görsel: `referans/ana_sahne.png` (941x1672, dikey 9:16)
 - Altın halka küpe
 - Elini yanağına dayamış, sıkılmış/bezgin bakış
 - Kişilik: _(ilk senaryodan sonra doldurulacak)_
-- ElevenLabs sesi: **Gülsu Çağıran** — `bGmbiluBMaeupKCFxoOk` (genç, enerjik, doğal, İstanbul aksanı)
+- ElevenLabs sesi: **Gülsu Çağıran** — `bGmbiluBMaeupKCFxoOk` (genç, İstanbul aksanı — kullanıcının kulağına göre **bezgin** tonda; Derya bezgin olan)
 
 ## Sahne (Mutfak, Gece)
 
