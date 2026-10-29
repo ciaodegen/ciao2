@@ -2,3 +2,4 @@ __pycache__/
 bolumler/*/calisma/
 bolumler/*/cikti/*.wav
 bolumler/*/cikti/ses_katmanlari/
+referans/.plaka_*.npy

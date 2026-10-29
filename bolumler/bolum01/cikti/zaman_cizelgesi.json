@@ -1,187 +1,187 @@
 {
- "sure": 61.45997916666666,
+ "sure": 49.22591666666667,
  "replikler": [
   {
    "id": "01",
    "karakter": "ipek",
-   "bas": 2.2,
-   "son": 4.87
+   "bas": 2.0,
+   "son": 4.399
   },
   {
    "id": "02",
    "karakter": "derya",
-   "bas": 5.32,
-   "son": 6.76
+   "bas": 4.649,
+   "son": 5.775
   },
   {
    "id": "03",
    "karakter": "ipek",
-   "bas": 7.14,
-   "son": 9.7
+   "bas": 5.975,
+   "son": 8.237
   },
   {
    "id": "04",
    "karakter": "derya",
-   "bas": 10.08,
-   "son": 17.68
+   "bas": 8.437,
+   "son": 14.253
   },
   {
    "id": "05",
    "karakter": "ipek",
-   "bas": 18.06,
-   "son": 20.58
+   "bas": 14.453,
+   "son": 16.712
   },
   {
    "id": "06",
    "karakter": "derya",
-   "bas": 20.96,
-   "son": 29.57
+   "bas": 16.912,
+   "son": 23.534
   },
   {
    "id": "07",
    "karakter": "ipek",
-   "bas": 29.95,
-   "son": 33.26
+   "bas": 23.734,
+   "son": 26.685
   },
   {
    "id": "08",
    "karakter": "derya",
-   "bas": 33.64,
-   "son": 46.77
+   "bas": 26.885,
+   "son": 36.709
   },
   {
    "id": "09",
    "karakter": "ipek",
-   "bas": 47.15,
-   "son": 51.17
+   "bas": 36.909,
+   "son": 40.513
   },
   {
    "id": "10",
    "karakter": "derya",
-   "bas": 52.17,
-   "son": 54.33
+   "bas": 41.263,
+   "son": 42.953
   },
   {
    "id": "11",
    "karakter": "ipek",
-   "bas": 54.78,
-   "son": 59.66
+   "bas": 43.253,
+   "son": 47.626
   }
  ],
  "altyazi": [
   [
-   2.33,
-   5.02,
+   2.111,
+   4.549,
    "Sana bir şey söyleyeceğim ama dürüst ol."
   ],
   [
-   5.34,
-   6.91,
+   4.654,
+   5.925,
    "Hıh."
   ],
   [
-   7.162,
-   9.85,
+   5.989,
+   8.387,
    "Sence ben çok mu çirkinim?"
   ],
   [
-   10.082,
-   12.644,
+   8.427,
+   10.312,
    "Ya İpek, Allah aşkına!"
   ],
   [
-   12.644,
-   15.29,
+   10.312,
+   12.379,
    "Yine filtreyle çekilip üstüne FaceApp basılmış"
   ],
   [
-   15.29,
-   17.83,
+   12.379,
+   14.403,
    "kızlara bakıp bakıp söylenme bana!"
   ],
   [
-   18.06,
-   20.73,
+   14.447,
+   16.862,
    "Ya ama kızın burnu yok resmen!"
   ],
   [
-   21.062,
-   23.377,
+   16.981,
+   18.79,
    "E, sen de burnunu beğenmiyorsun diye"
   ],
   [
-   23.377,
-   26.467,
+   18.79,
+   21.086,
    "geçen gün ön kamerayı kapattın."
   ],
   [
-   26.467,
-   27.2,
+   21.086,
+   21.659,
    "Ne yapalım,"
   ],
   [
-   27.2,
-   29.72,
+   21.659,
+   23.684,
    "hepimiz burnumuzu iptal mi edelim?"
   ],
   [
-   30.054,
-   33.41,
+   23.821,
+   26.835,
    "Dalga geçme ya! Kızın cildi cam gibi."
   ],
   [
-   33.814,
-   37.003,
+   27.01,
+   29.423,
    "Kızın cildi değil, ekranı cam gibi!"
   ],
   [
-   37.003,
-   38.96,
+   29.423,
+   30.893,
    "Bir de şu telefonu bırak artık."
   ],
   [
-   38.96,
-   41.62,
+   30.893,
+   32.882,
    "Kim ne giyerse onu giyiyorsunuz,"
   ],
   [
-   41.62,
-   44.624,
+   32.882,
+   35.143,
    "kim nereye giderse oraya gidiyorsunuz."
   ],
   [
-   44.624,
-   46.92,
+   35.143,
+   36.859,
    "Resmen yönetiliyorsunuz!"
   ],
   [
-   47.345,
-   49.03,
+   37.077,
+   38.582,
    "Sen de geçen gün o kızın giydiği"
   ],
   [
-   49.03,
-   51.32,
+   38.582,
+   40.663,
    "ceketin linkini istemedin mi?"
   ],
   [
-   52.324,
-   54.48,
+   41.372,
+   43.103,
    "Ben kalite kontrol yapıyordum."
   ],
   [
-   54.799,
-   56.416,
+   43.264,
+   44.708,
    "He, tabii."
   ],
   [
-   56.416,
-   58.216,
+   44.708,
+   46.315,
    "Ceket de bugün kargoya veriliyormuş,"
   ],
   [
-   58.216,
-   59.81,
+   46.315,
+   47.776,
    "kalite kontrol uzmanı."
   ]
  ]

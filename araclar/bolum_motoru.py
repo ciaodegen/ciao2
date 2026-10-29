@@ -156,8 +156,18 @@ def sessizlik_kisalt(x, hs, maks=0.5, esik_oran=0.05):
 
 
 # ---------------------------------------------------------------- bölüm verisi
+def tempo_degistir(x, oran):
+    """Perdeyi değiştirmeden konuşmayı hızlandırır (ffmpeg atempo)."""
+    if abs(oran - 1) < 1e-3:
+        return x
+    ham = subprocess.run(["ffmpeg", "-v", "error", "-f", "f32le", "-ac", "1", "-ar", str(SR), "-i", "-",
+                          "-af", f"atempo={oran}", "-f", "f32le", "-ac", "1", "-ar", str(SR), "-"],
+                         input=x.astype(np.float32).tobytes(), check=True, capture_output=True).stdout
+    return np.frombuffer(ham, np.float32).copy()
+
+
 class Bolum:
-    def __init__(self, klasor):
+    def __init__(self, klasor, tempo=None, maks_sessizlik=0.5):
         self.klasor = klasor
         self.senaryo = json.load(open(f"{klasor}/senaryo.json"))
         self.replikler = []
@@ -169,7 +179,10 @@ class Bolum:
             kes_son = min(len(x) / SR, e + 0.15)
             x = x[int(kes_bas * SR):int(kes_son * SR)]
             hs = [(c, a - kes_bas, b - kes_bas) for c, a, b in harfler(al)]
-            x, hs = sessizlik_kisalt(x, hs)
+            x, hs = sessizlik_kisalt(x, hs, maks=maks_sessizlik)
+            oran = (tempo or {}).get(r["karakter"], 1.0)
+            x = tempo_degistir(x, oran)
+            hs = [(c, a / oran, b / oran) for c, a, b in hs]
             self.replikler.append(dict(r, ses=x, kes=0.0, sure=len(x) / SR, harfler=hs))
 
     def zamanla(self, giris, ara, ozel_ara, kapanis):
@@ -373,27 +386,36 @@ class Performans:
         out = {}
         for ad in KARAKTERLER:
             ph = self.faz[ad]
-            tx = 1.1 * np.sin(2 * np.pi * 0.11 * t + ph[0]) + 0.5 * np.sin(2 * np.pi * 0.23 * t + ph[1])
-            ty = 0.9 * np.sin(2 * np.pi * 0.25 * t + ph[2])
-            aci = 0.3 * np.sin(2 * np.pi * 0.07 * t + ph[3]) + 0.12 * np.sin(2 * np.pi * 0.19 * t + ph[4])
-            # konuşurken vurgulu hecelerde küçük baş vuruşları
+            yon_isareti = 1.0 if ad == "ipek" else -1.0  # karşıdakine doğru
+            # boşta: hafif baş salınımı + nefes
+            tx = 1.6 * np.sin(2 * np.pi * 0.11 * t + ph[0]) + 0.6 * np.sin(2 * np.pi * 0.23 * t + ph[1])
+            ty = 0.8 * np.sin(2 * np.pi * 0.17 * t + ph[2])
+            aci = 0.4 * np.sin(2 * np.pi * 0.07 * t + ph[3]) + 0.15 * np.sin(2 * np.pi * 0.19 * t + ph[4])
+            gx = 1.0 * np.sin(2 * np.pi * 0.06 * t + ph[5])
+            gy = 1.1 * np.sin(2 * np.pi * 0.24 * t + ph[2] * 0.5)
             z = self.zarf[ad]
             if i < len(z):
                 hizli = z[max(0, i - 2):i + 1].mean()
                 yavas = z[max(0, i - 12):i + 1].mean()
                 vurgu = np.clip((hizli - yavas) / (z.max() + 1e-6) * 6, 0, 1)
-                ty += 1.6 * vurgu
-                aci += 0.25 * vurgu * np.sin(ph[5] + t)
+                ty += 2.4 * vurgu
+                aci += 0.45 * vurgu * np.sin(ph[5] + 1.3 * t)
+                # konuşurken karşıdakine doğru hafifçe eğilir
+                konusma = np.clip(z[max(0, i - 20):i + 1].mean() / (z.max() + 1e-6) * 5, 0, 1)
+                gx += 1.8 * konusma * yon_isareti
             bebek, hedef = self._bakis(ad, t)
             if hedef == "asagi":
-                ty += 1.6
-            for (jt, ja, atak, tut, birak, jx, jy, jaci) in self.yon.JESTLER:
+                ty += 1.8
+            for jest in self.yon.JESTLER:
+                jt, ja, atak, tut, birak, jx, jy, jaci = jest[:8]
+                jgx, jgy = (jest[8], jest[9]) if len(jest) > 8 else (0.0, 0.0)
                 if ja == ad:
                     k = tumsek(t, jt, atak, tut, birak)
-                    tx, ty, aci = tx + jx * k, ty + jy * k, aci + jaci * k
+                    tx, ty, aci, gx, gy = tx + jx * k, ty + jy * k, aci + jaci * k, gx + jgx * k, gy + jgy * k
             h, w = self.agiz[ad]
-            out[ad] = dict(tx=float(np.clip(tx, -3, 3)), ty=float(np.clip(ty, -3.5, 3.5)),
-                           aci=float(np.clip(aci, -1.0, 1.0)), bebek=bebek, kirpma=self._kirp(ad, t),
+            out[ad] = dict(tx=float(np.clip(tx, -4, 4)), ty=float(np.clip(ty, -4, 4)),
+                           aci=float(np.clip(aci, -1.1, 1.1)), gx=float(np.clip(gx, -3.5, 3.5)),
+                           gy=float(np.clip(gy, -3, 3)), bebek=bebek, kirpma=self._kirp(ad, t),
                            agiz=(float(h[i]), float(w[i])))
         return out
 
@@ -529,7 +551,7 @@ def uret(klasor, prototip=None):
     spec = importlib.util.spec_from_file_location("yonetim", f"{klasor}/yonetim.py")
     yon = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(yon)
-    b = Bolum(klasor)
+    b = Bolum(klasor, tempo=yon.TEMPO, maks_sessizlik=yon.MAKS_SESSIZLIK)
     b.zamanla(giris=yon.GIRIS, ara=yon.ARA, ozel_ara=yon.OZEL_ARA, kapanis=yon.KAPANIS)
     yon.hazirla(b)
     cikti = f"{klasor}/cikti"

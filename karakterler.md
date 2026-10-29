@@ -50,6 +50,8 @@ Ana referans görsel: `referans/ana_sahne.png` (941x1672, dikey 9:16)
 - Replikler duygu etiketleriyle yazılır: `[sighs]`, `[bored]`, `[tired]`, `[laughs]`, `[giggles]`, `[excited]`, `[playfully]`, `[whispers]` vb.
 - Metin konuşur gibi yazılır: "ya", "kız", "yani", üç nokta ile duraksama.
 - Hesap limiti: aynı anda en fazla 3 istek.
+- Tempo: ham v3 çıktısı yavaş (~4,5 hece/sn). Bölümde `TEMPO = {"ipek": 1.12, "derya": 1.28}` ile perde
+  değişmeden hızlandırılır (~5,5–6,4 hece/sn), replik içi duraksama en fazla 0,35 sn, replik arası 0,2 sn.
 - Ses denemeleri için: `araclar/ses_sayfasi.py` (dinlenebilir HTML sayfası üretir)
 - Altyazı: beyaz, siyah kontur, Inter Display ExtraBold 62px, y=1440 merkez (Instagram alt arayüzünün üstünde)
 
@@ -58,7 +60,8 @@ Ana referans görsel: `referans/ana_sahne.png` (941x1672, dikey 9:16)
 - Sabit referans görsel üzerinde kod tabanlı rig: `araclar/sahne_rig.py`
   - göz kırpma, bakış yönü (orijinal / asagi / merkez=kamera / yukari=göz devirme)
   - konuşurken ağız: kendi sesinin şiddeti + harf zamanlaması (sesli harfe göre ağız şekli)
-  - küçük baş hareketleri (en fazla ~3 px / 1°; fazlası arka plan fayanslarını büker)
+  - karakterler silüet maskesiyle ayrı katman: baş (kayma/dönme) + gövde (eğilme/nefes); ARKA PLAN HİÇ OYNAMAZ
+    (karakterlerin arkası `arka_plan_plakasi` ile doldurulur; baş en fazla ~4 px / 1,1°)
   - çaydanlık ve bardak buharı, aspiratör ışığında çok hafif nefes
 - YAPILAMAYANLAR (görsel yeniden çizilmeden mümkün değil): el/kol hareketi, cips yeme, çay bardağı kaldırma
 - Bölüm üretimi: `python3 araclar/seslendir.py bolumler/bolumXX` sonra `python3 araclar/bolum_motoru.py bolumler/bolumXX`
@@ -66,4 +69,4 @@ Ana referans görsel: `referans/ana_sahne.png` (941x1672, dikey 9:16)
 
 ## Senaryo Notları / İşleyen Konular
 
-- Bölüm 1 — Ben Çok mu Çirkinim? (filtreli kızlar, FaceApp, ceket linki) — 61,5 sn
+- Bölüm 1 — Ben Çok mu Çirkinim? (filtreli kızlar, FaceApp, ceket linki) — 49,2 sn

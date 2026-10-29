@@ -10,9 +10,10 @@ kendisinden üretilir:
   - ortam: çaydanlık ve bardak buharı, aspiratör ışığında çok hafif nefes alma
 Koordinatlar 1080x1920 çözünürlüğe göredir.
 """
+import hashlib
 import os
 import numpy as np
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageFilter
 
 KOK = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 W, H = 1080, 1920
@@ -30,6 +31,22 @@ BAS = {
     "derya": dict(c=(812, 800), r=(205, 245), pivot=(800, 1030)),
 }
 YUMUSAK_KAT = 1.38  # iç elipsten bu katsayıya kadar yumuşak geçiş
+# karakter silüetleri (baş, saç, omuzlar; masadaki kollar sabit kaldığı için kaba kapatılır)
+SILUET = {
+    "ipek": [(45, 1060), (50, 1020), (60, 990), (78, 965), (100, 950), (104, 920), (100, 890), (98, 860),
+             (100, 830), (106, 800), (104, 770), (100, 745), (92, 720), (86, 695), (88, 670), (92, 648),
+             (100, 630), (112, 612), (128, 598), (140, 590), (148, 578), (162, 568), (185, 563), (210, 563),
+             (232, 567), (250, 575), (264, 588), (280, 605), (290, 625), (300, 640), (330, 648), (355, 656),
+             (375, 668), (392, 684), (405, 700), (418, 718), (430, 738), (440, 758), (450, 780), (460, 805),
+             (468, 830), (478, 850), (480, 880), (475, 910), (472, 940), (462, 962), (480, 985), (494, 1010),
+             (500, 1035), (505, 1060), (515, 1090), (540, 1130), (550, 1260), (0, 1260), (0, 1130), (15, 1110),
+             (30, 1085)],
+    "derya": [(570, 1260), (580, 1100), (590, 1070), (600, 1040), (618, 1000), (632, 960), (628, 920),
+              (630, 880), (642, 852), (652, 838), (680, 810), (710, 772), (745, 732), (780, 697), (815, 682),
+              (832, 652), (840, 630), (860, 614), (872, 600), (885, 588), (910, 579), (940, 579), (975, 586),
+              (1000, 590), (1025, 615), (1042, 640), (1050, 680), (1052, 710), (1055, 770), (1054, 800), (1052, 850), (1048, 900), (1050, 950), (1058, 1000),
+              (1068, 1040), (1080, 1070), (1080, 1260)],
+}
 CAYDANLIK_BUHAR = [(519, 612), (571, 596)]
 BARDAK_BUHAR = [(419, 1188), (935, 1244)]
 ASPIRATOR_ISIK = (654, 372)
@@ -210,36 +227,87 @@ class Agiz:
         parca[:] = parca * (1 - a[..., 3:]) + a[..., :3] * 255.0 * a[..., 3:]
 
 
-class BasHareketi:
-    """Yüz bölgesini deforme etmeden kaydırır/döndürür (yumuşak kenarlı yerel çarpıtma)."""
+GOVDE_Y = (1000, 1170)  # bu y'nin üstü gövdeyle birlikte tam hareket eder, altı (masa/kollar) sabit
+
+
+class KarakterKatmani:
+    """Karakteri silüet maskesiyle ayrı bir katman olarak hareket ettirir; arka plan hiç oynamaz.
+
+    Baş (saç, yüz, yanaktaki el) pivot etrafında kaydırılıp döndürülür; gövde (omuzlar) eğilip nefes
+    alır. Hareket masaya doğru sıfıra iner. Açılan boşluklar arka plan plakasından gelir.
+    """
 
     def __init__(self, ad):
         b = BAS[ad]
         self.cx, self.cy = b["c"]
         self.rx, self.ry = b["r"]
         self.px, self.py = b["pivot"]
-        ex, ey = self.rx * YUMUSAK_KAT, self.ry * YUMUSAK_KAT
-        self.x0, self.x1 = max(0, int(self.cx - ex)), min(W, int(self.cx + ex) + 1)
-        self.y0, self.y1 = max(0, int(self.cy - ey)), min(H, int(self.cy + ey) + 1)
+        xs, ys = zip(*SILUET[ad])
+        self.x0, self.x1 = max(0, min(xs) - 24), min(W, max(xs) + 25)
+        self.y0, self.y1 = max(0, min(ys) - 24), min(H, max(ys) + 1)
         yy, xx = np.mgrid[self.y0:self.y1, self.x0:self.x1].astype(np.float32)
         e = np.sqrt(((xx - self.cx) / self.rx) ** 2 + ((yy - self.cy) / self.ry) ** 2)
         s = np.clip((YUMUSAK_KAT - e) / (YUMUSAK_KAT - 1), 0, 1)
-        self.agirlik = s * s * (3 - 2 * s)
+        self.w_bas = s * s * (3 - 2 * s)
+        g = np.clip((GOVDE_Y[1] - yy) / (GOVDE_Y[1] - GOVDE_Y[0]), 0, 1)
+        self.w_govde = g * g * (3 - 2 * g)
         self.xx, self.yy = xx, yy
+        im = Image.new("L", (W * 2, H * 2), 0)
+        ImageDraw.Draw(im).polygon([(x * 2, y * 2) for x, y in SILUET[ad]], fill=255)
+        self.maske = np.asarray(im.resize((W, H), Image.BOX).filter(ImageFilter.GaussianBlur(0.8))).astype(np.float32) / 255.0
+        # hareket edebilen bölge (plaka sadece burada doldurulur)
+        self.hareketli = np.zeros((H, W), bool)
+        self.hareketli[self.y0:self.y1, self.x0:self.x1] = np.maximum(self.w_bas, self.w_govde) > 0.003
 
-    def uygula(self, kaynak, hedef, tx, ty, aci_derece):
-        if abs(tx) < 0.05 and abs(ty) < 0.05 and abs(aci_derece) < 0.01:
-            return
-        t = np.radians(aci_derece)
+    def uygula(self, kaynak, cikti, tx, ty, aci, gx, gy):
+        t = np.radians(aci)
         c, s = np.cos(t), np.sin(t)
-        dx, dy = self.xx - self.px, self.yy - self.py
-        # ters eşleme: hedef noktanın kaynağı
-        sx = self.px + c * (dx - tx) + s * (dy - ty)
-        sy = self.py - s * (dx - tx) + c * (dy - ty)
-        w = self.agirlik
-        sx = self.xx + w * (sx - self.xx)
-        sy = self.yy + w * (sy - self.yy)
-        hedef[self.y0:self.y1, self.x0:self.x1] = _bilinear(kaynak, sx, sy)
+        dx, dy = self.xx - self.px - gx - tx, self.yy - self.py - gy - ty
+        # başın ters eşlemesi (gövde kayması da dahil)
+        bx = self.px + c * dx + s * dy
+        by = self.py - s * dx + c * dy
+        gx_k, gy_k = self.xx - gx, self.yy - gy  # sadece gövde
+        wg, wb = self.w_govde, self.w_bas
+        # kaynak = nokta + gövde kayması + (başın gövdeye göre hareketi)
+        sx = self.xx + wg * (gx_k - self.xx) + wb * (bx - gx_k)
+        sy = self.yy + wg * (gy_k - self.yy) + wb * (by - gy_k)
+        renk = _bilinear(kaynak, sx, sy)
+        a = _bilinear(self.maske[..., None], sx, sy)
+        p = cikti[self.y0:self.y1, self.x0:self.x1]
+        p[:] = renk * a + p * (1 - a)
+
+
+def arka_plan_plakasi(base, katmanlar, derinlik=34):
+    """Karakterlerin arkasını, dışarıdaki arka plandan içeri doğru katman katman doldurur."""
+    bolge = np.zeros(base.shape[:2], bool)
+    for k in katmanlar:
+        bolge |= (k.maske > 0.02) & k.hareketli
+    ys, xs = np.nonzero(bolge)
+    y0, y1, x0, x1 = max(0, ys.min() - 2), min(H, ys.max() + 3), max(0, xs.min() - 2), min(W, xs.max() + 3)
+    V = base[y0:y1, x0:x1].copy()
+    R = bolge[y0:y1, x0:x1]
+    K = ~R
+    for _ in range(derinlik):
+        Kf = K.astype(np.float32)
+        Vp = np.pad(V * Kf[..., None], ((1, 1), (1, 1), (0, 0)))
+        Kp = np.pad(Kf, 1)
+        S = np.zeros_like(V); C = np.zeros_like(Kf)
+        for oy in (0, 1, 2):
+            for ox in (0, 1, 2):
+                if oy == 1 and ox == 1:
+                    continue
+                S += Vp[oy:oy + V.shape[0], ox:ox + V.shape[1]]
+                C += Kp[oy:oy + V.shape[0], ox:ox + V.shape[1]]
+        yeni = (C > 0) & ~K
+        V[yeni] = S[yeni] / C[yeni][:, None]
+        K = K | yeni
+    # doldurulan şeritlerdeki çizgilenmeyi hafifçe yumuşat
+    dolu = R & K
+    yum = np.asarray(Image.fromarray(np.clip(V, 0, 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(1.5))).astype(np.float32)
+    V[dolu] = yum[dolu]
+    plaka = base.copy()
+    plaka[y0:y1, x0:x1] = V
+    return plaka
 
 
 def _bilinear(img, sx, sy):
@@ -268,7 +336,7 @@ class Buhar:
         r = int(round(r))
         if r not in self._sprite:
             yy, xx = np.mgrid[-2 * r:2 * r + 1, -2 * r:2 * r + 1]
-            self._sprite[r] = np.exp(-(xx ** 2 + yy ** 2) / (2 * (r * 0.75) ** 2)).astype(np.float32)
+            self._sprite[r] = np.exp(-(xx ** 2) / (2 * (r * 0.55) ** 2) - (yy ** 2) / (2 * (r * 0.95) ** 2)).astype(np.float32)
         return self._sprite[r]
 
     def ciz(self, kare, t):
@@ -298,9 +366,16 @@ class Sahne:
         b8 = np.asarray(img)
         self.gozler = {k: [Goz(b8, kt) for kt in v] for k, v in GOZ_KUTULARI.items()}
         self.agizlar = {k: Agiz(b8, v) for k, v in AGIZ_KUTULARI.items()}
-        self.baslar = {k: BasHareketi(k) for k in BAS}
-        self.caydanlik = Buhar(CAYDANLIK_BUHAR, 0.18, 3.0, 34, 0.22, 5, 18, 1)
-        self.bardak = Buhar(BARDAK_BUHAR, 0.4, 2.2, 22, 0.13, 4, 11, 2)
+        self.katmanlar = {k: KarakterKatmani(k) for k in SILUET}
+        anahtar = hashlib.md5(repr(SILUET).encode()).hexdigest()[:10]
+        onbellek = f"{KOK}/referans/.plaka_{anahtar}.npy"
+        if os.path.exists(onbellek):
+            self.plaka = np.load(onbellek)
+        else:
+            self.plaka = arka_plan_plakasi(self.base, self.katmanlar.values())
+            np.save(onbellek, self.plaka)
+        self.caydanlik = Buhar(CAYDANLIK_BUHAR, 0.16, 3.2, 36, 0.30, 5, 17, 1)
+        self.bardak = Buhar(BARDAK_BUHAR, 0.3, 2.4, 24, 0.22, 4, 12, 2)
         # aspiratör ışığı için radyal ağırlık
         yy, xx = np.mgrid[0:H, 0:W].astype(np.float32)
         d = np.sqrt((xx - ASPIRATOR_ISIK[0]) ** 2 + ((yy - ASPIRATOR_ISIK[1]) * 1.3) ** 2)
@@ -309,13 +384,8 @@ class Sahne:
         self.isik_kutu = (ys.min(), ys.max() + 1, xs.min(), xs.max() + 1)
 
     def kare(self, t, durum):
-        """durum[karakter] = dict(tx, ty, aci, bebek=(dx,dy), kirpma, agiz=(acik, en))"""
+        """durum[karakter] = dict(tx, ty, aci, gx, gy, bebek=[(dx,dy)...], kirpma, agiz=(acik, en))"""
         k = self.base.copy()
-        y0, y1, x0, x1 = self.isik_kutu
-        kazanc = 1 + 0.018 * np.sin(2 * np.pi * 0.31 * t) + 0.006 * np.sin(2 * np.pi * 1.7 * t)
-        k[y0:y1, x0:x1] *= (1 + (kazanc - 1) * self.isik[y0:y1, x0:x1])[..., None]
-        self.caydanlik.ciz(k, t)
-        self.bardak.ciz(k, t)
         for ad, d in durum.items():
             bebek = d["bebek"]
             if not isinstance(bebek[0], (tuple, list)):  # tek ofset -> iki göze aynı
@@ -323,9 +393,12 @@ class Sahne:
             for g, (bx, by) in zip(self.gozler[ad], bebek):
                 g.ciz(k, bx, by, d["kirpma"])
             self.agizlar[ad].ciz(k, *d["agiz"])
-        # baş hareketleri sırayla uygulanır ki geçiş bölgeleri birbirini ezmesin
-        cikti = k
+        cikti = self.plaka.copy()
         for ad, d in durum.items():
-            kaynak, cikti = cikti, cikti.copy()
-            self.baslar[ad].uygula(kaynak, cikti, d["tx"], d["ty"], d["aci"])
+            self.katmanlar[ad].uygula(k, cikti, d["tx"], d["ty"], d["aci"], d.get("gx", 0.0), d.get("gy", 0.0))
+        y0, y1, x0, x1 = self.isik_kutu
+        kazanc = 1 + 0.018 * np.sin(2 * np.pi * 0.31 * t) + 0.006 * np.sin(2 * np.pi * 1.7 * t)
+        cikti[y0:y1, x0:x1] *= (1 + (kazanc - 1) * self.isik[y0:y1, x0:x1])[..., None]
+        self.caydanlik.ciz(cikti, t)
+        self.bardak.ciz(cikti, t)
         return np.clip(cikti, 0, 255)
