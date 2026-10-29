@@ -220,6 +220,9 @@ def ses_montaji(b, yon, cikti_klasor):
             s, e = seslendirilmis_aralik(x)
             seviye = np.sqrt((x[int(s * SR):int(e * SR)] ** 2).mean())
             x = x * (0.1 / seviye)  # -20 dBFS RMS'e eşitle
+            if "seviye_egrisi" in r:  # [[göreli zaman 0-1, kazanç], ...] ör. giderek kısılan ses
+                nokta = np.array(r["seviye_egrisi"], np.float32)
+                x = x * np.interp(np.linspace(0, 1, len(x)), nokta[:, 0], nokta[:, 1]).astype(np.float32)
             i = int(r["bas"] * SR)
             k[i:i + len(x)] += x[:n - i]
         katmanlar[f"konusma_{ad}"] = k
@@ -517,9 +520,9 @@ def altyazi_gorseli(metin, boyut=62, maks_gen=840):
 _SAHNE = None
 
 
-def _isci_baslat():
+def _isci_baslat(sahne_adi):
     global _SAHNE
-    _SAHNE = Sahne()
+    _SAHNE = Sahne(sahne_adi)
 
 
 def _parca_ciz(args):
@@ -557,11 +560,12 @@ def uret(klasor, prototip=None):
     cikti = f"{klasor}/cikti"
     os.makedirs(cikti, exist_ok=True)
     zarflar = ses_montaji(b, yon, cikti)
-    sahne = Sahne()
+    sahne_adi = getattr(yon, "SAHNE", "ana_sahne")
+    sahne = Sahne(sahne_adi)
     perf = Performans(b, yon, sahne, zarflar)
     n = perf.n if prototip is None else int(prototip * FPS)
     durumlar = [perf.durum(i) for i in range(n)]
-    altyazilar = altyazi_parcalari(b)
+    altyazilar = sorted(altyazi_parcalari(b) + list(getattr(yon, "EK_ALTYAZI", [])))
     json.dump(dict(sure=b.sure, replikler=[dict(id=r["id"], karakter=r["karakter"], bas=round(r["bas"], 3),
                                                   son=round(r["son"], 3)) for r in b.replikler],
                    altyazi=[(round(a, 3), round(c, 3), m) for a, c, m in altyazilar]),
@@ -570,7 +574,7 @@ def uret(klasor, prototip=None):
     sinirlar = np.linspace(0, n, isci + 1).astype(int)
     isler = [(durumlar[sinirlar[k]:sinirlar[k + 1]], altyazilar, int(sinirlar[k]), int(sinirlar[k + 1]),
               f"{cikti}/_parca{k}.mp4", yon.ALTYAZI_Y) for k in range(isci)]
-    with ProcessPoolExecutor(isci, initializer=_isci_baslat) as ex:
+    with ProcessPoolExecutor(isci, initializer=_isci_baslat, initargs=(sahne_adi,)) as ex:
         parcalar = list(ex.map(_parca_ciz, isler))
     with open(f"{cikti}/_liste.txt", "w") as f:
         f.writelines(f"file '{os.path.abspath(p)}'\n" for p in parcalar)

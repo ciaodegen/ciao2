@@ -1,0 +1,182 @@
+{
+ "sure": 50.25239583333333,
+ "replikler": [
+  {
+   "id": "01",
+   "karakter": "ipek",
+   "bas": 2.0,
+   "son": 11.257
+  },
+  {
+   "id": "02",
+   "karakter": "derya",
+   "bas": 11.457,
+   "son": 14.965
+  },
+  {
+   "id": "03",
+   "karakter": "ipek",
+   "bas": 15.165,
+   "son": 18.568
+  },
+  {
+   "id": "04",
+   "karakter": "derya",
+   "bas": 18.768,
+   "son": 24.398
+  },
+  {
+   "id": "05",
+   "karakter": "ipek",
+   "bas": 24.598,
+   "son": 26.785
+  },
+  {
+   "id": "06",
+   "karakter": "derya",
+   "bas": 26.985,
+   "son": 29.149
+  },
+  {
+   "id": "07",
+   "karakter": "ipek",
+   "bas": 29.349,
+   "son": 38.559
+  },
+  {
+   "id": "08",
+   "karakter": "derya",
+   "bas": 38.759,
+   "son": 41.58
+  },
+  {
+   "id": "09",
+   "karakter": "ipek",
+   "bas": 41.78,
+   "son": 44.967
+  },
+  {
+   "id": "10",
+   "karakter": "ipek",
+   "bas": 46.567,
+   "son": 48.852
+  }
+ ],
+ "altyazi": [
+  [
+   2.057,
+   3.379,
+   "Yirmilerinin ortasında olmak"
+  ],
+  [
+   3.379,
+   4.977,
+   "çok tuhaf değil mi ya?"
+  ],
+  [
+   4.977,
+   6.932,
+   "Arkadaş çevremde çocuğu olan var,"
+  ],
+  [
+   6.932,
+   9.646,
+   "dünyayı gezen var, yüksek lisans yapan var,"
+  ],
+  [
+   9.646,
+   11.407,
+   "üniversiteye hazırlanan var…"
+  ],
+  [
+   11.513,
+   13.146,
+   "Bir de sana bak."
+  ],
+  [
+   13.146,
+   15.115,
+   "Yatağını bile annen topluyor."
+  ],
+  [
+   15.276,
+   16.566,
+   "Neden öyle diyorsun?"
+  ],
+  [
+   16.566,
+   18.718,
+   "Ben sabahları koşuya çıkıyorum bir kere!"
+  ],
+  [
+   18.833,
+   22.155,
+   "İpek, her gün saat ikide uyandığın için Mehmet’e"
+  ],
+  [
+   22.155,
+   24.548,
+   "günaydın yerine tünaydın yazıyorsun."
+  ],
+  [
+   24.634,
+   26.935,
+   "Ama 2 n ile yazıyorum ona çok bile."
+  ],
+  [
+   27.071,
+   29.299,
+   "Geçen gün de 4 n'den 3 n'ye geçmiştin."
+  ],
+  [
+   29.46,
+   31.335,
+   "Ya Mehmet demişken… Ben de evlilik"
+  ],
+  [
+   31.335,
+   33.18,
+   "teklifinde nasıl evet diyeceğimi,"
+  ],
+  [
+   33.18,
+   34.341,
+   "düğünde pastamızı,"
+  ],
+  [
+   34.341,
+   36.044,
+   "balayında nereye gideceğimizi…"
+  ],
+  [
+   36.044,
+   37.366,
+   "Bunların hepsini planladım."
+  ],
+  [
+   37.366,
+   38.709,
+   "Ben de planlı biriyim."
+  ],
+  [
+   38.811,
+   41.73,
+   "E en son hani sana cevap vermemişti? Ne oldu?"
+  ],
+  [
+   41.82,
+   45.117,
+   "E, vermedi. Üstüne fotoğrafı gitti…"
+  ],
+  [
+   45.217,
+   46.467,
+   "…"
+  ],
+  [
+   46.633,
+   49.002,
+   "Ama pasta konusunda kararsızım hâlâ."
+  ]
+ ]
+}

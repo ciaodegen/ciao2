@@ -1,0 +1,43 @@
+{
+  "bolum": "Aspiratör Işığı — Bölüm 2: Herkes Bir Şeyler Yapıyor",
+  "sesler": {
+    "ipek": {"ad": "Gökçe Deniz", "voice_id": "oPC5I9GKjMReiaM29gjY"},
+    "derya": {"ad": "Mel Ross", "voice_id": "LDb18ybzyBBJNGLUnm0l"}
+  },
+  "model": "eleven_v3",
+  "ayar": {"stability": 0.5},
+  "not": "altyazi = senaryodaki metin (sadece yazım düzeltmesi: 'Geçen gün de', n'den/n'ye). tts = seslendirme metni: duygu etiketleri ve harflerin okunuşu (n -> ne).",
+  "replikler": [
+    {"id": "01", "karakter": "ipek",
+     "altyazi": "Yirmilerinin ortasında olmak çok tuhaf değil mi ya? Arkadaş çevremde çocuğu olan var, dünyayı gezen var, yüksek lisans yapan var, üniversiteye hazırlanan var…",
+     "tts": "[thoughtful] Yirmilerinin ortasında olmak çok tuhaf değil mi ya? [rambling] Arkadaş çevremde çocuğu olan var, dünyayı gezen var, yüksek lisans yapan var, üniversiteye hazırlanan var..."},
+    {"id": "02", "karakter": "derya",
+     "altyazi": "Bir de sana bak. Yatağını bile annen topluyor.",
+     "tts": "[deadpan] Bir de sana bak. [dry] Yatağını bile annen topluyor."},
+    {"id": "03", "karakter": "ipek",
+     "altyazi": "Neden öyle diyorsun? Ben sabahları koşuya çıkıyorum bir kere!",
+     "tts": "[offended] Neden öyle diyorsun? [proudly] Ben sabahları koşuya çıkıyorum bir kere!"},
+    {"id": "04", "karakter": "derya",
+     "altyazi": "İpek, her gün saat ikide uyandığın için Mehmet’e günaydın yerine tünaydın yazıyorsun.",
+     "tts": "[unimpressed] İpek... her gün saat ikide uyandığın için, Mehmet'e günaydın yerine tünaydın yazıyorsun."},
+    {"id": "05", "karakter": "ipek",
+     "altyazi": "Ama 2 n ile yazıyorum ona çok bile.",
+     "tts": "[defensive] Ama iki ne ile yazıyorum, ona çok bile."},
+    {"id": "06", "karakter": "derya",
+     "altyazi": "Geçen gün de 4 n'den 3 n'ye geçmiştin.",
+     "tts": "[sarcastic] Geçen gün de dört ne'den, üç ne'ye geçmiştin."},
+    {"id": "07", "karakter": "ipek",
+     "altyazi": "Ya Mehmet demişken… Ben de evlilik teklifinde nasıl evet diyeceğimi, düğünde pastamızı, balayında nereye gideceğimizi… Bunların hepsini planladım. Ben de planlı biriyim.",
+     "tts": "[excited] Ya Mehmet demişken... [dreamy] Ben de evlilik teklifinde nasıl evet diyeceğimi, düğünde pastamızı, balayında nereye gideceğimizi... [proudly] Bunların hepsini planladım. Ben de planlı biriyim."},
+    {"id": "08", "karakter": "derya",
+     "altyazi": "E en son hani sana cevap vermemişti? Ne oldu?",
+     "tts": "[curious] E, en son hani sana cevap vermemişti? [skeptical] Ne oldu?"},
+    {"id": "09", "karakter": "ipek",
+     "altyazi": "E, vermedi. Üstüne fotoğrafı gitti…",
+     "tts": "[hesitant] Eee, vermedi... [quietly] Üstüne fotoğrafı gitti...",
+     "seviye_egrisi": [[0, 1.0], [0.35, 0.9], [1, 0.22]]},
+    {"id": "10", "karakter": "ipek",
+     "altyazi": "Ama pasta konusunda kararsızım hâlâ.",
+     "tts": "[cheerfully] Ama pasta konusunda kararsızım hâlâ!"}
+  ]
+}

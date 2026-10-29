@@ -1,6 +1,9 @@
 # Derya & İpek — Karakter ve Sahne Kılavuzu
 
-Ana referans görsel: `referans/ana_sahne.png` (941x1672, dikey 9:16)
+Referans görseller (sahne profilleri `araclar/sahne_rig.py` → `SAHNELER`):
+- `ana_sahne` — `referans/ana_sahne.png`: ikisi de eli yanağında (Bölüm 1)
+- `bolum02` — `referans/bolum02_sahne.png`: İpek cips paketinde, Derya telefonda; masada laptop, mum, kiraz, "Planlar" defteri, kişisel gelişim kitapları (Bölüm 2)
+- Yeni görsel gelince: göz/ağız kutuları, baş elipsi, silüet, gövde sınırı, buhar noktaları için yeni profil eklenir
 
 ## DEĞİŞMEZ KURALLAR
 
@@ -64,9 +67,13 @@ Ana referans görsel: `referans/ana_sahne.png` (941x1672, dikey 9:16)
     (karakterlerin arkası `arka_plan_plakasi` ile doldurulur; baş en fazla ~4 px / 1,1°)
   - çaydanlık ve bardak buharı, aspiratör ışığında çok hafif nefes
 - YAPILAMAYANLAR (görsel yeniden çizilmeden mümkün değil): el/kol hareketi, cips yeme, çay bardağı kaldırma
+- Bölüm `yonetim.py` içinde `SAHNE = "..."` ile görsel seçilir; `EK_ALTYAZI` ile sessiz anlara altyazı (ör. "…"),
+  `senaryo.json`da `seviye_egrisi` ile giderek kısılan ses
 - Bölüm üretimi: `python3 araclar/seslendir.py bolumler/bolumXX` sonra `python3 araclar/bolum_motoru.py bolumler/bolumXX`
 - Bölüm klasörü: `senaryo.json` (altyazı + tts metni) ve `yonetim.py` (bakış, jest, efekt zamanları)
 
 ## Senaryo Notları / İşleyen Konular
 
 - Bölüm 1 — Ben Çok mu Çirkinim? (filtreli kızlar, FaceApp, ceket linki) — 49,2 sn
+- Bölüm 2 — Herkes Bir Şeyler Yapıyor (yirmilerin ortası, tünaydın, Mehmet, düğün planları, engellenme) — 50,3 sn
+- Süregelen şakalar: İpek ↔ Mehmet (İpek her şeyi planlamış, Mehmet cevap vermiyor/engelledi); İpek öğlen 2'de uyanır; Derya telefondan başını kaldırmadan laf sokar

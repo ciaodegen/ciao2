@@ -1,12 +1,12 @@
 """Aspiratör Işığı sahnesinin animasyon rig'i.
 
-Referans görsel (referans/ana_sahne.png) hiç yeniden çizilmez. Her kare, görselin
+Referans görsel (SAHNELER[...]["dosya"]) hiç yeniden çizilmez. Her kare, görselin
 kendisinden üretilir:
   - göz: göz akı alanı aynı renkle yeniden boyanır, göz bebeği kaydırılır, göz kırpma için
     göz kapağı (cilt rengi + kapak çizgisi) çizilir
   - ağız: kapalı dudak orijinal kalır; konuşurken üstüne açık ağız şekli çizilir
-  - baş: yüz bölgesi katı (deforme olmadan) birkaç piksel kaydırılır/döndürülür; geçiş
-    bölgesi yumuşak bir alanda saç/omuz kenarına dağıtılır
+  - karakter: silüet maskesiyle ayrı katman; baş kayar/döner, gövde eğilir/nefes alır;
+    arka plan hiç oynamaz (karakterlerin arkası arka plan plakasıyla doldurulur)
   - ortam: çaydanlık ve bardak buharı, aspiratör ışığında çok hafif nefes alma
 Koordinatlar 1080x1920 çözünürlüğe göredir.
 """
@@ -19,37 +19,63 @@ KOK = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 W, H = 1080, 1920
 SS = 4  # küçük çizimler için süper örnekleme
 
-# --- Sabit sahne ölçüleri (ana_sahne.png -> 1080x1920) ---
-GOZ_KUTULARI = {
-    "ipek": [(255, 850, 350, 905), (370, 820, 440, 880)],
-    "derya": [(715, 835, 790, 895), (805, 870, 890, 925)],
+YUMUSAK_KAT = 1.38  # baş elipsinden bu katsayıya kadar yumuşak geçiş
+
+# --- Sahne profilleri (koordinatlar 1080x1920 ölçeğinde) ---
+# goz/agiz: tespit kutuları; bas: baş elipsi ve dönme pivotu; siluet: karakter katmanı
+# (masadaki kollar sabit kaldığı için alt kısım kaba kapatılır); govde_y: bu y'nin üstü gövdeyle
+# tam hareket eder, altı sabit; buhar: çaydanlık ve bardak buhar kaynakları
+SAHNELER = {
+    "ana_sahne": dict(
+        dosya="referans/ana_sahne.png",
+        goz={"ipek": [(255, 850, 350, 905), (370, 820, 440, 880)],
+             "derya": [(715, 835, 790, 895), (805, 870, 890, 925)]},
+        agiz={"ipek": (350, 915, 415, 955), "derya": (735, 935, 800, 975)},
+        bas={"ipek": dict(c=(290, 790), r=(205, 245), pivot=(345, 1010)),
+             "derya": dict(c=(812, 800), r=(205, 245), pivot=(800, 1030))},
+        siluet={
+            "ipek": [(45, 1060), (50, 1020), (60, 990), (78, 965), (100, 950), (104, 920), (100, 890), (98, 860),
+                     (100, 830), (106, 800), (104, 770), (100, 745), (92, 720), (86, 695), (88, 670), (92, 648),
+                     (100, 630), (112, 612), (128, 598), (140, 590), (148, 578), (162, 568), (185, 563), (210, 563),
+                     (232, 567), (250, 575), (264, 588), (280, 605), (290, 625), (300, 640), (330, 648), (355, 656),
+                     (375, 668), (392, 684), (405, 700), (418, 718), (430, 738), (440, 758), (450, 780), (460, 805),
+                     (468, 830), (478, 850), (480, 880), (475, 910), (472, 940), (462, 962), (480, 985), (494, 1010),
+                     (500, 1035), (505, 1060), (515, 1090), (540, 1130), (550, 1260), (0, 1260), (0, 1130), (15, 1110),
+                     (30, 1085)],
+            "derya": [(570, 1260), (580, 1100), (590, 1070), (600, 1040), (618, 1000), (632, 960), (628, 920),
+                      (630, 880), (642, 852), (652, 838), (680, 810), (710, 772), (745, 732), (780, 697), (815, 682),
+                      (832, 652), (840, 630), (860, 614), (872, 600), (885, 588), (910, 579), (940, 579), (975, 586),
+                      (1000, 590), (1025, 615), (1042, 640), (1050, 680), (1052, 710), (1055, 770), (1054, 800),
+                      (1052, 850), (1048, 900), (1050, 950), (1058, 1000), (1068, 1040), (1080, 1070), (1080, 1260)]},
+        govde_y=(1000, 1170),
+        caydanlik_buhar=[(519, 612), (571, 596)],
+        bardak_buhar=[(419, 1188), (935, 1244)],
+        aspirator_isik=(654, 372),
+    ),
+    "bolum02": dict(
+        dosya="referans/bolum02_sahne.png",
+        goz={"ipek": [(250, 725, 345, 778), (345, 680, 422, 743)],
+             "derya": [(712, 775, 785, 833), (790, 808, 872, 862)]},
+        agiz={"ipek": (340, 772, 398, 808), "derya": (735, 855, 792, 897)},
+        bas={"ipek": dict(c=(300, 690), r=(170, 200), pivot=(360, 850)),
+             "derya": dict(c=(790, 780), r=(165, 200), pivot=(770, 915))},
+        siluet={
+            "ipek": [(0, 900), (20, 880), (50, 860), (85, 852), (130, 838), (180, 828), (140, 800), (135, 760),
+                     (125, 705), (120, 670), (110, 630), (105, 580), (120, 540), (140, 520), (165, 510), (215, 510),
+                     (250, 525), (270, 555), (280, 575), (305, 580), (340, 595), (370, 615), (395, 645), (430, 660),
+                     (450, 690), (455, 740), (452, 785), (440, 810), (430, 840), (460, 880), (480, 910), (490, 950),
+                     (500, 980), (560, 990), (578, 1050), (580, 1150), (560, 1260), (0, 1260)],
+            "derya": [(585, 1260), (585, 1150), (585, 1050), (590, 970), (605, 930), (630, 905), (650, 890),
+                      (675, 880), (685, 820), (705, 770), (730, 730), (760, 695), (790, 670), (820, 640), (840, 620),
+                      (850, 590), (900, 575), (940, 580), (970, 600), (990, 630), (1000, 670), (1000, 710),
+                      (995, 760), (1000, 810), (1005, 860), (1008, 920), (990, 975), (1030, 985), (1080, 990),
+                      (1080, 1260)]},
+        govde_y=(960, 1110),
+        caydanlik_buhar=[(520, 614), (566, 600)],
+        bardak_buhar=[(444, 1168), (982, 1236)],
+        aspirator_isik=(665, 368),
+    ),
 }
-AGIZ_KUTULARI = {"ipek": (350, 915, 415, 955), "derya": (735, 935, 800, 975)}
-# baş bölgesi: (merkez x, y, iç yarıçap x, y, dönme pivotu x, y)
-BAS = {
-    "ipek": dict(c=(290, 790), r=(205, 245), pivot=(345, 1010)),
-    "derya": dict(c=(812, 800), r=(205, 245), pivot=(800, 1030)),
-}
-YUMUSAK_KAT = 1.38  # iç elipsten bu katsayıya kadar yumuşak geçiş
-# karakter silüetleri (baş, saç, omuzlar; masadaki kollar sabit kaldığı için kaba kapatılır)
-SILUET = {
-    "ipek": [(45, 1060), (50, 1020), (60, 990), (78, 965), (100, 950), (104, 920), (100, 890), (98, 860),
-             (100, 830), (106, 800), (104, 770), (100, 745), (92, 720), (86, 695), (88, 670), (92, 648),
-             (100, 630), (112, 612), (128, 598), (140, 590), (148, 578), (162, 568), (185, 563), (210, 563),
-             (232, 567), (250, 575), (264, 588), (280, 605), (290, 625), (300, 640), (330, 648), (355, 656),
-             (375, 668), (392, 684), (405, 700), (418, 718), (430, 738), (440, 758), (450, 780), (460, 805),
-             (468, 830), (478, 850), (480, 880), (475, 910), (472, 940), (462, 962), (480, 985), (494, 1010),
-             (500, 1035), (505, 1060), (515, 1090), (540, 1130), (550, 1260), (0, 1260), (0, 1130), (15, 1110),
-             (30, 1085)],
-    "derya": [(570, 1260), (580, 1100), (590, 1070), (600, 1040), (618, 1000), (632, 960), (628, 920),
-              (630, 880), (642, 852), (652, 838), (680, 810), (710, 772), (745, 732), (780, 697), (815, 682),
-              (832, 652), (840, 630), (860, 614), (872, 600), (885, 588), (910, 579), (940, 579), (975, 586),
-              (1000, 590), (1025, 615), (1042, 640), (1050, 680), (1052, 710), (1055, 770), (1054, 800), (1052, 850), (1048, 900), (1050, 950), (1058, 1000),
-              (1068, 1040), (1080, 1070), (1080, 1260)],
-}
-CAYDANLIK_BUHAR = [(519, 612), (571, 596)]
-BARDAK_BUHAR = [(419, 1188), (935, 1244)]
-ASPIRATOR_ISIK = (654, 372)
 
 
 def _hull(pts):
@@ -227,9 +253,6 @@ class Agiz:
         parca[:] = parca * (1 - a[..., 3:]) + a[..., :3] * 255.0 * a[..., 3:]
 
 
-GOVDE_Y = (1000, 1170)  # bu y'nin üstü gövdeyle birlikte tam hareket eder, altı (masa/kollar) sabit
-
-
 class KarakterKatmani:
     """Karakteri silüet maskesiyle ayrı bir katman olarak hareket ettirir; arka plan hiç oynamaz.
 
@@ -237,23 +260,25 @@ class KarakterKatmani:
     alır. Hareket masaya doğru sıfıra iner. Açılan boşluklar arka plan plakasından gelir.
     """
 
-    def __init__(self, ad):
-        b = BAS[ad]
+    def __init__(self, ad, profil):
+        b = profil["bas"][ad]
         self.cx, self.cy = b["c"]
         self.rx, self.ry = b["r"]
         self.px, self.py = b["pivot"]
-        xs, ys = zip(*SILUET[ad])
+        siluet = profil["siluet"][ad]
+        govde_y = profil["govde_y"]
+        xs, ys = zip(*siluet)
         self.x0, self.x1 = max(0, min(xs) - 24), min(W, max(xs) + 25)
         self.y0, self.y1 = max(0, min(ys) - 24), min(H, max(ys) + 1)
         yy, xx = np.mgrid[self.y0:self.y1, self.x0:self.x1].astype(np.float32)
         e = np.sqrt(((xx - self.cx) / self.rx) ** 2 + ((yy - self.cy) / self.ry) ** 2)
         s = np.clip((YUMUSAK_KAT - e) / (YUMUSAK_KAT - 1), 0, 1)
         self.w_bas = s * s * (3 - 2 * s)
-        g = np.clip((GOVDE_Y[1] - yy) / (GOVDE_Y[1] - GOVDE_Y[0]), 0, 1)
+        g = np.clip((govde_y[1] - yy) / (govde_y[1] - govde_y[0]), 0, 1)
         self.w_govde = g * g * (3 - 2 * g)
         self.xx, self.yy = xx, yy
         im = Image.new("L", (W * 2, H * 2), 0)
-        ImageDraw.Draw(im).polygon([(x * 2, y * 2) for x, y in SILUET[ad]], fill=255)
+        ImageDraw.Draw(im).polygon([(x * 2, y * 2) for x, y in siluet], fill=255)
         self.maske = np.asarray(im.resize((W, H), Image.BOX).filter(ImageFilter.GaussianBlur(0.8))).astype(np.float32) / 255.0
         # hareket edebilen bölge (plaka sadece burada doldurulur)
         self.hareketli = np.zeros((H, W), bool)
@@ -360,25 +385,28 @@ class Buhar:
 
 
 class Sahne:
-    def __init__(self):
-        img = Image.open(f"{KOK}/referans/ana_sahne.png").convert("RGB").resize((W, H), Image.LANCZOS)
+    def __init__(self, ad="ana_sahne"):
+        profil = SAHNELER[ad]
+        self.ad = ad
+        img = Image.open(f"{KOK}/{profil['dosya']}").convert("RGB").resize((W, H), Image.LANCZOS)
         self.base = np.asarray(img).astype(np.float32)
         b8 = np.asarray(img)
-        self.gozler = {k: [Goz(b8, kt) for kt in v] for k, v in GOZ_KUTULARI.items()}
-        self.agizlar = {k: Agiz(b8, v) for k, v in AGIZ_KUTULARI.items()}
-        self.katmanlar = {k: KarakterKatmani(k) for k in SILUET}
-        anahtar = hashlib.md5(repr(SILUET).encode()).hexdigest()[:10]
-        onbellek = f"{KOK}/referans/.plaka_{anahtar}.npy"
+        self.gozler = {k: [Goz(b8, kt) for kt in v] for k, v in profil["goz"].items()}
+        self.agizlar = {k: Agiz(b8, v) for k, v in profil["agiz"].items()}
+        self.katmanlar = {k: KarakterKatmani(k, profil) for k in profil["siluet"]}
+        anahtar = hashlib.md5(repr((profil["siluet"], profil["bas"], profil["govde_y"])).encode()).hexdigest()[:10]
+        onbellek = f"{KOK}/referans/.plaka_{ad}_{anahtar}.npy"
         if os.path.exists(onbellek):
             self.plaka = np.load(onbellek)
         else:
             self.plaka = arka_plan_plakasi(self.base, self.katmanlar.values())
             np.save(onbellek, self.plaka)
-        self.caydanlik = Buhar(CAYDANLIK_BUHAR, 0.16, 3.2, 36, 0.30, 5, 17, 1)
-        self.bardak = Buhar(BARDAK_BUHAR, 0.3, 2.4, 24, 0.22, 4, 12, 2)
+        self.caydanlik = Buhar(profil["caydanlik_buhar"], 0.16, 3.2, 36, 0.30, 5, 17, 1)
+        self.bardak = Buhar(profil["bardak_buhar"], 0.3, 2.4, 24, 0.22, 4, 12, 2)
         # aspiratör ışığı için radyal ağırlık
+        lx, ly = profil["aspirator_isik"]
         yy, xx = np.mgrid[0:H, 0:W].astype(np.float32)
-        d = np.sqrt((xx - ASPIRATOR_ISIK[0]) ** 2 + ((yy - ASPIRATOR_ISIK[1]) * 1.3) ** 2)
+        d = np.sqrt((xx - lx) ** 2 + ((yy - ly) * 1.3) ** 2)
         self.isik = np.clip(1 - d / 420, 0, 1) ** 2
         ys, xs = np.nonzero(self.isik > 0.001)
         self.isik_kutu = (ys.min(), ys.max() + 1, xs.min(), xs.max() + 1)
