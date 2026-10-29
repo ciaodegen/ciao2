@@ -17,7 +17,7 @@ Ana referans görsel: `referans/ana_sahne.png` (941x1672, dikey 9:16)
 - Altın halka küpe
 - Elini yanağına dayamış, sıkılmış/bezgin bakış
 - Kişilik: _(ilk senaryodan sonra doldurulacak)_
-- ElevenLabs sesi: _(seçilecek)_
+- ElevenLabs sesi: **Gökçe Deniz** — `oPC5I9GKjMReiaM29gjY` (neşeli, cilveli, ince; İpek enerjik olan)
 
 ### Derya — SAĞDAKİ
 - Uzun siyah saç, pembe/fuşya röfleler, topuz + pembe fiyonk toka
