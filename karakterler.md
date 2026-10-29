@@ -16,7 +16,7 @@ Ana referans görsel: `referans/ana_sahne.png` (941x1672, dikey 9:16)
 - Pembe, omzu açık kazak; altında siyah askılı
 - Altın halka küpe
 - Elini yanağına dayamış, sıkılmış/bezgin bakış
-- Kişilik: _(ilk senaryodan sonra doldurulacak)_
+- Kişilik: meraklı, hafif alıngan, cilveli; sosyal medyadaki kızlarla kendini kıyaslar, laf sokmayı da bilir
 - ElevenLabs sesi: **Gökçe Deniz** — `oPC5I9GKjMReiaM29gjY` (neşeli, cilveli, ince; İpek enerjik olan)
 
 ### Derya — SAĞDAKİ
@@ -24,7 +24,7 @@ Ana referans görsel: `referans/ana_sahne.png` (941x1672, dikey 9:16)
 - Leopar desenli bluz, siyah choker kolye
 - Altın halka küpe
 - Elini yanağına dayamış, sıkılmış/bezgin bakış
-- Kişilik: _(ilk senaryodan sonra doldurulacak)_
+- Kişilik: dobra, biraz sabırsız, kuru/alaycı komik; İpek'e akıl verir ama kendisi de aynı şeyleri yapar (ceket linki)
 - ElevenLabs sesi: **Mel Ross** — `LDb18ybzyBBJNGLUnm0l` (tok, rahat, biraz alaycı; Derya bezgin olan)
 
 ## Sahne (Mutfak, Gece)
@@ -51,9 +51,19 @@ Ana referans görsel: `referans/ana_sahne.png` (941x1672, dikey 9:16)
 - Metin konuşur gibi yazılır: "ya", "kız", "yani", üç nokta ile duraksama.
 - Hesap limiti: aynı anda en fazla 3 istek.
 - Ses denemeleri için: `araclar/ses_sayfasi.py` (dinlenebilir HTML sayfası üretir)
-- Efektler: aspiratör ışığında hafif titreme/parlama, konuşana göre hafif zoom, altyazı
-- Altyazı stili: _(belirlenecek)_
+- Altyazı: beyaz, siyah kontur, Inter Display ExtraBold 62px, y=1440 merkez (Instagram alt arayüzünün üstünde)
+
+## Animasyon Yöntemi
+
+- Sabit referans görsel üzerinde kod tabanlı rig: `araclar/sahne_rig.py`
+  - göz kırpma, bakış yönü (orijinal / asagi / merkez=kamera / yukari=göz devirme)
+  - konuşurken ağız: kendi sesinin şiddeti + harf zamanlaması (sesli harfe göre ağız şekli)
+  - küçük baş hareketleri (en fazla ~3 px / 1°; fazlası arka plan fayanslarını büker)
+  - çaydanlık ve bardak buharı, aspiratör ışığında çok hafif nefes
+- YAPILAMAYANLAR (görsel yeniden çizilmeden mümkün değil): el/kol hareketi, cips yeme, çay bardağı kaldırma
+- Bölüm üretimi: `python3 araclar/seslendir.py bolumler/bolumXX` sonra `python3 araclar/bolum_motoru.py bolumler/bolumXX`
+- Bölüm klasörü: `senaryo.json` (altyazı + tts metni) ve `yonetim.py` (bakış, jest, efekt zamanları)
 
 ## Senaryo Notları / İşleyen Konular
 
-_(her videodan sonra güncellenecek)_
+- Bölüm 1 — Ben Çok mu Çirkinim? (filtreli kızlar, FaceApp, ceket linki) — 61,5 sn

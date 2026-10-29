@@ -1,0 +1,188 @@
+{
+ "sure": 61.45997916666666,
+ "replikler": [
+  {
+   "id": "01",
+   "karakter": "ipek",
+   "bas": 2.2,
+   "son": 4.87
+  },
+  {
+   "id": "02",
+   "karakter": "derya",
+   "bas": 5.32,
+   "son": 6.76
+  },
+  {
+   "id": "03",
+   "karakter": "ipek",
+   "bas": 7.14,
+   "son": 9.7
+  },
+  {
+   "id": "04",
+   "karakter": "derya",
+   "bas": 10.08,
+   "son": 17.68
+  },
+  {
+   "id": "05",
+   "karakter": "ipek",
+   "bas": 18.06,
+   "son": 20.58
+  },
+  {
+   "id": "06",
+   "karakter": "derya",
+   "bas": 20.96,
+   "son": 29.57
+  },
+  {
+   "id": "07",
+   "karakter": "ipek",
+   "bas": 29.95,
+   "son": 33.26
+  },
+  {
+   "id": "08",
+   "karakter": "derya",
+   "bas": 33.64,
+   "son": 46.77
+  },
+  {
+   "id": "09",
+   "karakter": "ipek",
+   "bas": 47.15,
+   "son": 51.17
+  },
+  {
+   "id": "10",
+   "karakter": "derya",
+   "bas": 52.17,
+   "son": 54.33
+  },
+  {
+   "id": "11",
+   "karakter": "ipek",
+   "bas": 54.78,
+   "son": 59.66
+  }
+ ],
+ "altyazi": [
+  [
+   2.33,
+   5.02,
+   "Sana bir şey söyleyeceğim ama dürüst ol."
+  ],
+  [
+   5.34,
+   6.91,
+   "Hıh."
+  ],
+  [
+   7.162,
+   9.85,
+   "Sence ben çok mu çirkinim?"
+  ],
+  [
+   10.082,
+   12.644,
+   "Ya İpek, Allah aşkına!"
+  ],
+  [
+   12.644,
+   15.29,
+   "Yine filtreyle çekilip üstüne FaceApp basılmış"
+  ],
+  [
+   15.29,
+   17.83,
+   "kızlara bakıp bakıp söylenme bana!"
+  ],
+  [
+   18.06,
+   20.73,
+   "Ya ama kızın burnu yok resmen!"
+  ],
+  [
+   21.062,
+   23.377,
+   "E, sen de burnunu beğenmiyorsun diye"
+  ],
+  [
+   23.377,
+   26.467,
+   "geçen gün ön kamerayı kapattın."
+  ],
+  [
+   26.467,
+   27.2,
+   "Ne yapalım,"
+  ],
+  [
+   27.2,
+   29.72,
+   "hepimiz burnumuzu iptal mi edelim?"
+  ],
+  [
+   30.054,
+   33.41,
+   "Dalga geçme ya! Kızın cildi cam gibi."
+  ],
+  [
+   33.814,
+   37.003,
+   "Kızın cildi değil, ekranı cam gibi!"
+  ],
+  [
+   37.003,
+   38.96,
+   "Bir de şu telefonu bırak artık."
+  ],
+  [
+   38.96,
+   41.62,
+   "Kim ne giyerse onu giyiyorsunuz,"
+  ],
+  [
+   41.62,
+   44.624,
+   "kim nereye giderse oraya gidiyorsunuz."
+  ],
+  [
+   44.624,
+   46.92,
+   "Resmen yönetiliyorsunuz!"
+  ],
+  [
+   47.345,
+   49.03,
+   "Sen de geçen gün o kızın giydiği"
+  ],
+  [
+   49.03,
+   51.32,
+   "ceketin linkini istemedin mi?"
+  ],
+  [
+   52.324,
+   54.48,
+   "Ben kalite kontrol yapıyordum."
+  ],
+  [
+   54.799,
+   56.416,
+   "He, tabii."
+  ],
+  [
+   56.416,
+   58.216,
+   "Ceket de bugün kargoya veriliyormuş,"
+  ],
+  [
+   58.216,
+   59.81,
+   "kalite kontrol uzmanı."
+  ]
+ ]
+}

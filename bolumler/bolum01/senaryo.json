@@ -1,0 +1,34 @@
+{
+  "bolum": "Aspiratör Işığı — Bölüm 1: Ben Çok mu Çirkinim?",
+  "sesler": {
+    "ipek": {"ad": "Gökçe Deniz", "voice_id": "oPC5I9GKjMReiaM29gjY"},
+    "derya": {"ad": "Mel Ross", "voice_id": "LDb18ybzyBBJNGLUnm0l"}
+  },
+  "model": "eleven_v3",
+  "ayar": {"stability": 0.5},
+  "not": "altyazi = senaryodaki orijinal metin (değiştirilmez). tts = seslendirme metni: sadece duygu etiketleri, uzatmalar ve okunuş (FaceApp -> Feys Ep) eklenir.",
+  "replikler": [
+    {"id": "01", "karakter": "ipek",  "altyazi": "Sana bir şey söyleyeceğim ama dürüst ol.",
+     "tts": "[curious] Sana bir şey söyleyeceğim... ama dürüst ol."},
+    {"id": "02", "karakter": "derya", "altyazi": "Hıh.",
+     "tts": "[bored] Hıh."},
+    {"id": "03", "karakter": "ipek",  "altyazi": "Sence ben çok mu çirkinim?",
+     "tts": "[hesitant] Sence ben... çok mu çirkinim?"},
+    {"id": "04", "karakter": "derya", "altyazi": "Ya İpek, Allah aşkına! Yine filtreyle çekilip üstüne FaceApp basılmış kızlara bakıp bakıp söylenme bana!",
+     "tts": "[exasperated] Ya İpek, Allah aşkına! [annoyed] Yine filtreyle çekilip üstüne Feys Ep basılmış kızlara bakıp bakıp söylenme bana!"},
+    {"id": "05", "karakter": "ipek",  "altyazi": "Ya ama kızın burnu yok resmen!",
+     "tts": "[whiny] Yaa ama kızın burnu yok resmen!"},
+    {"id": "06", "karakter": "derya", "altyazi": "E, sen de burnunu beğenmiyorsun diye geçen gün ön kamerayı kapattın. Ne yapalım, hepimiz burnumuzu iptal mi edelim?",
+     "tts": "[sarcastic] Eee, sen de burnunu beğenmiyorsun diye geçen gün ön kamerayı kapattın. [deadpan] Ne yapalım, hepimiz burnumuzu iptal mi edelim?"},
+    {"id": "07", "karakter": "ipek",  "altyazi": "Dalga geçme ya! Kızın cildi cam gibi.",
+     "tts": "[offended] Dalga geçme ya! [dreamy] Kızın cildi cam gibi."},
+    {"id": "08", "karakter": "derya", "altyazi": "Kızın cildi değil, ekranı cam gibi! Bir de şu telefonu bırak artık. Kim ne giyerse onu giyiyorsunuz, kim nereye giderse oraya gidiyorsunuz. Resmen yönetiliyorsunuz!",
+     "tts": "[sarcastic] Kızın cildi değil, ekranı cam gibi! [annoyed] Bir de şu telefonu bırak artık. Kim ne giyerse onu giyiyorsunuz, kim nereye giderse oraya gidiyorsunuz. [emphatic] Resmen yönetiliyorsunuz!"},
+    {"id": "09", "karakter": "ipek",  "altyazi": "Sen de geçen gün o kızın giydiği ceketin linkini istemedin mi?",
+     "tts": "[smug] Sen de geçen gün o kızın giydiği ceketin linkini istemedin mi?"},
+    {"id": "10", "karakter": "derya", "altyazi": "Ben kalite kontrol yapıyordum.",
+     "tts": "[confident] Ben kalite kontrol yapıyordum."},
+    {"id": "11", "karakter": "ipek",  "altyazi": "He, tabii. Ceket de bugün kargoya veriliyormuş, kalite kontrol uzmanı.",
+     "tts": "[sarcastic] Heee, tabiii. [teasing] Ceket de bugün kargoya veriliyormuş, kalite kontrol uzmanı."}
+  ]
+}
