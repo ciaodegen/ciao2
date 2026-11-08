@@ -103,12 +103,12 @@
 
 **[0:17–0:22]**
 🎬 Araba kapısı: siyah kalemle çizilmiş dev sembol ve tarihler yavaşça belirir.
-🎙️ "On their car door, he left his symbol… and the dates of his **attacks**."
+🎙️ "On their car door, he leaves his symbol… and the dates of his **attacks**."
 🇹🇷 Arabalarının kapısına sembolünü… ve saldırılarının tarihlerini bıraktı.
 
 **[0:22–0:26]**
 🎬 Oto yıkamacı tabelası altında ankesörlü telefon; ahize kablosundan sallanıyor.
-🎙️ "Then, once again… he called the **police**."
+🎙️ "Then, once again… he calls the **police**."
 🇹🇷 Sonra bir kez daha… polisi aradı.
 
 **[0:26–0:31]**
