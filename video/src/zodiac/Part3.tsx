@@ -237,9 +237,9 @@ const SuspectShot: React.FC<{ s0: number }> = ({ s0 }) => {
           <line x1={x + 150} y1={1240} x2={x - 150} y2={1520} stroke="#e2262d" strokeWidth={26} strokeLinecap="round" />
         </g>)}
       </Svg>
-      <Stamp text="NO MATCH" at={L(31.2)} y={1700} size={120} until={L(32.6)} />
+      <Stamp text="NO MATCH" at={L(31.2)} y={1080} size={130} until={L(32.6)} />
       <Stamp text="1992" at={L(32.7)} y={800} x={720} size={170} rot={6} />
-      <Stamp text="NEVER CHARGED" at={L(33.83)} y={1700} size={110} />
+      <Stamp text="NEVER CHARGED" at={L(33.83)} y={1080} size={110} />
       <Vignette strength={0.45} />
     </Camera>
   );
