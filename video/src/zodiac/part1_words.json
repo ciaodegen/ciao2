@@ -1,0 +1,684 @@
+{
+ "voice": "Ian Cartwell - Suspense and Mystery",
+ "voice_id": "e5WNhrdI30aXpS2RSGm1",
+ "model": "eleven_multilingual_v2",
+ "settings": {
+  "stability": 0.45,
+  "similarity_boost": 0.8,
+  "style": 0.25,
+  "use_speaker_boost": true,
+  "speed": 1.12
+ },
+ "words": [
+  {
+   "word": "For",
+   "start": 0.0,
+   "end": 0.163
+  },
+  {
+   "word": "fifty-seven",
+   "start": 0.209,
+   "end": 0.766
+  },
+  {
+   "word": "years,",
+   "start": 0.813,
+   "end": 1.138
+  },
+  {
+   "word": "nobody",
+   "start": 1.196,
+   "end": 1.567
+  },
+  {
+   "word": "has",
+   "start": 1.625,
+   "end": 1.741
+  },
+  {
+   "word": "caught",
+   "start": 1.811,
+   "end": 2.09
+  },
+  {
+   "word": "him.",
+   "start": 2.136,
+   "end": 2.508
+  },
+  {
+   "word": "They",
+   "start": 2.961,
+   "end": 3.123
+  },
+  {
+   "word": "call",
+   "start": 3.181,
+   "end": 3.425
+  },
+  {
+   "word": "him...",
+   "start": 3.495,
+   "end": 3.936
+  },
+  {
+   "word": "the",
+   "start": 4.47,
+   "end": 4.563
+  },
+  {
+   "word": "Zodiac.",
+   "start": 4.609,
+   "end": 5.399
+  },
+  {
+   "word": "California,",
+   "start": 6.246,
+   "end": 6.966
+  },
+  {
+   "word": "nineteen",
+   "start": 7.105,
+   "end": 7.442
+  },
+  {
+   "word": "sixty-eight.",
+   "start": 7.488,
+   "end": 8.255
+  },
+  {
+   "word": "A",
+   "start": 8.591,
+   "end": 8.649
+  },
+  {
+   "word": "young",
+   "start": 8.719,
+   "end": 8.882
+  },
+  {
+   "word": "couple",
+   "start": 8.94,
+   "end": 9.218
+  },
+  {
+   "word": "is",
+   "start": 9.253,
+   "end": 9.334
+  },
+  {
+   "word": "killed",
+   "start": 9.404,
+   "end": 9.718
+  },
+  {
+   "word": "on",
+   "start": 9.764,
+   "end": 9.834
+  },
+  {
+   "word": "a",
+   "start": 9.88,
+   "end": 9.903
+  },
+  {
+   "word": "quiet",
+   "start": 9.961,
+   "end": 10.252
+  },
+  {
+   "word": "road.",
+   "start": 10.31,
+   "end": 10.774
+  },
+  {
+   "word": "Months",
+   "start": 11.227,
+   "end": 11.459
+  },
+  {
+   "word": "later,",
+   "start": 11.505,
+   "end": 11.865
+  },
+  {
+   "word": "he",
+   "start": 11.923,
+   "end": 12.005
+  },
+  {
+   "word": "attacks",
+   "start": 12.051,
+   "end": 12.399
+  },
+  {
+   "word": "again.",
+   "start": 12.446,
+   "end": 12.968
+  },
+  {
+   "word": "This",
+   "start": 13.688,
+   "end": 13.886
+  },
+  {
+   "word": "time,",
+   "start": 13.944,
+   "end": 14.408
+  },
+  {
+   "word": "one",
+   "start": 14.559,
+   "end": 14.745
+  },
+  {
+   "word": "victim",
+   "start": 14.791,
+   "end": 15.081
+  },
+  {
+   "word": "survives.",
+   "start": 15.128,
+   "end": 15.836
+  },
+  {
+   "word": "Then",
+   "start": 16.289,
+   "end": 16.579
+  },
+  {
+   "word": "he",
+   "start": 16.66,
+   "end": 16.753
+  },
+  {
+   "word": "calls",
+   "start": 16.8,
+   "end": 17.031
+  },
+  {
+   "word": "the",
+   "start": 17.078,
+   "end": 17.148
+  },
+  {
+   "word": "police",
+   "start": 17.194,
+   "end": 17.507
+  },
+  {
+   "word": "and",
+   "start": 17.542,
+   "end": 17.612
+  },
+  {
+   "word": "confesses,",
+   "start": 17.658,
+   "end": 18.367
+  },
+  {
+   "word": "from",
+   "start": 18.471,
+   "end": 18.634
+  },
+  {
+   "word": "a",
+   "start": 18.68,
+   "end": 18.703
+  },
+  {
+   "word": "payphone",
+   "start": 18.75,
+   "end": 19.133
+  },
+  {
+   "word": "just",
+   "start": 19.179,
+   "end": 19.377
+  },
+  {
+   "word": "blocks",
+   "start": 19.446,
+   "end": 19.737
+  },
+  {
+   "word": "away.",
+   "start": 19.771,
+   "end": 20.375
+  },
+  {
+   "word": "Weeks",
+   "start": 21.002,
+   "end": 21.246
+  },
+  {
+   "word": "later,",
+   "start": 21.292,
+   "end": 21.617
+  },
+  {
+   "word": "three",
+   "start": 21.664,
+   "end": 21.873
+  },
+  {
+   "word": "newspapers",
+   "start": 21.919,
+   "end": 22.43
+  },
+  {
+   "word": "get",
+   "start": 22.477,
+   "end": 22.616
+  },
+  {
+   "word": "letters.",
+   "start": 22.662,
+   "end": 23.243
+  },
+  {
+   "word": "Each",
+   "start": 23.579,
+   "end": 23.765
+  },
+  {
+   "word": "one",
+   "start": 23.812,
+   "end": 23.974
+  },
+  {
+   "word": "holds",
+   "start": 24.021,
+   "end": 24.23
+  },
+  {
+   "word": "a",
+   "start": 24.276,
+   "end": 24.299
+  },
+  {
+   "word": "piece",
+   "start": 24.346,
+   "end": 24.566
+  },
+  {
+   "word": "of",
+   "start": 24.601,
+   "end": 24.659
+  },
+  {
+   "word": "a",
+   "start": 24.706,
+   "end": 24.729
+  },
+  {
+   "word": "secret",
+   "start": 24.775,
+   "end": 25.066
+  },
+  {
+   "word": "code.",
+   "start": 25.135,
+   "end": 25.716
+  },
+  {
+   "word": "His",
+   "start": 26.11,
+   "end": 26.319
+  },
+  {
+   "word": "demand:",
+   "start": 26.377,
+   "end": 27.016
+  },
+  {
+   "word": "\"Print",
+   "start": 27.306,
+   "end": 27.689
+  },
+  {
+   "word": "it",
+   "start": 27.736,
+   "end": 27.817
+  },
+  {
+   "word": "on",
+   "start": 27.864,
+   "end": 27.945
+  },
+  {
+   "word": "the",
+   "start": 27.98,
+   "end": 28.049
+  },
+  {
+   "word": "front",
+   "start": 28.096,
+   "end": 28.305
+  },
+  {
+   "word": "page,",
+   "start": 28.363,
+   "end": 29.025
+  },
+  {
+   "word": "or",
+   "start": 29.21,
+   "end": 29.373
+  },
+  {
+   "word": "I",
+   "start": 29.431,
+   "end": 29.454
+  },
+  {
+   "word": "kill",
+   "start": 29.559,
+   "end": 29.744
+  },
+  {
+   "word": "again.\"",
+   "start": 29.791,
+   "end": 30.418
+  },
+  {
+   "word": "Then",
+   "start": 31.138,
+   "end": 31.439
+  },
+  {
+   "word": "another",
+   "start": 31.579,
+   "end": 31.927
+  },
+  {
+   "word": "letter:",
+   "start": 31.973,
+   "end": 32.496
+  },
+  {
+   "word": "\"This",
+   "start": 32.786,
+   "end": 33.076
+  },
+  {
+   "word": "is",
+   "start": 33.123,
+   "end": 33.204
+  },
+  {
+   "word": "the",
+   "start": 33.25,
+   "end": 33.32
+  },
+  {
+   "word": "Zodiac",
+   "start": 33.366,
+   "end": 33.796
+  },
+  {
+   "word": "speaking.\"",
+   "start": 33.854,
+   "end": 34.539
+  },
+  {
+   "word": "The",
+   "start": 35.166,
+   "end": 35.294
+  },
+  {
+   "word": "name",
+   "start": 35.34,
+   "end": 35.526
+  },
+  {
+   "word": "was",
+   "start": 35.572,
+   "end": 35.688
+  },
+  {
+   "word": "born.",
+   "start": 35.758,
+   "end": 36.257
+  },
+  {
+   "word": "Thousands",
+   "start": 36.791,
+   "end": 37.267
+  },
+  {
+   "word": "tried",
+   "start": 37.314,
+   "end": 37.534
+  },
+  {
+   "word": "to",
+   "start": 37.558,
+   "end": 37.616
+  },
+  {
+   "word": "crack",
+   "start": 37.662,
+   "end": 37.883
+  },
+  {
+   "word": "the",
+   "start": 37.929,
+   "end": 37.999
+  },
+  {
+   "word": "code.",
+   "start": 38.045,
+   "end": 38.486
+  },
+  {
+   "word": "But",
+   "start": 39.02,
+   "end": 39.16
+  },
+  {
+   "word": "the",
+   "start": 39.195,
+   "end": 39.264
+  },
+  {
+   "word": "ones",
+   "start": 39.322,
+   "end": 39.485
+  },
+  {
+   "word": "who",
+   "start": 39.508,
+   "end": 39.601
+  },
+  {
+   "word": "did",
+   "start": 39.647,
+   "end": 39.798
+  },
+  {
+   "word": "it?",
+   "start": 39.845,
+   "end": 40.123
+  },
+  {
+   "word": "A",
+   "start": 40.75,
+   "end": 40.82
+  },
+  {
+   "word": "schoolteacher",
+   "start": 40.866,
+   "end": 41.447
+  },
+  {
+   "word": "and",
+   "start": 41.482,
+   "end": 41.551
+  },
+  {
+   "word": "his",
+   "start": 41.598,
+   "end": 41.702
+  },
+  {
+   "word": "wife.",
+   "start": 41.76,
+   "end": 42.283
+  },
+  {
+   "word": "In",
+   "start": 42.678,
+   "end": 42.782
+  },
+  {
+   "word": "about",
+   "start": 42.828,
+   "end": 43.014
+  },
+  {
+   "word": "a",
+   "start": 43.049,
+   "end": 43.072
+  },
+  {
+   "word": "week.",
+   "start": 43.119,
+   "end": 43.513
+  },
+  {
+   "word": "The",
+   "start": 44.361,
+   "end": 44.477
+  },
+  {
+   "word": "message",
+   "start": 44.524,
+   "end": 44.883
+  },
+  {
+   "word": "was",
+   "start": 44.93,
+   "end": 45.058
+  },
+  {
+   "word": "chilling.",
+   "start": 45.116,
+   "end": 45.685
+  },
+  {
+   "word": "But",
+   "start": 46.021,
+   "end": 46.161
+  },
+  {
+   "word": "there",
+   "start": 46.184,
+   "end": 46.323
+  },
+  {
+   "word": "was",
+   "start": 46.346,
+   "end": 46.428
+  },
+  {
+   "word": "no",
+   "start": 46.474,
+   "end": 46.578
+  },
+  {
+   "word": "name.",
+   "start": 46.648,
+   "end": 47.101
+  },
+  {
+   "word": "And",
+   "start": 47.728,
+   "end": 47.856
+  },
+  {
+   "word": "the",
+   "start": 47.89,
+   "end": 47.96
+  },
+  {
+   "word": "last",
+   "start": 48.007,
+   "end": 48.25
+  },
+  {
+   "word": "eighteen",
+   "start": 48.297,
+   "end": 48.634
+  },
+  {
+   "word": "letters?",
+   "start": 48.692,
+   "end": 49.191
+  },
+  {
+   "word": "Still",
+   "start": 49.818,
+   "end": 50.05
+  },
+  {
+   "word": "a",
+   "start": 50.097,
+   "end": 50.12
+  },
+  {
+   "word": "mystery.",
+   "start": 50.166,
+   "end": 50.782
+  },
+  {
+   "word": "And",
+   "start": 51.176,
+   "end": 51.316
+  },
+  {
+   "word": "for",
+   "start": 51.362,
+   "end": 51.478
+  },
+  {
+   "word": "his",
+   "start": 51.525,
+   "end": 51.618
+  },
+  {
+   "word": "next",
+   "start": 51.664,
+   "end": 51.838
+  },
+  {
+   "word": "attack...",
+   "start": 51.885,
+   "end": 52.395
+  },
+  {
+   "word": "he",
+   "start": 52.5,
+   "end": 52.581
+  },
+  {
+   "word": "came",
+   "start": 52.639,
+   "end": 52.813
+  },
+  {
+   "word": "wearing",
+   "start": 52.837,
+   "end": 53.08
+  },
+  {
+   "word": "a",
+   "start": 53.127,
+   "end": 53.15
+  },
+  {
+   "word": "costume.",
+   "start": 53.208,
+   "end": 54.056
+  }
+ ]
+}
