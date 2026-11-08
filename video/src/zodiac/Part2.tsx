@@ -116,7 +116,7 @@ const WardShot: React.FC<{ s0: number }> = ({ s0 }) => {
             <circle key={i} cx={x as number} cy={y as number} r={24} fill={c as string} stroke={INK} strokeWidth={5} />)}
         </g>
       </Svg>
-      <Toon outfit={{ ...HIM, jacket: "#e9ecef" }} x={760} y={1700} h={900} filter={MUTED} opts={{ mode: "stand", expr: f >= L(13.65) ? "stern" : "dazed", seed: 71, blink: blink(f, 3), facing: -1 }} />
+      <Toon outfit={{ ...HIM, jacket: "#e9ecef" }} x={760} y={1700} h={900} filter={MUTED} opts={{ mode: "stand", expr: f >= L(13.65) ? "stern" : "dazed", seed: 71, blink: blink(f, 3), facing: -1 }} style={{ clipPath: "inset(0 0 46% 0)" }} />
       <Svg>
         <path d="M 600 1230 Q 760 1180 940 1230 L 940 1330 L 600 1330 Z" fill="#dfe8ee" stroke={INK} strokeWidth={6} />
         {bubble > 0 && <g transform={`translate(560 560) scale(${0.6 + 0.4 * bubble})`} opacity={bubble}>
@@ -242,7 +242,7 @@ const WindowShot: React.FC<{ s0: number }> = ({ s0 }) => {
   const f = useCurrentFrame(), L = (t: number) => at(t) - s0;
   const call = f >= L(30.95);
   return (
-    <Camera keys={[{ f: 0, z: 1.25, x: 540, y: 900 }, { f: L(30.8), z: 1.1, x: 540, y: 960 }, { f: 105, z: 1.0, x: 540, y: 980 }]}>
+    <Camera keys={[{ f: 0, z: 1.7, x: 540, y: 900 }, { f: L(30.8), z: 1.58, x: 540, y: 880 }, { f: 105, z: 1.52, x: 540, y: 880 }]}>
       <AbsoluteFill style={{ background: "#3a3448" }} />
       <Svg>
         <rect x={110} y={250} width={860} height={900} fill="#0c1222" stroke={INK} strokeWidth={10} />
@@ -251,12 +251,13 @@ const WindowShot: React.FC<{ s0: number }> = ({ s0 }) => {
         <path d="M 970 250 Q 860 600 930 1150 L 970 1150 Z" fill="#a83a4a" stroke={INK} strokeWidth={6} />
       </Svg>
       {TEENS.map((o, i) => (
-        <Toon key={i} outfit={o} x={300 + i * 240} y={1500 + (i === 1 ? 20 : 0)} h={900} opts={{ mode: "stand", expr: "shock", seed: 90 + i, blink: blink(f, i), facing: 0,
+        <Toon key={i} outfit={o} x={300 + i * 240} y={1325 + (i === 1 ? 20 : 0)} h={900} opts={{ mode: "stand", expr: "shock", seed: 90 + i, blink: blink(f, i), facing: 0,
           prop: call && i === 2 ? "phone" : null, look: i === 0 ? 0.5 : 0 }} />
       ))}
       <Svg>
         <rect x={60} y={1150} width={960} height={70} fill="#e9e1cc" stroke={INK} strokeWidth={8} />
         <rect x={0} y={1220} width={W} height={800} fill="#3a3448" />
+        {Array.from({ length: 9 }, (_, r) => Array.from({ length: 8 }, (_, c) => <rect key={`${r}-${c}`} x={(r % 2) * -70 + c * 140} y={1230 + r * 70} width={140} height={70} fill="#4a3a48" stroke="#2a2230" strokeWidth={6} />))}
       </Svg>
       <Vignette strength={0.5} />
     </Camera>
@@ -329,7 +330,7 @@ const SketchShot: React.FC<{ s0: number }> = ({ s0 }) => {
       <Toon outfit={SUSPECT} x={540} y={1960} h={1640} filter="grayscale(1) sepia(0.35) contrast(1.15)" opts={{ mode: "stand", expr: "neutral", seed: 81, facing: 0 }} style={{ clipPath: "inset(0 0 52% 0)" }} />
       <Svg>
         {g1 > 0 && <ellipse cx={540} cy={790} rx={210 * g1} ry={90 * g1} fill="none" stroke="#ffd23f" strokeWidth={14} />}
-        {g2 > 0 && <ellipse cx={540} cy={570} rx={240 * g2} ry={110 * g2} fill="none" stroke="#ffd23f" strokeWidth={14} />}
+        {g2 > 0 && <ellipse cx={540} cy={650} rx={230 * g2} ry={85 * g2} fill="none" stroke="#ffd23f" strokeWidth={14} />}
       </Svg>
       <Stamp text="STILL FREE" at={L(44.99)} y={1350} size={130} />
       <Vignette strength={0.45} />

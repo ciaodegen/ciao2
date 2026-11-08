@@ -127,8 +127,9 @@ export const buildCaptions = (words: Word[], opts: { merge?: Record<number, stri
     if (m !== undefined) {
       const [t, n] = typeof m === "string" ? [m, 2] : m;
       text = t; end = words[Math.min(words.length - 1, i + n - 1)].end; i += n - 1;
-    } else if (opts.replace?.[i] !== undefined) text = opts.replace[i];
-    text = text.replace(/["“”]/g, "").replace(/\.\.\.$/, "").replace(/[.,:;!]+$/g, "");
+    }
+    if (opts.replace?.[i] !== undefined) text = opts.replace[i];
+    else text = text.replace(/["“”]/g, "").replace(/\.\.\.$/, "").replace(/[.,:;!]+$/g, "");
     const color = opts.red?.includes(idx) ? RED : opts.yellow?.includes(idx) ? YELLOW : WHITE;
     out.push({ text, start: w.start, end, color });
   }

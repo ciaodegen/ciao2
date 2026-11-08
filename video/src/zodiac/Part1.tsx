@@ -362,7 +362,10 @@ const SpeakingShot: React.FC<{ s0: number }> = ({ s0 }) => {
   if (f < cut) {
     const drop = ramp(f, L(31.2), L(31.2) + 8), open = ramp(f, L(31.7), L(32.3)), rise = ramp(f, L(32.2), L(32.75));
     const msg = "This is the Zodiac speaking.";
-    const n = Math.round(clamp01((f - L(32.79)) / (L(34.4) - L(32.79))) * msg.length);
+    const keysT = [[32.79, 0], [33.12, 5], [33.25, 8], [33.37, 12], [33.85, 19], [34.45, 28]];
+    let n = 0;
+    for (let i = 1; i < keysT.length; i++) { const [t0, c0] = keysT[i - 1], [t1, c1] = keysT[i];
+      if (f >= L(t0)) n = Math.round(lerp(c0, c1, clamp01((f - L(t0)) / Math.max(1, L(t1) - L(t0))))); }
     const slam = L(33.37) + 6, ss = f < slam ? 0 : f < slam + 5 ? lerp(2.4, 0.95, smoother((f - slam) / 5)) : 1;
     return (
       <Camera keys={[{ f: 0, z: 1.0, y: 1000 }, { f: L(32.6), z: 1.0, y: 960 }, { f: cut, z: 1.2, y: 860 }]} kicks={[L(31.2) + 8, slam]}>

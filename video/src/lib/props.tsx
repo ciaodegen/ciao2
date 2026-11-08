@@ -129,13 +129,13 @@ export const Car: React.FC<{ x: number; base: number; s?: number; color?: string
         <ellipse cx={0} cy={4} rx={k(270)} ry={k(18)} fill="rgba(0,0,0,0.45)" />
         <path d={body} fill={taxi ? "#f2c230" : police ? "#16161c" : color} stroke={INK} strokeWidth={SW} strokeLinejoin="round" />
         {police && <><rect x={k(-120)} y={k(-118)} width={k(230)} height={k(70)} fill="#f2efe6" stroke={INK} strokeWidth={SW * 0.7} />
-          <text x={k(-5)} y={k(-70)} textAnchor="middle" fontFamily="Anton" fontSize={k(40)} fill={INK}>POLICE</text>
+          <text x={flip ? k(5) : k(-5)} y={k(-70)} textAnchor="middle" fontFamily="Anton" fontSize={k(40)} fill={INK} transform={flip ? "scale(-1 1)" : undefined}>POLICE</text>
           <rect x={k(-30)} y={k(-218)} width={k(60)} height={k(24)} rx={k(6)} fill={Math.floor(f / 6) % 2 ? "#ff3030" : "#8a1a1a"} stroke={INK} strokeWidth={SW * 0.7} /></>}
         <path d={`M ${k(-75)} ${k(-125)} L ${k(-48)} ${k(-178)} L ${k(5)} ${k(-178)} L ${k(5)} ${k(-125)} Z`} fill="#1b2438" stroke={INK} strokeWidth={SW * 0.8} strokeLinejoin="round" />
         <path d={`M ${k(22)} ${k(-125)} L ${k(22)} ${k(-178)} L ${k(85)} ${k(-178)} L ${k(118)} ${k(-125)} Z`} fill="#1b2438" stroke={INK} strokeWidth={SW * 0.8} strokeLinejoin="round" />
         {!police && <line x1={k(-250)} y1={k(-70)} x2={k(258)} y2={k(-70)} stroke="#e9e6dc" strokeWidth={k(6)} opacity={0.7} />}
         {taxi && <><rect x={k(-35)} y={k(-225)} width={k(70)} height={k(30)} rx={k(6)} fill="#ffe9a0" stroke={INK} strokeWidth={SW * 0.8} />
-          <text x={0} y={k(-203)} textAnchor="middle" fontFamily="Anton" fontSize={k(22)} fill={INK}>TAXI</text></>}
+          <text x={0} y={k(-203)} textAnchor="middle" fontFamily="Anton" fontSize={k(22)} fill={INK} transform={flip ? "scale(-1 1)" : undefined}>TAXI</text></>}
         <circle cx={k(250)} cy={k(-88)} r={k(13)} fill={lights ? "#fff1a8" : "#77736a"} stroke={INK} strokeWidth={SW * 0.7} />
         <rect x={k(-258)} y={k(-92)} width={k(14)} height={k(22)} fill={lights ? "#ff4a3d" : "#6b2a2a"} stroke={INK} strokeWidth={SW * 0.6} />
         {[-150, 150].map(cx => (<g key={cx}>
