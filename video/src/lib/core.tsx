@@ -117,16 +117,18 @@ export type Word = { word: string; start: number; end: number };
 export type CapWord = { text: string; start: number; end: number; color: string };
 export const YELLOW = "#ffd23f", RED = "#ff3b3b", WHITE = "#ffffff";
 
-export const buildCaptions = (words: Word[], opts: { merge?: Record<number, string>; replace?: Record<number, string>;
+export const buildCaptions = (words: Word[], opts: { merge?: Record<number, string | [string, number]>; replace?: Record<number, string>;
   yellow?: number[]; red?: number[] }): CapWord[] => {
   const out: CapWord[] = [];
   for (let i = 0; i < words.length; i++) {
-    const w = words[i];
+    const w = words[i], idx = i;
     let text = w.word, end = w.end;
-    if (opts.merge && opts.merge[i] !== undefined) { text = opts.merge[i]; end = words[i + 1].end; i++; }
-    else if (opts.replace && opts.replace[i] !== undefined) text = opts.replace[i];
-    text = text.replace(/["“”]/g, "").replace(/[.,:;!]+$/g, "").replace(/\.\.\.$/, "");
-    const idx = opts.merge && opts.merge[i - 1] !== undefined ? i - 1 : i;
+    const m = opts.merge?.[i];
+    if (m !== undefined) {
+      const [t, n] = typeof m === "string" ? [m, 2] : m;
+      text = t; end = words[Math.min(words.length - 1, i + n - 1)].end; i += n - 1;
+    } else if (opts.replace?.[i] !== undefined) text = opts.replace[i];
+    text = text.replace(/["“”]/g, "").replace(/\.\.\.$/, "").replace(/[.,:;!]+$/g, "");
     const color = opts.red?.includes(idx) ? RED : opts.yellow?.includes(idx) ? YELLOW : WHITE;
     out.push({ text, start: w.start, end, color });
   }

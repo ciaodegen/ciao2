@@ -14,29 +14,29 @@ const WORDS = (wordsJson as { words: Word[] }).words;
 export const PART1_FRAMES = 1650;
 
 // ---------------- cast ----------------
-const NIGHT = "brightness(0.8) saturate(0.82)";
-const ZODIAC: Outfit = { jacket: "#5d5970", pants: "#383644", boots: "#0b0a0e", hat: "hood", skin: "#d8c2ae" };
-const SHADOW: Outfit = { jacket: "#1b1922", pants: "#141218", boots: "#0b0a0e", hat: "fedora", cap: "#1c1a20", skin: "#2a2630" };
-const OFFICER: Outfit = { jacket: "#2a3a66", pants: "#1f2a48", boots: INK, hat: "police", buttons: "#e8c45a", skin: "#f5c9a0" };
-const REPORTERS: Outfit[] = [
+export const NIGHT = "brightness(0.8) saturate(0.82)";
+export const ZODIAC: Outfit = { jacket: "#5d5970", pants: "#383644", boots: "#0b0a0e", hat: "hood", skin: "#d8c2ae" };
+export const SHADOW: Outfit = { jacket: "#1b1922", pants: "#141218", boots: "#0b0a0e", hat: "fedora", cap: "#1c1a20", skin: "#2a2630" };
+export const OFFICER: Outfit = { jacket: "#2a3a66", pants: "#1f2a48", boots: INK, hat: "police", buttons: "#e8c45a", skin: "#f5c9a0" };
+export const REPORTERS: Outfit[] = [
   { jacket: "#7a6a58", pants: "#3b3f52", boots: "#3a2a22", hat: "fedora", cap: "#5b4a3c", skin: "#ffe2c2" },
   { jacket: "#4a5a7a", pants: "#2e3446", boots: "#2a2228", hat: "fedora", cap: "#3d3a44", skin: "#ecd0b6", moustache: "#4a3426" },
   { jacket: "#8c3b4a", pants: "#3b3f52", boots: "#3a2a22", hat: "fedora", cap: "#6b5a4a", skin: "#c99067" },
 ];
-const EDITOR: Outfit = { jacket: "#e9e4d6", pants: "#3b3f52", boots: "#3a2a22", hat: "hair", hair: "#6b6560", skin: "#f5c9a0", glasses: true, build: "stout" };
-const EXPERT: Outfit[] = [
+export const EDITOR: Outfit = { jacket: "#e9e4d6", pants: "#3b3f52", boots: "#3a2a22", hat: "hair", hair: "#6b6560", skin: "#f5c9a0", glasses: true, build: "stout" };
+export const EXPERT: Outfit[] = [
   { jacket: "#2f3440", pants: "#23262f", boots: INK, hat: "hair", hair: "#3a2c24", skin: "#ffe2c2", glasses: true },
   { jacket: "#3b3040", pants: "#23262f", boots: INK, hat: "hair", hair: "#b9b2a8", skin: "#f5c9a0", moustache: "#9a948c", build: "stout" },
 ];
-const TEACHER: Outfit = { jacket: "#8a6a3c", pants: "#3b3f52", boots: "#3a2a22", hat: "hair", hair: "#3a2c24", skin: "#ffe2c2", glasses: true };
-const WIFE: Outfit = { jacket: "#c25a7a", pants: "#3b3f52", boots: "#5a3b2a", hat: "hair", hair: "#7a4a2a", skin: "#ffe2c2", glasses: true, dress: "#c25a7a" };
-const folk = (v: number): Outfit => {
+export const TEACHER: Outfit = { jacket: "#8a6a3c", pants: "#3b3f52", boots: "#3a2a22", hat: "hair", hair: "#3a2c24", skin: "#ffe2c2", glasses: true };
+export const WIFE: Outfit = { jacket: "#c25a7a", pants: "#3b3f52", boots: "#5a3b2a", hat: "hair", hair: "#7a4a2a", skin: "#ffe2c2", glasses: true, dress: "#c25a7a" };
+export const folk = (v: number): Outfit => {
   const coats = ["#3f6fb5", "#8c3b4a", "#5d7a3a", "#b5653f", "#2f5f6a", "#7b5ac9", "#a08a3a"];
   const skins = ["#ffe2c2", "#f5c9a0", "#ecd0b6", "#c99067", "#8d5a3a"];
   const hats = ["fedora", "hair", "cap", "hair", "fedora"] as const;
   return { jacket: coats[v % 7], pants: "#3b3f52", boots: "#4a3426", skin: skins[v % 5], hat: hats[v % 5], cap: ["#5b4a3c", "#c0353a", "#2f5f6a"][v % 3], hair: ["#3a2c24", "#7a4a2a", "#1e1a18"][v % 3] };
 };
-const blink = (f: number, seed: number) => { const p = 40 + Math.floor(rnd(seed, 1) * 35); return (f + seed * 7) % p < 3; };
+export const blink = (f: number, seed: number) => { const p = 40 + Math.floor(rnd(seed, 1) * 35); return (f + seed * 7) % p < 3; };
 
 // ---------------- shots ----------------
 /** S1 hook: red symbol slams out of the dark, 57 YEARS */

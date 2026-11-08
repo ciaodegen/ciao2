@@ -117,8 +117,8 @@ export const StreetLamp: React.FC<{ x: number; base: number; h?: number; on?: bo
 };
 
 /** 1960s sedan, side view, facing right. base = road y under the wheels. */
-export const Car: React.FC<{ x: number; base: number; s?: number; color?: string; lights?: boolean; flip?: boolean; taxi?: boolean; beams?: number }> =
-  ({ x, base, s = 1, color = "#c9c2b0", lights = false, flip = false, taxi = false, beams = 0 }) => {
+export const Car: React.FC<{ x: number; base: number; s?: number; color?: string; lights?: boolean; flip?: boolean; taxi?: boolean; beams?: number; police?: boolean; f?: number }> =
+  ({ x, base, s = 1, color = "#c9c2b0", lights = false, flip = false, taxi = false, beams = 0, police = false, f = 0 }) => {
     const k = (v: number) => v * s;
     const body = `M ${k(-250)} ${k(-40)} L ${k(-250)} ${k(-95)} Q ${k(-240)} ${k(-115)} ${k(-200)} ${k(-118)} L ${k(-130)} ${k(-120)}
       L ${k(-90)} ${k(-185)} Q ${k(-80)} ${k(-195)} ${k(-60)} ${k(-195)} L ${k(80)} ${k(-195)} Q ${k(100)} ${k(-195)} ${k(110)} ${k(-185)}
@@ -127,10 +127,13 @@ export const Car: React.FC<{ x: number; base: number; s?: number; color?: string
       <g transform={`translate(${x} ${base}) scale(${flip ? -1 : 1} 1)`}>
         {beams > 0 && <path d={`M ${k(250)} ${k(-80)} L ${k(900)} ${k(-200)} L ${k(900)} ${k(60)} Z`} fill="#fff4c2" opacity={0.28 * beams} />}
         <ellipse cx={0} cy={4} rx={k(270)} ry={k(18)} fill="rgba(0,0,0,0.45)" />
-        <path d={body} fill={taxi ? "#f2c230" : color} stroke={INK} strokeWidth={SW} strokeLinejoin="round" />
+        <path d={body} fill={taxi ? "#f2c230" : police ? "#16161c" : color} stroke={INK} strokeWidth={SW} strokeLinejoin="round" />
+        {police && <><rect x={k(-120)} y={k(-118)} width={k(230)} height={k(70)} fill="#f2efe6" stroke={INK} strokeWidth={SW * 0.7} />
+          <text x={k(-5)} y={k(-70)} textAnchor="middle" fontFamily="Anton" fontSize={k(40)} fill={INK}>POLICE</text>
+          <rect x={k(-30)} y={k(-218)} width={k(60)} height={k(24)} rx={k(6)} fill={Math.floor(f / 6) % 2 ? "#ff3030" : "#8a1a1a"} stroke={INK} strokeWidth={SW * 0.7} /></>}
         <path d={`M ${k(-75)} ${k(-125)} L ${k(-48)} ${k(-178)} L ${k(5)} ${k(-178)} L ${k(5)} ${k(-125)} Z`} fill="#1b2438" stroke={INK} strokeWidth={SW * 0.8} strokeLinejoin="round" />
         <path d={`M ${k(22)} ${k(-125)} L ${k(22)} ${k(-178)} L ${k(85)} ${k(-178)} L ${k(118)} ${k(-125)} Z`} fill="#1b2438" stroke={INK} strokeWidth={SW * 0.8} strokeLinejoin="round" />
-        <line x1={k(-250)} y1={k(-70)} x2={k(258)} y2={k(-70)} stroke="#e9e6dc" strokeWidth={k(6)} opacity={0.7} />
+        {!police && <line x1={k(-250)} y1={k(-70)} x2={k(258)} y2={k(-70)} stroke="#e9e6dc" strokeWidth={k(6)} opacity={0.7} />}
         {taxi && <><rect x={k(-35)} y={k(-225)} width={k(70)} height={k(30)} rx={k(6)} fill="#ffe9a0" stroke={INK} strokeWidth={SW * 0.8} />
           <text x={0} y={k(-203)} textAnchor="middle" fontFamily="Anton" fontSize={k(22)} fill={INK}>TAXI</text></>}
         <circle cx={k(250)} cy={k(-88)} r={k(13)} fill={lights ? "#fff1a8" : "#77736a"} stroke={INK} strokeWidth={SW * 0.7} />
