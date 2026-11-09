@@ -374,8 +374,8 @@ const SpeakingShot: React.FC<{ s0: number }> = ({ s0 }) => {
           <g transform={`translate(0 ${lerp(-900, 0, drop)})`}>
             <Paper x={540} y={lerp(1300, 820, rise)} w={860} h={600} rot={-2}>
               <text x={0} y={-150} textAnchor="middle" fontFamily="Special Elite" fontSize={58} fill="#2a2140">Dear Editor</text>
-              <text x={0} y={-30} textAnchor="middle" fontFamily="Special Elite" fontSize={66} fill="#1d1830">{msg.slice(0, Math.min(n, 15))}</text>
-              <text x={0} y={70} textAnchor="middle" fontFamily="Special Elite" fontSize={66} fill="#1d1830">{n > 15 ? msg.slice(15, n) : ""}</text>
+              <text x={0} y={-30} textAnchor="middle" fontFamily="Special Elite" fontSize={66} fill="#1d1830">{msg.slice(0, Math.min(n, 11))}</text>
+              <text x={0} y={70} textAnchor="middle" fontFamily="Special Elite" fontSize={66} fill="#1d1830">{n > 12 ? msg.slice(12, n) : ""}</text>
             </Paper>
             <Envelope x={540} y={1360} w={720} open={open} />
           </g>
