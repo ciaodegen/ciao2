@@ -1,0 +1,629 @@
+{
+ "voice": "Ian Cartwell - Suspense and Mystery",
+ "voice_id": "e5WNhrdI30aXpS2RSGm1",
+ "model": "eleven_multilingual_v2",
+ "settings": {
+  "stability": 0.45,
+  "similarity_boost": 0.8,
+  "style": 0.25,
+  "use_speaker_boost": true,
+  "speed": 1.12
+ },
+ "words": [
+  {
+   "word": "This",
+   "start": 0.0,
+   "end": 0.209
+  },
+  {
+   "word": "code",
+   "start": 0.279,
+   "end": 0.534
+  },
+  {
+   "word": "stayed",
+   "start": 0.569,
+   "end": 0.813
+  },
+  {
+   "word": "unsolved",
+   "start": 0.859,
+   "end": 1.37
+  },
+  {
+   "word": "for",
+   "start": 1.416,
+   "end": 1.556
+  },
+  {
+   "word": "fifty-one",
+   "start": 1.625,
+   "end": 2.09
+  },
+  {
+   "word": "years.",
+   "start": 2.136,
+   "end": 2.717
+  },
+  {
+   "word": "The",
+   "start": 2.868,
+   "end": 2.984
+  },
+  {
+   "word": "FBI",
+   "start": 3.03,
+   "end": 3.46
+  },
+  {
+   "word": "tried.",
+   "start": 3.529,
+   "end": 4.122
+  },
+  {
+   "word": "Codebreakers",
+   "start": 4.412,
+   "end": 5.016
+  },
+  {
+   "word": "tried.",
+   "start": 5.074,
+   "end": 5.515
+  },
+  {
+   "word": "Thousands",
+   "start": 5.573,
+   "end": 5.968
+  },
+  {
+   "word": "of",
+   "start": 6.002,
+   "end": 6.06
+  },
+  {
+   "word": "amateurs",
+   "start": 6.107,
+   "end": 6.513
+  },
+  {
+   "word": "tried.",
+   "start": 6.56,
+   "end": 7.059
+  },
+  {
+   "word": "Then,",
+   "start": 7.279,
+   "end": 7.663
+  },
+  {
+   "word": "in",
+   "start": 7.732,
+   "end": 7.86
+  },
+  {
+   "word": "twenty",
+   "start": 7.895,
+   "end": 8.15
+  },
+  {
+   "word": "twenty,",
+   "start": 8.197,
+   "end": 8.649
+  },
+  {
+   "word": "three",
+   "start": 8.731,
+   "end": 8.975
+  },
+  {
+   "word": "amateur",
+   "start": 9.044,
+   "end": 9.451
+  },
+  {
+   "word": "codebreakers",
+   "start": 9.497,
+   "end": 10.066
+  },
+  {
+   "word": "cracked",
+   "start": 10.136,
+   "end": 10.461
+  },
+  {
+   "word": "it.",
+   "start": 10.507,
+   "end": 10.809
+  },
+  {
+   "word": "From",
+   "start": 11.204,
+   "end": 11.355
+  },
+  {
+   "word": "the",
+   "start": 11.389,
+   "end": 11.459
+  },
+  {
+   "word": "U.S.,",
+   "start": 11.505,
+   "end": 12.016
+  },
+  {
+   "word": "Australia",
+   "start": 12.063,
+   "end": 12.597
+  },
+  {
+   "word": "and",
+   "start": 12.643,
+   "end": 12.771
+  },
+  {
+   "word": "Belgium.",
+   "start": 12.841,
+   "end": 13.421
+  },
+  {
+   "word": "The",
+   "start": 13.955,
+   "end": 14.083
+  },
+  {
+   "word": "trick?",
+   "start": 14.129,
+   "end": 14.605
+  },
+  {
+   "word": "The",
+   "start": 15.058,
+   "end": 15.162
+  },
+  {
+   "word": "message",
+   "start": 15.209,
+   "end": 15.534
+  },
+  {
+   "word": "was",
+   "start": 15.569,
+   "end": 15.685
+  },
+  {
+   "word": "written",
+   "start": 15.731,
+   "end": 15.987
+  },
+  {
+   "word": "diagonally,",
+   "start": 16.033,
+   "end": 16.834
+  },
+  {
+   "word": "with",
+   "start": 16.88,
+   "end": 17.043
+  },
+  {
+   "word": "a",
+   "start": 17.078,
+   "end": 17.101
+  },
+  {
+   "word": "mistake",
+   "start": 17.148,
+   "end": 17.473
+  },
+  {
+   "word": "inside.",
+   "start": 17.519,
+   "end": 18.227
+  },
+  {
+   "word": "It",
+   "start": 18.68,
+   "end": 18.808
+  },
+  {
+   "word": "said:",
+   "start": 18.854,
+   "end": 19.319
+  },
+  {
+   "word": "\"I",
+   "start": 19.853,
+   "end": 19.98
+  },
+  {
+   "word": "hope",
+   "start": 20.05,
+   "end": 20.213
+  },
+  {
+   "word": "you",
+   "start": 20.247,
+   "end": 20.317
+  },
+  {
+   "word": "are",
+   "start": 20.363,
+   "end": 20.456
+  },
+  {
+   "word": "having",
+   "start": 20.491,
+   "end": 20.712
+  },
+  {
+   "word": "lots",
+   "start": 20.77,
+   "end": 20.967
+  },
+  {
+   "word": "of",
+   "start": 21.014,
+   "end": 21.072
+  },
+  {
+   "word": "fun",
+   "start": 21.118,
+   "end": 21.316
+  },
+  {
+   "word": "in",
+   "start": 21.362,
+   "end": 21.443
+  },
+  {
+   "word": "trying",
+   "start": 21.49,
+   "end": 21.745
+  },
+  {
+   "word": "to",
+   "start": 21.792,
+   "end": 21.838
+  },
+  {
+   "word": "catch",
+   "start": 21.896,
+   "end": 22.163
+  },
+  {
+   "word": "me.\"",
+   "start": 22.209,
+   "end": 22.767
+  },
+  {
+   "word": "But",
+   "start": 23.487,
+   "end": 23.638
+  },
+  {
+   "word": "again...",
+   "start": 23.672,
+   "end": 24.253
+  },
+  {
+   "word": "no",
+   "start": 24.648,
+   "end": 24.775
+  },
+  {
+   "word": "name.",
+   "start": 24.845,
+   "end": 25.309
+  },
+  {
+   "word": "Police",
+   "start": 25.843,
+   "end": 26.273
+  },
+  {
+   "word": "had",
+   "start": 26.319,
+   "end": 26.447
+  },
+  {
+   "word": "a",
+   "start": 26.482,
+   "end": 26.517
+  },
+  {
+   "word": "main",
+   "start": 26.563,
+   "end": 26.737
+  },
+  {
+   "word": "suspect,",
+   "start": 26.795,
+   "end": 27.527
+  },
+  {
+   "word": "Arthur",
+   "start": 27.771,
+   "end": 28.049
+  },
+  {
+   "word": "Leigh",
+   "start": 28.107,
+   "end": 28.305
+  },
+  {
+   "word": "Allen.",
+   "start": 28.386,
+   "end": 28.99
+  },
+  {
+   "word": "But",
+   "start": 29.384,
+   "end": 29.524
+  },
+  {
+   "word": "his",
+   "start": 29.559,
+   "end": 29.651
+  },
+  {
+   "word": "fingerprints",
+   "start": 29.698,
+   "end": 30.232
+  },
+  {
+   "word": "and",
+   "start": 30.267,
+   "end": 30.348
+  },
+  {
+   "word": "handwriting",
+   "start": 30.394,
+   "end": 30.847
+  },
+  {
+   "word": "didn't",
+   "start": 30.905,
+   "end": 31.149
+  },
+  {
+   "word": "match.",
+   "start": 31.196,
+   "end": 31.706
+  },
+  {
+   "word": "He",
+   "start": 32.101,
+   "end": 32.206
+  },
+  {
+   "word": "died",
+   "start": 32.264,
+   "end": 32.554
+  },
+  {
+   "word": "in",
+   "start": 32.6,
+   "end": 32.658
+  },
+  {
+   "word": "nineteen",
+   "start": 32.705,
+   "end": 33.03
+  },
+  {
+   "word": "ninety-two.",
+   "start": 33.076,
+   "end": 33.75
+  },
+  {
+   "word": "Never",
+   "start": 33.831,
+   "end": 34.04
+  },
+  {
+   "word": "charged.",
+   "start": 34.098,
+   "end": 34.667
+  },
+  {
+   "word": "In",
+   "start": 35.201,
+   "end": 35.364
+  },
+  {
+   "word": "nineteen",
+   "start": 35.433,
+   "end": 35.816
+  },
+  {
+   "word": "seventy-four,",
+   "start": 35.874,
+   "end": 36.873
+  },
+  {
+   "word": "Zodiac",
+   "start": 37.024,
+   "end": 37.558
+  },
+  {
+   "word": "claimed",
+   "start": 37.674,
+   "end": 38.011
+  },
+  {
+   "word": "thirty-seven",
+   "start": 38.092,
+   "end": 38.672
+  },
+  {
+   "word": "victims.",
+   "start": 38.742,
+   "end": 39.381
+  },
+  {
+   "word": "Police",
+   "start": 39.531,
+   "end": 39.926
+  },
+  {
+   "word": "can",
+   "start": 39.973,
+   "end": 40.124
+  },
+  {
+   "word": "confirm",
+   "start": 40.182,
+   "end": 40.553
+  },
+  {
+   "word": "five.",
+   "start": 40.634,
+   "end": 41.168
+  },
+  {
+   "word": "And",
+   "start": 41.505,
+   "end": 41.644
+  },
+  {
+   "word": "one",
+   "start": 41.703,
+   "end": 41.842
+  },
+  {
+   "word": "code",
+   "start": 41.888,
+   "end": 42.132
+  },
+  {
+   "word": "is",
+   "start": 42.167,
+   "end": 42.237
+  },
+  {
+   "word": "still",
+   "start": 42.271,
+   "end": 42.469
+  },
+  {
+   "word": "unsolved.",
+   "start": 42.538,
+   "end": 43.154
+  },
+  {
+   "word": "Just",
+   "start": 43.305,
+   "end": 43.525
+  },
+  {
+   "word": "thirteen",
+   "start": 43.63,
+   "end": 44.013
+  },
+  {
+   "word": "symbols.",
+   "start": 44.059,
+   "end": 44.651
+  },
+  {
+   "word": "It",
+   "start": 45.046,
+   "end": 45.174
+  },
+  {
+   "word": "starts",
+   "start": 45.22,
+   "end": 45.487
+  },
+  {
+   "word": "with:",
+   "start": 45.545,
+   "end": 45.94
+  },
+  {
+   "word": "\"My",
+   "start": 46.045,
+   "end": 46.335
+  },
+  {
+   "word": "name",
+   "start": 46.416,
+   "end": 46.66
+  },
+  {
+   "word": "is...\"",
+   "start": 46.707,
+   "end": 47.125
+  },
+  {
+   "word": "Fifty-seven",
+   "start": 47.264,
+   "end": 47.821
+  },
+  {
+   "word": "years",
+   "start": 47.868,
+   "end": 48.065
+  },
+  {
+   "word": "later,",
+   "start": 48.112,
+   "end": 48.588
+  },
+  {
+   "word": "the",
+   "start": 48.692,
+   "end": 48.797
+  },
+  {
+   "word": "case",
+   "start": 48.843,
+   "end": 49.052
+  },
+  {
+   "word": "is",
+   "start": 49.087,
+   "end": 49.157
+  },
+  {
+   "word": "still",
+   "start": 49.191,
+   "end": 49.4
+  },
+  {
+   "word": "open.",
+   "start": 49.447,
+   "end": 49.818
+  },
+  {
+   "word": "Maybe",
+   "start": 50.271,
+   "end": 50.503
+  },
+  {
+   "word": "the",
+   "start": 50.538,
+   "end": 50.619
+  },
+  {
+   "word": "answer...",
+   "start": 50.677,
+   "end": 51.188
+  },
+  {
+   "word": "is",
+   "start": 51.432,
+   "end": 51.571
+  },
+  {
+   "word": "right",
+   "start": 51.618,
+   "end": 51.804
+  },
+  {
+   "word": "there.",
+   "start": 51.838,
+   "end": 52.431
+  }
+ ]
+}

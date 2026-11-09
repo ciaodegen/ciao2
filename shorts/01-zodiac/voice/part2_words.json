@@ -1,0 +1,734 @@
+{
+ "voice": "Ian Cartwell - Suspense and Mystery",
+ "voice_id": "e5WNhrdI30aXpS2RSGm1",
+ "model": "eleven_multilingual_v2",
+ "settings": {
+  "stability": 0.45,
+  "similarity_boost": 0.8,
+  "style": 0.25,
+  "use_speaker_boost": true,
+  "speed": 1.12
+ },
+ "words": [
+  {
+   "word": "He",
+   "start": 0.0,
+   "end": 0.139
+  },
+  {
+   "word": "wore",
+   "start": 0.186,
+   "end": 0.43
+  },
+  {
+   "word": "a",
+   "start": 0.499,
+   "end": 0.546
+  },
+  {
+   "word": "black",
+   "start": 0.604,
+   "end": 0.848
+  },
+  {
+   "word": "hood...",
+   "start": 0.894,
+   "end": 1.474
+  },
+  {
+   "word": "with",
+   "start": 1.695,
+   "end": 1.869
+  },
+  {
+   "word": "his",
+   "start": 1.916,
+   "end": 2.009
+  },
+  {
+   "word": "symbol",
+   "start": 2.043,
+   "end": 2.345
+  },
+  {
+   "word": "on",
+   "start": 2.415,
+   "end": 2.508
+  },
+  {
+   "word": "the",
+   "start": 2.543,
+   "end": 2.612
+  },
+  {
+   "word": "chest.",
+   "start": 2.659,
+   "end": 3.251
+  },
+  {
+   "word": "September,",
+   "start": 3.785,
+   "end": 4.342
+  },
+  {
+   "word": "nineteen",
+   "start": 4.447,
+   "end": 4.795
+  },
+  {
+   "word": "sixty-nine.",
+   "start": 4.841,
+   "end": 5.631
+  },
+  {
+   "word": "A",
+   "start": 6.165,
+   "end": 6.235
+  },
+  {
+   "word": "young",
+   "start": 6.304,
+   "end": 6.467
+  },
+  {
+   "word": "couple",
+   "start": 6.525,
+   "end": 6.827
+  },
+  {
+   "word": "is",
+   "start": 6.873,
+   "end": 6.954
+  },
+  {
+   "word": "having",
+   "start": 7.001,
+   "end": 7.221
+  },
+  {
+   "word": "a",
+   "start": 7.268,
+   "end": 7.291
+  },
+  {
+   "word": "picnic",
+   "start": 7.338,
+   "end": 7.639
+  },
+  {
+   "word": "by",
+   "start": 7.686,
+   "end": 7.802
+  },
+  {
+   "word": "a",
+   "start": 7.848,
+   "end": 7.883
+  },
+  {
+   "word": "lake.",
+   "start": 7.93,
+   "end": 8.371
+  },
+  {
+   "word": "He",
+   "start": 8.766,
+   "end": 8.882
+  },
+  {
+   "word": "pulls",
+   "start": 8.928,
+   "end": 9.137
+  },
+  {
+   "word": "a",
+   "start": 9.183,
+   "end": 9.218
+  },
+  {
+   "word": "gun.",
+   "start": 9.265,
+   "end": 9.741
+  },
+  {
+   "word": "Ties",
+   "start": 9.927,
+   "end": 10.217
+  },
+  {
+   "word": "them",
+   "start": 10.263,
+   "end": 10.391
+  },
+  {
+   "word": "up.",
+   "start": 10.461,
+   "end": 10.739
+  },
+  {
+   "word": "Then",
+   "start": 10.844,
+   "end": 11.018
+  },
+  {
+   "word": "he",
+   "start": 11.064,
+   "end": 11.146
+  },
+  {
+   "word": "attacks.",
+   "start": 11.192,
+   "end": 11.912
+  },
+  {
+   "word": "She",
+   "start": 12.632,
+   "end": 12.748
+  },
+  {
+   "word": "doesn't",
+   "start": 12.794,
+   "end": 13.061
+  },
+  {
+   "word": "make",
+   "start": 13.108,
+   "end": 13.317
+  },
+  {
+   "word": "it.",
+   "start": 13.363,
+   "end": 13.584
+  },
+  {
+   "word": "He",
+   "start": 13.653,
+   "end": 13.758
+  },
+  {
+   "word": "survives,",
+   "start": 13.804,
+   "end": 14.385
+  },
+  {
+   "word": "and",
+   "start": 14.42,
+   "end": 14.547
+  },
+  {
+   "word": "describes",
+   "start": 14.594,
+   "end": 15.023
+  },
+  {
+   "word": "the",
+   "start": 15.058,
+   "end": 15.128
+  },
+  {
+   "word": "hood.",
+   "start": 15.174,
+   "end": 15.604
+  },
+  {
+   "word": "On",
+   "start": 16.138,
+   "end": 16.266
+  },
+  {
+   "word": "their",
+   "start": 16.301,
+   "end": 16.44
+  },
+  {
+   "word": "car",
+   "start": 16.486,
+   "end": 16.66
+  },
+  {
+   "word": "door,",
+   "start": 16.718,
+   "end": 17.102
+  },
+  {
+   "word": "he",
+   "start": 17.171,
+   "end": 17.253
+  },
+  {
+   "word": "leaves",
+   "start": 17.322,
+   "end": 17.531
+  },
+  {
+   "word": "his",
+   "start": 17.566,
+   "end": 17.659
+  },
+  {
+   "word": "symbol,",
+   "start": 17.694,
+   "end": 18.239
+  },
+  {
+   "word": "and",
+   "start": 18.39,
+   "end": 18.541
+  },
+  {
+   "word": "the",
+   "start": 18.576,
+   "end": 18.646
+  },
+  {
+   "word": "dates",
+   "start": 18.681,
+   "end": 18.901
+  },
+  {
+   "word": "of",
+   "start": 18.936,
+   "end": 19.006
+  },
+  {
+   "word": "his",
+   "start": 19.052,
+   "end": 19.157
+  },
+  {
+   "word": "attacks.",
+   "start": 19.203,
+   "end": 19.842
+  },
+  {
+   "word": "Then,",
+   "start": 20.376,
+   "end": 20.724
+  },
+  {
+   "word": "once",
+   "start": 20.77,
+   "end": 20.979
+  },
+  {
+   "word": "again,",
+   "start": 21.003,
+   "end": 21.455
+  },
+  {
+   "word": "he",
+   "start": 21.606,
+   "end": 21.676
+  },
+  {
+   "word": "calls",
+   "start": 21.722,
+   "end": 21.955
+  },
+  {
+   "word": "the",
+   "start": 21.989,
+   "end": 22.059
+  },
+  {
+   "word": "police.",
+   "start": 22.094,
+   "end": 22.698
+  },
+  {
+   "word": "Two",
+   "start": 23.092,
+   "end": 23.232
+  },
+  {
+   "word": "weeks",
+   "start": 23.278,
+   "end": 23.475
+  },
+  {
+   "word": "later.",
+   "start": 23.522,
+   "end": 23.952
+  },
+  {
+   "word": "San",
+   "start": 24.242,
+   "end": 24.404
+  },
+  {
+   "word": "Francisco.",
+   "start": 24.451,
+   "end": 25.205
+  },
+  {
+   "word": "A",
+   "start": 26.204,
+   "end": 26.274
+  },
+  {
+   "word": "man",
+   "start": 26.332,
+   "end": 26.552
+  },
+  {
+   "word": "gets",
+   "start": 26.622,
+   "end": 26.796
+  },
+  {
+   "word": "into",
+   "start": 26.842,
+   "end": 27.005
+  },
+  {
+   "word": "a",
+   "start": 27.063,
+   "end": 27.086
+  },
+  {
+   "word": "taxi.",
+   "start": 27.133,
+   "end": 27.678
+  },
+  {
+   "word": "He",
+   "start": 27.725,
+   "end": 27.818
+  },
+  {
+   "word": "kills",
+   "start": 27.864,
+   "end": 28.073
+  },
+  {
+   "word": "the",
+   "start": 28.108,
+   "end": 28.178
+  },
+  {
+   "word": "driver.",
+   "start": 28.201,
+   "end": 28.793
+  },
+  {
+   "word": "Teenagers",
+   "start": 29.188,
+   "end": 29.733
+  },
+  {
+   "word": "see",
+   "start": 29.78,
+   "end": 29.919
+  },
+  {
+   "word": "it",
+   "start": 29.954,
+   "end": 30.024
+  },
+  {
+   "word": "from",
+   "start": 30.07,
+   "end": 30.198
+  },
+  {
+   "word": "a",
+   "start": 30.244,
+   "end": 30.267
+  },
+  {
+   "word": "window,",
+   "start": 30.314,
+   "end": 30.79
+  },
+  {
+   "word": "and",
+   "start": 30.894,
+   "end": 31.045
+  },
+  {
+   "word": "call",
+   "start": 31.103,
+   "end": 31.278
+  },
+  {
+   "word": "the",
+   "start": 31.324,
+   "end": 31.394
+  },
+  {
+   "word": "police.",
+   "start": 31.429,
+   "end": 31.986
+  },
+  {
+   "word": "Minutes",
+   "start": 32.706,
+   "end": 32.996
+  },
+  {
+   "word": "later,",
+   "start": 33.042,
+   "end": 33.425
+  },
+  {
+   "word": "police",
+   "start": 33.53,
+   "end": 33.901
+  },
+  {
+   "word": "drive",
+   "start": 33.983,
+   "end": 34.215
+  },
+  {
+   "word": "right",
+   "start": 34.25,
+   "end": 34.424
+  },
+  {
+   "word": "past",
+   "start": 34.47,
+   "end": 34.714
+  },
+  {
+   "word": "a",
+   "start": 34.761,
+   "end": 34.784
+  },
+  {
+   "word": "man",
+   "start": 34.83,
+   "end": 35.016
+  },
+  {
+   "word": "walking",
+   "start": 35.074,
+   "end": 35.364
+  },
+  {
+   "word": "away.",
+   "start": 35.411,
+   "end": 35.922
+  },
+  {
+   "word": "They",
+   "start": 36.456,
+   "end": 36.63
+  },
+  {
+   "word": "don't",
+   "start": 36.665,
+   "end": 36.839
+  },
+  {
+   "word": "stop",
+   "start": 36.885,
+   "end": 37.141
+  },
+  {
+   "word": "him.",
+   "start": 37.199,
+   "end": 37.512
+  },
+  {
+   "word": "Days",
+   "start": 38.36,
+   "end": 38.592
+  },
+  {
+   "word": "later,",
+   "start": 38.65,
+   "end": 38.998
+  },
+  {
+   "word": "a",
+   "start": 39.045,
+   "end": 39.091
+  },
+  {
+   "word": "letter",
+   "start": 39.161,
+   "end": 39.381
+  },
+  {
+   "word": "arrives,",
+   "start": 39.428,
+   "end": 39.915
+  },
+  {
+   "word": "with",
+   "start": 39.962,
+   "end": 40.101
+  },
+  {
+   "word": "a",
+   "start": 40.148,
+   "end": 40.171
+  },
+  {
+   "word": "torn",
+   "start": 40.217,
+   "end": 40.403
+  },
+  {
+   "word": "piece",
+   "start": 40.449,
+   "end": 40.67
+  },
+  {
+   "word": "of",
+   "start": 40.693,
+   "end": 40.751
+  },
+  {
+   "word": "the",
+   "start": 40.798,
+   "end": 40.867
+  },
+  {
+   "word": "driver's",
+   "start": 40.891,
+   "end": 41.251
+  },
+  {
+   "word": "shirt.",
+   "start": 41.274,
+   "end": 41.715
+  },
+  {
+   "word": "Police",
+   "start": 42.168,
+   "end": 42.493
+  },
+  {
+   "word": "release",
+   "start": 42.539,
+   "end": 42.83
+  },
+  {
+   "word": "a",
+   "start": 42.864,
+   "end": 42.888
+  },
+  {
+   "word": "sketch.",
+   "start": 42.934,
+   "end": 43.422
+  },
+  {
+   "word": "Glasses.",
+   "start": 43.561,
+   "end": 44.165
+  },
+  {
+   "word": "Short",
+   "start": 44.304,
+   "end": 44.559
+  },
+  {
+   "word": "hair.",
+   "start": 44.606,
+   "end": 44.919
+  },
+  {
+   "word": "Nobody",
+   "start": 44.989,
+   "end": 45.291
+  },
+  {
+   "word": "is",
+   "start": 45.337,
+   "end": 45.419
+  },
+  {
+   "word": "caught.",
+   "start": 45.477,
+   "end": 45.953
+  },
+  {
+   "word": "Then",
+   "start": 46.487,
+   "end": 46.708
+  },
+  {
+   "word": "he",
+   "start": 46.766,
+   "end": 46.835
+  },
+  {
+   "word": "mailed",
+   "start": 46.893,
+   "end": 47.149
+  },
+  {
+   "word": "a",
+   "start": 47.184,
+   "end": 47.207
+  },
+  {
+   "word": "new",
+   "start": 47.253,
+   "end": 47.369
+  },
+  {
+   "word": "code.",
+   "start": 47.428,
+   "end": 47.869
+  },
+  {
+   "word": "Three",
+   "start": 48.205,
+   "end": 48.426
+  },
+  {
+   "word": "hundred",
+   "start": 48.472,
+   "end": 48.728
+  },
+  {
+   "word": "forty",
+   "start": 48.774,
+   "end": 48.995
+  },
+  {
+   "word": "symbols.",
+   "start": 49.041,
+   "end": 49.587
+  },
+  {
+   "word": "It",
+   "start": 49.808,
+   "end": 49.912
+  },
+  {
+   "word": "would",
+   "start": 49.947,
+   "end": 50.098
+  },
+  {
+   "word": "stay",
+   "start": 50.133,
+   "end": 50.307
+  },
+  {
+   "word": "unsolved...",
+   "start": 50.353,
+   "end": 51.003
+  },
+  {
+   "word": "for",
+   "start": 51.247,
+   "end": 51.375
+  },
+  {
+   "word": "fifty-one",
+   "start": 51.421,
+   "end": 51.863
+  },
+  {
+   "word": "years.",
+   "start": 51.909,
+   "end": 52.571
+  }
+ ]
+}
