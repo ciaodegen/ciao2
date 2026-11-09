@@ -10,26 +10,24 @@ const NAVY = "#14213d", NAVY_D = "#0a1124", YELLOW = "#ffd23f", RED = "#e2262d",
 /** Mascot: a bean-head detective in a fedora and trench coat. */
 export const DETECTIVE: Outfit = { jacket: "#c9a46a", pants: "#3b3f52", boots: "#3a2a22", hat: "fedora", cap: "#2e2a36", skin: "#ffe2c2", buttons: "#5a3a1a" };
 
-/** Mascot bust with a magnifying glass over his right eye. (cx, cy) = head centre, s = scale (1 = 236 px head). */
+/** Mascot bust wearing a gold monocle with a chain. (cx, cy) = head centre, s = scale (1 = 236 px head). */
 const Mascot: React.FC<{ cx: number; cy: number; s: number }> = ({ cx, cy, s }) => {
-  const h = 1000 * s, x = cx, y = cy + (975 - 309) * s;
-  const ex = cx + 44 * s, ey = cy - 8 * s, R = 41 * s;
-  const hx = ex + R * 3.0, hy = ey + R * 3.9;
+  const HC = 286; // head centre of seed 7 in the 1000-unit design canvas
+  const h = 1000 * s, x = cx, y = cy + (975 - HC) * s;
+  const ex = cx + 32 * s, ey = cy - 1 * s, R = 19 * s;
+  const c0x = ex + R * 0.72, c0y = ey + R * 0.72;
+  const chain = `M ${c0x} ${c0y} C ${c0x + 30 * s} ${c0y + 70 * s}, ${cx + 95 * s} ${cy + 150 * s}, ${cx + 40 * s} ${cy + 215 * s}`;
   return (
     <>
       <Toon outfit={DETECTIVE} x={x} y={y} h={h} shadow={0} opts={{ mode: "stand", expr: "smile", seed: 7, facing: 0, look: 0.3 }} />
       <svg style={{ position: "absolute", left: 0, top: 0, overflow: "visible" }} width={1} height={1}>
-        <line x1={ex + R * 0.7} y1={ey + R * 0.7} x2={hx} y2={hy} stroke={INK} strokeWidth={36 * s} strokeLinecap="round" />
-        <line x1={ex + R * 0.7} y1={ey + R * 0.7} x2={hx} y2={hy} stroke="#7a4b2a" strokeWidth={22 * s} strokeLinecap="round" />
-        <circle cx={hx - 4 * s} cy={hy - 4 * s} r={17 * s} fill={INK} />
-        <circle cx={ex} cy={ey} r={R} fill="#cfe6ff" />
-        <circle cx={ex} cy={ey} r={R * 0.62} fill="#fff" stroke={INK} strokeWidth={7 * s} />
-        <circle cx={ex + R * 0.12} cy={ey + R * 0.05} r={R * 0.3} fill={INK} />
-        <circle cx={ex + R * 0.02} cy={ey - R * 0.08} r={R * 0.1} fill="#fff" />
-        <path d={`M ${ex - R * 0.62} ${ey - R * 0.74} Q ${ex} ${ey - R * 1.0} ${ex + R * 0.62} ${ey - R * 0.74}`} fill="none" stroke={INK} strokeWidth={9 * s} strokeLinecap="round" />
-        <path d={`M ${ex - R * 0.55} ${ey - R * 0.45} A ${R * 0.75} ${R * 0.75} 0 0 1 ${ex - R * 0.1} ${ey - R * 0.72}`} fill="none" stroke="#fff" strokeWidth={10 * s} strokeLinecap="round" opacity={0.8} />
-        <circle cx={ex} cy={ey} r={R} fill="none" stroke={INK} strokeWidth={24 * s} />
-        <circle cx={ex} cy={ey} r={R} fill="none" stroke="#e8c45a" strokeWidth={13 * s} />
+        <path d={chain} fill="none" stroke={INK} strokeWidth={7 * s} strokeLinecap="round" />
+        <path d={chain} fill="none" stroke="#e8c45a" strokeWidth={4 * s} strokeLinecap="round" strokeDasharray={`${5 * s} ${3 * s}`} />
+        <circle cx={cx + 40 * s} cy={cy + 215 * s} r={5 * s} fill="#e8c45a" stroke={INK} strokeWidth={2.5 * s} />
+        <circle cx={ex} cy={ey} r={R} fill="#cfe6ff" opacity={0.35} />
+        <path d={`M ${ex - R * 0.6} ${ey - R * 0.25} A ${R * 0.65} ${R * 0.65} 0 0 1 ${ex - R * 0.1} ${ey - R * 0.62}`} fill="none" stroke="#fff" strokeWidth={3.5 * s} strokeLinecap="round" opacity={0.9} />
+        <circle cx={ex} cy={ey} r={R} fill="none" stroke={INK} strokeWidth={8 * s} />
+        <circle cx={ex} cy={ey} r={R} fill="none" stroke="#e8c45a" strokeWidth={4.5 * s} />
       </svg>
     </>
   );
@@ -74,7 +72,7 @@ export const Avatar: React.FC = () => (
     <Doodles w={800} h={800} cell={150} seed={11} />
     <div style={{ position: "absolute", left: 40, top: 40, width: 720, height: 720, borderRadius: "50%", border: `16px solid ${YELLOW}`, boxShadow: `0 0 0 10px ${INK} inset, 0 0 0 10px ${INK}` }} />
     <AbsoluteFill style={{ clipPath: "circle(352px at 400px 400px)" }}>
-      <Mascot cx={380} cy={390} s={1.55} />
+      <Mascot cx={390} cy={360} s={1.75} />
     </AbsoluteFill>
   </AbsoluteFill>
 );
@@ -88,7 +86,7 @@ export const Banner: React.FC = () => (
     <div style={{ position: "absolute", left: 560, top: 512, width: 416, height: 416, borderRadius: "50%", background: `radial-gradient(circle, #2a4170 0%, ${NAVY} 70%)`,
       border: `14px solid ${YELLOW}`, boxShadow: `0 0 0 9px ${INK} inset, 0 0 0 9px ${INK}`, overflow: "hidden" }}>
       <div style={{ position: "absolute", left: -560, top: -512, width: 2560, height: 1440 }}>
-        <Mascot cx={760} cy={700} s={0.8} />
+        <Mascot cx={768} cy={680} s={0.92} />
       </div>
     </div>
     <div style={{ position: "absolute", left: 1040, top: 560, fontFamily: "Anton", fontSize: 158, lineHeight: 1, color: YELLOW, letterSpacing: 4,
