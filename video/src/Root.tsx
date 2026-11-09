@@ -1,12 +1,14 @@
 import React from "react";
 import { Composition } from "remotion";
 import { Avatar, Banner } from "./brand/Brand";
+import { CoverPart1 } from "./zodiac/Covers";
 import { PART1_FRAMES, ZodiacPart1 } from "./zodiac/Part1";
 import { PART2_FRAMES, ZodiacPart2 } from "./zodiac/Part2";
 import { PART3_FRAMES, ZodiacPart3 } from "./zodiac/Part3";
 
 export const RemotionRoot: React.FC = () => (
   <>
+    <Composition id="CoverPart1" component={CoverPart1} durationInFrames={1} fps={30} width={1080} height={1920} />
     <Composition id="Avatar" component={Avatar} durationInFrames={1} fps={30} width={800} height={800} />
     <Composition id="Banner" component={Banner} durationInFrames={1} fps={30} width={2560} height={1440} />
     <Composition id="ZodiacPart1" component={ZodiacPart1} durationInFrames={PART1_FRAMES} fps={30} width={1080} height={1920} />
