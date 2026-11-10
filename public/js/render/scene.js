@@ -38,7 +38,6 @@ export class World {
 
     this.renderer = new THREE.WebGLRenderer({ canvas, antialias: this.renderScale >= 0.75, powerPreference: 'high-performance' });
     this.renderer.setPixelRatio(1);
-    this.renderer.setSize(Math.round(STAGE_W * this.renderScale), Math.round(STAGE_H * this.renderScale), false);
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
 
     this.scene = new THREE.Scene();
@@ -53,6 +52,7 @@ export class World {
     this.scene.fog = new THREE.Fog('#f3dcc0', 110, 420);
 
     this.camera = new THREE.PerspectiveCamera(58, STAGE_W / STAGE_H, 0.5, 900);
+    this.setSize(STAGE_W, STAGE_H);
     this.focus = -16;
     this.camX = 0;
 
@@ -67,6 +67,25 @@ export class World {
     this.buildEffects();
     this.ownerName = null;
     this.archMode = null;
+  }
+
+  /**
+   * Sahne boyutu: 1080x1920 (9:16) ya da ekranı doldurmak için daha geniş/uzun.
+   * Arayüz kutusu (1080x1920) her zaman ortadadır; hudX/hudY onun konumu.
+   */
+  setSize(width, height) {
+    this.width = width;
+    this.height = height;
+    this.hudX = (width - STAGE_W) / 2;
+    this.hudY = (height - STAGE_H) / 2;
+    this.renderer.setSize(Math.round(width * this.renderScale), Math.round(height * this.renderScale), false);
+    const aspect = width / height;
+    const base = STAGE_W / STAGE_H;
+    // Daha dar ekranda yolun genişliği aynı kalsın diye dikey açıyı büyüt
+    const halfV = aspect < base ? Math.atan(Math.tan((29 * Math.PI) / 180) * (base / aspect)) : (29 * Math.PI) / 180;
+    this.camera.fov = (halfV * 2 * 180) / Math.PI;
+    this.camera.aspect = aspect;
+    this.camera.updateProjectionMatrix();
   }
 
   laneX(lane) {
@@ -504,15 +523,15 @@ export class World {
     this.renderer.render(this.scene, this.camera);
   }
 
-  /** 3D noktayı sahne (1080x1920) koordinatına çevirir. */
+  /** 3D noktayı sahne koordinatına (piksel) çevirir. */
   project(x, y, z, out) {
     const v = this._v || (this._v = new THREE.Vector3());
     v.set(x, y, z);
     const dist = v.distanceTo(this.camera.position);
     v.project(this.camera);
-    out.x = (v.x + 1) * 0.5 * STAGE_W;
-    out.y = (1 - v.y) * 0.5 * STAGE_H;
-    out.visible = v.z < 1 && v.z > -1 && out.x > -100 && out.x < STAGE_W + 100 && out.y > -100 && out.y < STAGE_H + 100;
+    out.x = (v.x + 1) * 0.5 * this.width;
+    out.y = (1 - v.y) * 0.5 * this.height;
+    out.visible = v.z < 1 && v.z > -1 && out.x > -100 && out.x < this.width + 100 && out.y > -100 && out.y < this.height + 100;
     out.dist = dist;
     return out;
   }

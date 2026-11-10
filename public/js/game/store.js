@@ -63,14 +63,15 @@ export class LocalStore extends MemoryStore {
 }
 
 export class ServerStore extends MemoryStore {
-  static async load() {
-    const res = await fetch('api/state');
-    const data = res.ok ? await res.json() : {};
-    return new ServerStore(data);
+  static async load(key = '') {
+    const res = await fetch('api/state', { headers: key ? { 'x-admin-key': key } : {} });
+    if (!res.ok) throw new Error(`api/state ${res.status}`);
+    return new ServerStore(await res.json(), key);
   }
 
-  constructor(data) {
+  constructor(data, key = '') {
     super(data);
+    this.key = key;
     this.timer = null;
   }
 
@@ -92,7 +93,7 @@ export class ServerStore extends MemoryStore {
     try {
       await fetch('api/state', {
         method: 'POST',
-        headers: { 'content-type': 'application/json' },
+        headers: { 'content-type': 'application/json', ...(this.key ? { 'x-admin-key': this.key } : {}) },
         body: JSON.stringify(body),
       });
     } catch {

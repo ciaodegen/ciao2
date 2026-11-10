@@ -1,12 +1,20 @@
-// Yerel sunucu: oyunu tarayıcıya/OBS'e sunar, TikTok olaylarını WebSocket ile iletir,
-// profilleri data/store.json'a kaydeder.
+// Sunucu: oyunu tarayıcıya / OBS'e / iPad'e sunar, TikTok olaylarını WebSocket ile iletir,
+// profilleri data/store.json'a kaydeder. Bilgisayarda veya bulutta (Render vb.) çalışır.
 //
 //   npm run sim                          -> sahte izleyicilerle test
 //   npm start -- --user kullaniciadi     -> gerçek TikTok yayınına bağlan
 //
-// Ayarlar ortam değişkeniyle de verilebilir: TIKTOK_USER, SIGN_API_KEY, PORT
+// Ortam değişkenleri:
+//   TIKTOK_USER   yayın yapan TikTok kullanıcı adı
+//   ADMIN_TOKEN   şifre. Verilirse oyun ekranı ve kontrol paneli şifre ister
+//                 (sunucu internete açıksa mutlaka ver)
+//   STORAGE       "file" (varsayılan, data/store.json) veya "client" (profiller
+//                 oyun ekranının tarayıcısında tutulur; diski kalıcı olmayan bulut için)
+//   SIGN_API_KEY  Euler Stream API anahtarı (gerekirse)
+//   PORT          dinlenecek port (varsayılan 3000)
 
 import http from 'node:http';
+import { timingSafeEqual } from 'node:crypto';
 import { readFile, stat } from 'node:fs/promises';
 import { readFileSync } from 'node:fs';
 import { extname, join, normalize, resolve, sep } from 'node:path';
@@ -34,19 +42,41 @@ function parseArgs(argv) {
 }
 
 const args = parseArgs(process.argv.slice(2));
+const ADMIN_TOKEN = (process.env.ADMIN_TOKEN || '').trim();
+const STORAGE = process.env.STORAGE === 'client' ? 'client' : 'file';
 const MIME = {
   '.html': 'text/html; charset=utf-8',
   '.js': 'text/javascript; charset=utf-8',
   '.css': 'text/css; charset=utf-8',
   '.json': 'application/json; charset=utf-8',
+  '.webmanifest': 'application/manifest+json; charset=utf-8',
   '.png': 'image/png',
   '.svg': 'image/svg+xml',
   '.ico': 'image/x-icon',
 };
 
-const store = await new FileStore(join(ROOT, 'data', 'store.json')).load();
-let status = { ok: true, label: args.user ? `TikTok: @${args.user}` : args.sim ? 'Sunucu: sahte izleyiciler' : 'Sunucu hazır (olay kaynağı yok)' };
+const store = STORAGE === 'file' ? await new FileStore(join(ROOT, 'data', 'store.json')).load() : null;
 const source = args.user ? 'tiktok' : args.sim ? 'sim' : 'idle';
+let status = {
+  ok: true,
+  label: args.user ? `TikTok: @${args.user} (oyun ekranı açılınca bağlanır)` : args.sim ? 'Sunucu: sahte izleyiciler' : 'Sunucu hazır (olay kaynağı yok)',
+};
+
+// ---------------------------------------------------------------- şifre
+
+function keyMatches(given) {
+  if (!ADMIN_TOKEN) return true;
+  if (typeof given !== 'string' || !given) return false;
+  const a = Buffer.from(given);
+  const b = Buffer.from(ADMIN_TOKEN);
+  return a.length === b.length && timingSafeEqual(a, b);
+}
+
+function authorized(req, url) {
+  return keyMatches(req.headers['x-admin-key'] || url.searchParams.get('key'));
+}
+
+// ---------------------------------------------------------------- HTTP
 
 async function sendFile(res, file) {
   try {
@@ -83,26 +113,33 @@ function readJson(req, limit = 2_000_000) {
   });
 }
 
+function json(res, code, body) {
+  res.writeHead(code, { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' });
+  res.end(body === undefined ? '' : JSON.stringify(body));
+}
+
 const server = http.createServer(async (req, res) => {
   const url = new URL(req.url, 'http://localhost');
   const path = decodeURIComponent(url.pathname);
 
   if (path === '/api/health') {
-    res.writeHead(200, { 'content-type': 'application/json' });
-    return res.end(JSON.stringify({ ok: true, source, user: args.user || null, status }));
+    return json(res, 200, { ok: true, source, user: args.user || null, status, authRequired: Boolean(ADMIN_TOKEN), storage: STORAGE });
   }
-  if (path === '/api/state' && req.method === 'GET') {
-    res.writeHead(200, { 'content-type': 'application/json' });
-    return res.end(JSON.stringify(store.data));
+  if (path === '/api/auth') {
+    return authorized(req, url) ? json(res, 200, { ok: true }) : json(res, 401, { ok: false });
   }
-  if (path === '/api/state' && req.method === 'POST') {
-    try {
-      store.merge(await readJson(req));
-      res.writeHead(204);
-      return res.end();
-    } catch {
-      res.writeHead(400);
-      return res.end();
+  if (path === '/api/state') {
+    if (!authorized(req, url)) return json(res, 401, { ok: false });
+    if (!store) return json(res, 200, { profiles: {}, cities: {} });
+    if (req.method === 'GET') return json(res, 200, store.data);
+    if (req.method === 'POST') {
+      try {
+        store.merge(await readJson(req));
+        res.writeHead(204);
+        return res.end();
+      } catch {
+        return json(res, 400, { ok: false });
+      }
     }
   }
   if (path === '/vendor/three.module.js') return sendFile(res, THREE_FILE);
@@ -126,8 +163,21 @@ function broadcast(msg, except = null) {
   }
 }
 
-wss.on('connection', (ws) => {
+const emit = (event) => broadcast({ kind: 'event', event });
+const setStatus = (s) => {
+  status = s;
+  broadcast({ kind: 'status', ...status });
+};
+
+wss.on('connection', (ws, req) => {
+  const url = new URL(req.url, 'http://localhost');
+  if (!authorized(req, url)) {
+    ws.close(4001, 'sifre');
+    return;
+  }
   ws.send(JSON.stringify({ kind: 'status', ...status }));
+  ensureTikTok();
+
   ws.on('message', (raw) => {
     let msg;
     try {
@@ -135,25 +185,45 @@ wss.on('connection', (ws) => {
     } catch {
       return;
     }
-    // Kontrol panelinden gelen olay/komutları diğer ekranlara (OBS) ilet
+    // Kontrol panelinden gelen olay/komutları diğer ekranlara ilet
     if (msg.kind === 'event' && msg.event && typeof msg.event.type === 'string') broadcast({ kind: 'event', event: msg.event }, ws);
     if (msg.kind === 'command' && (msg.name === 'konvoy' || msg.name === 'skip')) broadcast({ kind: 'command', name: msg.name }, ws);
   });
+  ws.on('close', () => {
+    if (wss.clients.size === 0) scheduleTikTokStop();
+  });
 });
 
-const emit = (event) => broadcast({ kind: 'event', event });
-const setStatus = (s) => {
-  status = s;
-  broadcast({ kind: 'status', ...status });
-};
+// ---------------------------------------------------------------- TikTok bağlantısı
+// Bağlantı sadece bir ekran (oyun veya panel) açıkken kurulur. Böylece bulutta
+// 7/24 boşuna bağlanmaya çalışılmaz ve bağlantı servisinin kotası harcanmaz.
 
-// ---------------------------------------------------------------- olay kaynağı
+let tiktok = null;
+let stopTimer = null;
 
-if (args.user) {
-  startTikTok({ username: args.user, signApiKey: process.env.SIGN_API_KEY, emit, onStatus: setStatus }).catch((err) => {
+function ensureTikTok() {
+  clearTimeout(stopTimer);
+  if (!args.user || tiktok) return;
+  tiktok = startTikTok({ username: args.user, signApiKey: process.env.SIGN_API_KEY, emit, onStatus: setStatus }).catch((err) => {
     console.error('[tiktok] başlatılamadı:', err.message);
+    tiktok = null;
+    return null;
   });
-} else if (args.sim) {
+}
+
+function scheduleTikTokStop() {
+  clearTimeout(stopTimer);
+  stopTimer = setTimeout(async () => {
+    if (wss.clients.size > 0 || !tiktok) return;
+    const conn = await tiktok;
+    tiktok = null;
+    conn?.stop();
+    status = { ok: true, label: `TikTok: @${args.user} (oyun ekranı açılınca bağlanır)` };
+    console.log('[tiktok] açık ekran kalmadı, bağlantı kapatıldı');
+  }, 5 * 60 * 1000);
+}
+
+if (args.sim) {
   const sim = new Simulator(emit, { rate: 3 });
   sim.join(8);
   sim.start();
@@ -161,9 +231,11 @@ if (args.user) {
 
 server.listen(args.port, () => {
   const pkg = JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8'));
+  const key = ADMIN_TOKEN ? '&key=ŞİFRE' : '';
   console.log(`\n  ${pkg.description}`);
-  console.log(`  Oyun:          http://localhost:${args.port}/`);
-  console.log(`  OBS / LIVE Studio için: http://localhost:${args.port}/?obs=1  (1080x1920)`);
-  console.log(`  Ayrı kontrol paneli:    http://localhost:${args.port}/?panel=only`);
-  console.log(`  Olay kaynağı:  ${status.label}\n`);
+  console.log(`  Oyun:                   http://localhost:${args.port}/`);
+  console.log(`  OBS / LIVE Studio için: http://localhost:${args.port}/?obs=1${key}  (1080x1920)`);
+  console.log(`  Ayrı kontrol paneli:    http://localhost:${args.port}/?panel=only${key}`);
+  console.log(`  Olay kaynağı:  ${status.label}`);
+  console.log(`  Şifre: ${ADMIN_TOKEN ? 'açık' : 'kapalı'} · Kayıt: ${STORAGE === 'file' ? 'data/store.json' : 'oyun ekranının tarayıcısı'}\n`);
 });

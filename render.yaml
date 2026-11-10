@@ -1,0 +1,26 @@
+# Render (render.com) kurulum dosyası. Bilgisayar olmadan, telefondan kurulum için.
+# Render panelinde: New > Blueprint > bu repo. Sorulan değerleri gir.
+services:
+  - type: web
+    name: plaka-yarisi
+    runtime: node
+    region: frankfurt
+    plan: free
+    buildCommand: npm ci
+    startCommand: node server/index.js
+    healthCheckPath: /api/health
+    envVars:
+      # Yayın yapan TikTok kullanıcı adın (@ olmadan)
+      - key: TIKTOK_USER
+        sync: false
+      # Oyun ekranı ve kontrol paneli için kendi belirleyeceğin şifre
+      - key: ADMIN_TOKEN
+        sync: false
+      # Gerekirse Euler Stream API anahtarı (boş bırakılabilir)
+      - key: SIGN_API_KEY
+        sync: false
+      # Ücretsiz planda disk kalıcı değil: profiller oyun ekranının (iPad) hafızasında tutulur
+      - key: STORAGE
+        value: client
+      - key: NODE_VERSION
+        value: "22"

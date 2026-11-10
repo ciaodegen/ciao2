@@ -50,8 +50,10 @@ body {
   overflow: hidden;
   background: #000;
 }
-#scene { position: absolute; inset: 0; width: 1080px; height: 1920px; display: block; }
-#labels, .hud { position: absolute; inset: 0; pointer-events: none; }
+#scene { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+#labels { position: absolute; inset: 0; pointer-events: none; }
+/* Arayüz her zaman ortadaki 1080x1920 kutuda; sahne ekrana göre daha geniş/uzun olabilir */
+.hud { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; pointer-events: none; }
 
 /* ------------------------------------------------------------ plaka bileşeni */
 .plate {
@@ -475,3 +477,46 @@ body.panel-only { overflow: auto; }
 @media (prefers-reduced-motion: reduce) {
   .banner, .banner.out, .step, .count.pop b, .feed li, .owner-card.flash, .podium { animation: none !important; }
 }
+
+/* ------------------------------------------------------------ şifre ve başlat ekranları */
+.brand-mini { height: 54px; border-radius: 10px; }
+.brand-mini em { min-width: 40px; font-size: 18px; }
+.brand-mini > span { display: grid; place-items: center; padding: 0 14px; font: 400 30px/1 var(--display); }
+.gate, .start-gate {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  background: rgba(8, 9, 12, 0.88);
+  border: 0;
+  color: var(--white);
+  font-family: var(--ui);
+}
+.gate-card {
+  display: grid;
+  gap: 10px;
+  width: min(360px, 100%);
+  padding: 20px;
+  background: var(--asphalt);
+  border: 2px solid var(--glass-line);
+  border-radius: 16px;
+}
+.gate label { font: 400 20px/1 var(--display); letter-spacing: 0.04em; color: var(--signal); margin-top: 8px; }
+.gate input, .gate button {
+  font: 700 20px/1 var(--ui);
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 2px solid var(--ink);
+}
+.gate input { background: var(--plate); color: var(--ink); }
+.gate button, .start-gate b { background: var(--signal); color: var(--ink); cursor: pointer; }
+.gate p { margin: 0; font: 600 17px/1.3 var(--ui); color: #c9ccd4; }
+.gate p.err { color: #ff8fa3; }
+.start-gate { cursor: pointer; align-content: center; gap: 18px; }
+.start-gate b { padding: 18px 30px; border-radius: 14px; font: 400 34px/1 var(--display); letter-spacing: 0.03em; box-shadow: 0 6px 0 rgba(0, 0, 0, 0.5); }
+.start-gate small { font: 600 18px/1.2 var(--ui); color: #c9ccd4; }
+.gate :focus-visible, .start-gate:focus-visible b { outline: 3px solid var(--signal); outline-offset: 3px; }
+/* Ayrı panel sayfasında ses düğmesi işe yaramaz (ses yayın ekranında çalar) */
+body.panel-only [data-act="sound"] { display: none; }

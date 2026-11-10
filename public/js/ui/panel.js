@@ -43,7 +43,7 @@ export class Panel {
             <input id="panel-plate" type="text" maxlength="12" value="34" aria-label="Plakan" class="short">
             <button type="button" data-act="join">Katıl</button>
           </div>
-          <div class="row gifts">
+          <div class="row gift-row">
             <button type="button" data-gift="1" data-count="1">🌹 Gül</button>
             <button type="button" data-gift="1" data-count="10">🌹 x10</button>
             <button type="button" data-gift="10" data-count="1">🛢️ 10</button>

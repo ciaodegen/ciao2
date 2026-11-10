@@ -23,7 +23,55 @@ Profiller kalıcıdır: garaj seviyesi, plaka, galibiyetler ve şehir puanları 
 
 ---
 
-## 1. Kurulum (bir kez)
+## A) Bilgisayarsız: iPad + telefon
+
+iPad oyunu gösterir ve TikTok'ta **Oyun (ekran paylaşımı)** moduyla yayına verir. Telefon kontrol paneli ve yorumlar içindir. TikTok'a bağlanan sunucu ücretsiz bir bulut hizmetinde (Render) çalışır.
+
+### A1. Sunucuyu kur (bir kez, telefondan ~10 dakika)
+
+1. **render.com** adresine gir → *Get Started* → **GitHub ile giriş yap**. Render'ın `ciao2` reposuna erişmesine izin ver.
+2. Render panelinde **New → Blueprint** → `ciao2` reposunu seç.
+3. Dal (branch) olarak **`claude/practical-lovelace-5dgfne`** seç (bu dal ana dala birleştirilene kadar).
+4. Sorulan değerleri gir:
+   - `TIKTOK_USER`: TikTok kullanıcı adın (@ olmadan)
+   - `ADMIN_TOKEN`: kendi belirlediğin şifre (en az 10 karakter, kimseyle paylaşma)
+   - `SIGN_API_KEY`: boş bırak
+5. **Apply / Deploy**. Birkaç dakika sonra sunucunun adresi çıkar, ör. `https://plaka-yarisi-xxxx.onrender.com`.
+
+> Ücretsiz planda sunucu 15 dakika kullanılmazsa uyur; ilk açılış ~1 dakika sürebilir. Yayından birkaç dakika önce aç.
+
+### A2. iPad'i hazırla (bir kez)
+
+1. iPad'de **Safari** ile sunucu adresini aç.
+2. **Paylaş → Ana Ekrana Ekle → Ekle**. Ana ekrana gelen "Plaka Yarışı" simgesi oyunu adres çubuğu olmadan tam ekran açar.
+3. **Ayarlar → Ekran ve Parlaklık → Otomatik Kilit → Asla.**
+4. Ana ekrandaki simgeden aç ve şifreyi gir (bir kez sorar).
+
+### A3. Telefonu hazırla
+
+- Safari'de `https://SUNUCU-ADRESI/?panel=only` aç ve şifreyi gir. Bu sayfayı **yer işaretine** ekle, ana ekrana ekleme (ana ekrandan açılan sürüm her zaman yayın ekranı olur).
+- Yorumları görmek için telefonda TikTok'ta başka bir hesapla yayınını izleyebilirsin. Oyun da gelen yorum ve hediyeleri ekranda gösterir.
+
+### A4. Yayına çık
+
+1. iPad'i şarja tak, **Rahatsız Etmeyin** odağını aç (bildirimler yayına düşmesin).
+2. iPad'de **Plaka Yarışı**'nı aç → **▶ YAYINI BAŞLAT**'a dokun (ses açılır, ekran kararmaz).
+3. iPad'de **TikTok → + → CANLI → Oyun** → başlığı yaz → yayını başlat → ekran yayınını onayla.
+4. **Plaka Yarışı**'na geri dön. Artık iPad ekranı yayında.
+5. Telefondaki panelde nokta **yeşil** ve `TikTok: @kullanici (oda …)` yazıyorsa bağlantı tamam. Kırmızıysa yazan mesaja bak.
+6. Gerçek yayında **sahte izleyicileri başlatma**. Panelde sadece *Konvoy* ve *Sonraki aşama* gibi düğmeleri kullan.
+
+Yayını bitirmek için TikTok'a dönüp yayını kapat.
+
+**Notlar**
+- Ücretsiz planda sunucunun diski kalıcı değil; bu yüzden profiller (garaj, galibiyet, şehir puanları) **iPad'in hafızasında** tutulur. Uygulamayı ana ekrandan silersen sıfırlanır.
+- iPad ekranı TikTok'un dikey formatından daha geniş. Önemli her şey ortada durur, yanlara sadece binalar düşer. İlk yayında telefondan izleyip nasıl göründüğüne bak.
+- iPad ısınırsa adresin sonuna `?q=0.5` ekleyerek grafik kalitesini düşürebilirsin.
+- TikTok bağlantısı bulutta sürekli hata verirse, bağlantıyı imzalayan Euler Stream servisinden API anahtarı alıp Render'da **Environment → SIGN_API_KEY** alanına gir.
+
+## B) Bilgisayarla
+
+### B1. Kurulum (bir kez)
 
 1. [Node.js](https://nodejs.org) indir ve kur (LTS sürümü, 20 veya üstü).
 2. Bu klasörde bir terminal aç ve çalıştır:
@@ -32,7 +80,7 @@ Profiller kalıcıdır: garaj seviyesi, plaka, galibiyetler ve şehir puanları 
 npm install
 ```
 
-## 2. Sahte izleyicilerle dene
+### B2. Sahte izleyicilerle dene
 
 ```bash
 npm run sim
@@ -45,7 +93,7 @@ Sağ alttaki **🎮 Kontrol** panelinden:
 - **kendi adınla** katılıp hediye atabilirsin,
 - konvoya geçebilir, sonraki aşamaya atlayabilir, sesi açabilirsin.
 
-## 3. Gerçek TikTok yayınına bağlan
+### B3. Gerçek TikTok yayınına bağlan
 
 Önce TikTok'ta canlı yayını başlat, sonra:
 
@@ -53,11 +101,11 @@ Sağ alttaki **🎮 Kontrol** panelinden:
 npm start -- --user tiktok_kullanici_adin
 ```
 
-Sunucu yayına bağlanır, gelen yorum/hediye/beğenileri oyuna iletir. Yayın kapalıysa 30 saniyede bir tekrar dener.
+Sunucu, oyun ekranı açıldığında yayına bağlanır ve gelen yorum/hediye/beğenileri oyuna iletir. Yayın kapalıysa 30 saniyede bir tekrar dener.
 
 > TikTok'un canlı yayın olayları için **resmi bir API'si yok**. Bağlantı, resmi olmayan [tiktok-live-connector](https://www.npmjs.com/package/tiktok-live-connector) kütüphanesiyle yapılır. TikTok bir şey değiştirirse bağlantı bozulabilir; `npm update tiktok-live-connector` genelde düzeltir. Bağlantı imzalama servisi (Euler Stream) sınır koyarsa API anahtarını `SIGN_API_KEY` ortam değişkeniyle verebilirsin.
 
-## 4. Yayına ekleme
+### B4. Yayına ekleme
 
 Oyun ekranı **1080x1920 (dikey)** tasarlandı. Yayında görünecek adres:
 
@@ -88,7 +136,7 @@ Bu paneldeki düğmeler yayın ekranına anında yansır. Yayın penceresi seçi
 
 > Yayın ekranı tek olmalı. Oyun mantığı tarayıcıda çalışır; aynı anda iki oyun penceresi açarsan ikisinde farklı kazananlar çıkar. Yönetim için `?panel=only` kullan.
 
-## 5. Ayarlar
+## Ayarlar
 
 Tüm ayarlar `public/config/game.json` dosyasında:
 
@@ -99,9 +147,11 @@ Tüm ayarlar `public/config/game.json` dosyasında:
 - `likeGoal.every`: kaç beğenide bir herkese nitro
 - `effects`: nitro/yağ/drift/tır süreleri ve güçleri
 
-Kalıcı veriler `data/store.json` dosyasında tutulur. Silersen her şey sıfırlanır.
+Kalıcı veriler bilgisayarda `data/store.json` dosyasında, Render'da ise iPad'in hafızasında tutulur.
 
-## 6. Notlar
+Sunucu ortam değişkenleri: `TIKTOK_USER` (kullanıcı adı), `ADMIN_TOKEN` (şifre; sunucu internete açıksa mutlaka ver), `STORAGE` (`file` veya `client`), `SIGN_API_KEY`, `PORT`.
+
+## Notlar
 
 - Sesler kodla üretilir, telifli müzik yoktur. Yayına müzik eklersen telifsiz olsun.
 - Araçlar markasız, low-poly modellerdir. Gerçek araba markası veya logosu kullanma.
@@ -111,7 +161,8 @@ Kalıcı veriler `data/store.json` dosyasında tutulur. Silersen her şey sıfı
 ## Dosyalar
 
 ```
-server/index.js        yerel sunucu, WebSocket, kayıt
+server/index.js        sunucu: WebSocket, şifre, kayıt
+render.yaml            bulut (Render) kurulum ayarı
 server/tiktok.js       TikTok bağlantısı ve hediye serisi sayımı
 server/store.js        data/store.json kaydı
 public/index.html      oyun sayfası

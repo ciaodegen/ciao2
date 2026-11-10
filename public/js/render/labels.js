@@ -66,7 +66,7 @@ export class Labels {
       }
       const p = this.world.project(this.world.laneX(car.lane), 2.6, -car.progress, this.tmp);
       // Üstteki menülerin arkasında kalan (çok uzaktaki) etiketleri gösterme
-      if (!p.visible || p.dist > 190 || behindHud(p.x, p.y - 30)) {
+      if (!p.visible || p.dist > 190 || behindHud(p.x - this.world.hudX, p.y - 30 - this.world.hudY)) {
         if (item.shown !== false) {
           item.el.style.display = 'none';
           item.shown = false;
