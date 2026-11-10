@@ -1,0 +1,477 @@
+/* Plaka Yarışı: yayın ekranı 1080x1920 (9:16). Tüm arayüz Türk plakası motifinden türetildi.
+   Tek tema: oyun her zaman koyu asfalt üzerinde, açık renkli plakalarla oynanır. */
+:root {
+  --asphalt: #111419;
+  --plate: #f6f5ef;
+  --ink: #101114;
+  --tr: #1f4fd8;
+  --signal: #ffd23f;
+  --nitro: #ff6b1a;
+  --rose: #ff3b6b;
+  --mint: #19b26b;
+  --glass: rgba(13, 15, 20, 0.76);
+  --glass-line: rgba(255, 255, 255, 0.16);
+  --white: #ffffff;
+  --display: 'Anton', 'Impact', 'Arial Narrow', sans-serif;
+  --ui: 'Barlow Condensed', 'Arial Narrow', 'Roboto Condensed', sans-serif;
+  --outline: 0 3px 0 #000, 0 0 10px rgba(0, 0, 0, 0.75), 2px 0 0 #000, -2px 0 0 #000;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; }
+body {
+  background: var(--asphalt);
+  background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 6px 6px;
+  color: var(--white);
+  font-family: var(--ui);
+  overflow: hidden;
+}
+[hidden] { display: none !important; }
+
+.loading {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font: 700 22px var(--ui);
+  letter-spacing: 0.06em;
+  color: var(--signal);
+}
+
+#stage {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 1080px;
+  height: 1920px;
+  transform-origin: 50% 50%;
+  overflow: hidden;
+  background: #000;
+}
+#scene { position: absolute; inset: 0; width: 1080px; height: 1920px; display: block; }
+#labels, .hud { position: absolute; inset: 0; pointer-events: none; }
+
+/* ------------------------------------------------------------ plaka bileşeni */
+.plate {
+  display: flex;
+  align-items: stretch;
+  background: var(--plate);
+  color: var(--ink);
+  border: 3px solid var(--ink);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 6px 0 rgba(0, 0, 0, 0.35);
+}
+.plate > em {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  min-width: 48px;
+  padding: 0 8px;
+  background: var(--tr);
+  color: var(--white);
+  font: 700 22px var(--ui);
+  font-style: normal;
+}
+
+/* ------------------------------------------------------------ etiketler */
+.tag {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 14px 6px 6px;
+  background: var(--glass);
+  border: 2px solid var(--glass-line);
+  border-radius: 999px;
+  font: 700 34px/1 var(--ui);
+  white-space: nowrap;
+  transform-origin: 50% 100%;
+  will-change: transform;
+}
+.tag::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -14px;
+  border: 8px solid transparent;
+  border-top-color: var(--glass);
+  transform: translateX(-50%);
+}
+.tag.owner { border: 3px solid var(--signal); }
+.tag .crown {
+  position: absolute;
+  left: 18px;
+  top: -40px;
+  font-size: 40px;
+  font-style: normal;
+}
+.tag .nm { display: flex; align-items: center; gap: 6px; text-shadow: 0 2px 0 #000; }
+.tag .lvl { font-style: normal; color: var(--signal); font-size: 26px; }
+.tag .fire { font-style: normal; font-size: 28px; }
+.tag .pl {
+  display: flex;
+  align-items: stretch;
+  background: var(--plate);
+  color: var(--ink);
+  border: 2px solid var(--ink);
+  border-radius: 6px;
+  overflow: hidden;
+  font: 800 28px/1 var(--ui);
+}
+.tag .pl em {
+  display: grid;
+  place-items: center;
+  background: var(--tr);
+  color: var(--white);
+  font: 700 14px var(--ui);
+  font-style: normal;
+  padding: 0 4px;
+}
+.tag .pl { padding-right: 6px; gap: 5px; }
+
+.ava {
+  position: relative;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid var(--white);
+  color: var(--white);
+  font: 800 30px var(--ui);
+}
+.ava img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.ava.big { width: 150px; height: 150px; font-size: 80px; border-width: 5px; }
+
+/* ------------------------------------------------------------ üst bölüm */
+.hud-top {
+  position: absolute;
+  top: 248px;
+  left: 28px;
+  right: 28px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 10px 18px;
+}
+.brand { height: 80px; border-radius: 14px; border-width: 4px; }
+.brand em { min-width: 60px; font-size: 26px; }
+.brand span {
+  display: grid;
+  place-items: center;
+  padding: 0 22px;
+  font: 400 56px/1 var(--display);
+  letter-spacing: 0.02em;
+}
+.status { display: grid; justify-items: end; gap: 2px; text-shadow: var(--outline); }
+.status .phase { font: 400 38px/1 var(--display); letter-spacing: 0.02em; }
+.status .time { font: 800 44px/1 var(--ui); color: var(--signal); font-variant-numeric: tabular-nums; }
+.hud.konvoy .status .phase { color: #ffd1dc; }
+.track {
+  grid-column: 1 / -1;
+  height: 14px;
+  background: rgba(0, 0, 0, 0.55);
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.track i {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, var(--signal), var(--nitro));
+  transition: width 0.25s linear;
+}
+.howto {
+  grid-column: 1 / -1;
+  margin: 0;
+  font: 700 30px/1.15 var(--ui);
+  text-shadow: var(--outline);
+}
+.howto b {
+  display: inline-block;
+  padding: 0 8px;
+  background: var(--plate);
+  color: var(--ink);
+  border-radius: 6px;
+  text-shadow: none;
+}
+
+/* ------------------------------------------------------------ sol / sağ sütunlar */
+aside h3, .owner-card h3 {
+  margin: 0 0 8px;
+  font: 400 30px/1 var(--display);
+  letter-spacing: 0.04em;
+  text-shadow: var(--outline);
+}
+aside ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+
+.cities { position: absolute; left: 28px; top: 440px; width: 330px; transition: opacity 0.3s; }
+.city { height: 50px; align-items: center; }
+.city em { align-self: stretch; min-width: 40px; font-size: 22px; }
+.city .code { padding: 0 8px 0 10px; font: 400 30px/1 var(--display); }
+.city .nm { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: 800 24px/1 var(--ui); }
+.city b { padding: 0 12px; font: 800 28px/1 var(--ui); font-variant-numeric: tabular-nums; color: var(--tr); }
+.cities .hint {
+  padding: 12px 14px;
+  background: var(--glass);
+  border-radius: 12px;
+  font: 700 26px/1.2 var(--ui);
+}
+
+.owner-card {
+  position: absolute;
+  left: 28px;
+  top: 716px;
+  width: 330px;
+  padding: 10px 14px;
+  background: var(--glass);
+  border: 3px solid var(--signal);
+  border-radius: 18px;
+  transition: opacity 0.3s;
+}
+.owner-card h3 { margin-bottom: 6px; font-size: 26px; color: var(--signal); }
+.owner-card .row { display: flex; align-items: center; gap: 12px; }
+.owner-card .row > div { display: grid; min-width: 0; }
+.owner-card b { font: 800 30px/1.05 var(--ui); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.owner-card span { font: 700 24px var(--ui); color: var(--signal); }
+.owner-card p { margin: 6px 0 0; font: 600 22px/1.2 var(--ui); }
+.owner-card p.empty { margin: 0; font-size: 24px; }
+.owner-card.flash { animation: flash 0.9s ease-out; }
+@keyframes flash {
+  0% { transform: scale(1.12); box-shadow: 0 0 0 8px var(--signal); }
+  100% { transform: scale(1); box-shadow: 0 0 0 0 transparent; }
+}
+
+.gifts { position: absolute; right: 28px; top: 440px; width: 372px; transition: opacity 0.3s; }
+.gifts h3 { text-align: right; }
+.gift { height: 56px; align-items: center; }
+.gift em { align-self: stretch; min-width: 58px; font-size: 30px; }
+.gift .act { flex: 1; min-width: 0; padding: 0 10px; font: 400 26px/1 var(--display); letter-spacing: 0.01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gift .coin { display: grid; justify-items: end; padding: 0 12px 0 4px; font: 800 27px/0.95 var(--ui); font-variant-numeric: tabular-nums; }
+.gift .coin small { font: 700 13px/1 var(--ui); text-transform: uppercase; letter-spacing: 0.06em; color: #555; }
+.gift.free em { background: var(--mint); }
+.gift.free .coin { color: var(--mint); font-size: 22px; }
+.gift.crown em { background: var(--signal); color: var(--ink); }
+.gift.crown { border-color: var(--ink); background: #fff7d1; }
+.gift.crown .coin { font-size: 22px; }
+
+.feed {
+  position: absolute;
+  left: 28px;
+  top: 872px;
+  width: 330px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 4px;
+  font: 700 22px/1.15 var(--ui);
+  text-shadow: var(--outline);
+}
+.feed li { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; animation: slide-in 0.3s ease-out; }
+.feed li:nth-child(n + 4) { display: none; }
+
+.center { position: absolute; left: 380px; width: 310px; top: 440px; text-align: center; transition: opacity 0.3s; }
+.call { display: grid; justify-items: center; text-shadow: var(--outline); }
+.call small { font: 400 38px/1 var(--display); letter-spacing: 0.04em; }
+.call b { font: 400 170px/1 var(--display); color: var(--signal); font-variant-numeric: tabular-nums; }
+.call span { font: 700 30px/1.1 var(--ui); }
+.leaders { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.leaders li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 10px 5px 5px;
+  background: var(--glass);
+  border-radius: 999px;
+  font: 700 26px/1 var(--ui);
+}
+.leaders li > i { font-style: normal; width: 32px; height: 32px; display: grid; place-items: center; background: var(--signal); color: var(--ink); border-radius: 50%; font: 400 22px var(--display); }
+.leaders li .ava { width: 40px; height: 40px; font-size: 22px; border-width: 2px; }
+.leaders li span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.likegoal {
+  position: absolute;
+  left: 50%;
+  top: 948px;
+  width: 560px;
+  transform: translateX(-50%);
+  display: grid;
+  gap: 6px;
+  justify-items: center;
+}
+.likegoal .bar { width: 100%; height: 18px; background: rgba(0, 0, 0, 0.55); border: 2px solid rgba(255, 255, 255, 0.4); border-radius: 999px; overflow: hidden; }
+.likegoal .bar i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, #ff8fab, var(--rose)); transition: width 0.3s; }
+.likegoal span { font: 700 26px/1 var(--ui); text-shadow: var(--outline); }
+.likegoal span b { color: #ff9db5; font-variant-numeric: tabular-nums; }
+
+/* ------------------------------------------------------------ duyuru bantları */
+.banners {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 1010px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.banner {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  max-width: 1020px;
+  animation: pop-in 0.28s cubic-bezier(0.2, 1.4, 0.4, 1);
+}
+.banner.out { animation: pop-out 0.26s ease-in forwards; }
+.banner .tx { display: grid; justify-items: start; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.banner .tx small { font: 700 32px/1.05 var(--ui); letter-spacing: 0.01em; }
+.banner.big {
+  padding: 12px 34px;
+  background: var(--signal);
+  color: var(--ink);
+  font: 400 58px/1 var(--display);
+  letter-spacing: 0.01em;
+  transform: skewX(-8deg);
+  box-shadow: 0 10px 0 rgba(0, 0, 0, 0.45);
+  border: 4px solid var(--ink);
+}
+.banner.big > span { transform: skewX(8deg); }
+.banner.hazard {
+  background: repeating-linear-gradient(-45deg, var(--signal) 0 26px, var(--ink) 26px 52px);
+  padding: 12px;
+}
+.banner.hazard .tx, .banner.hazard .ic { background: var(--ink); color: var(--signal); padding: 10px 16px; }
+.banner.hazard .tx { font-size: 50px; }
+.banner.owner { background: linear-gradient(90deg, #f7c948, #fff1a8, #f7c948); }
+.banner.win { background: var(--plate); }
+.banner.win .ic { font-size: 70px; }
+.banner.toast {
+  padding: 8px 20px;
+  background: var(--glass);
+  border: 2px solid var(--glass-line);
+  border-radius: 999px;
+  font: 700 32px/1 var(--ui);
+  text-shadow: 0 2px 0 #000;
+}
+@keyframes pop-in { from { opacity: 0; scale: 0.6; } to { opacity: 1; scale: 1; } }
+@keyframes pop-out { to { opacity: 0; scale: 0.85; } }
+@keyframes slide-in { from { opacity: 0; translate: -20px 0; } to { opacity: 1; translate: 0 0; } }
+
+/* ------------------------------------------------------------ geri sayım */
+.count {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 470px;
+  text-align: center;
+  font: 400 420px/1 var(--display);
+  color: var(--signal);
+  text-shadow: 0 12px 0 #000, 0 0 40px rgba(0, 0, 0, 0.6);
+}
+.count.pop b { display: inline-block; animation: count 0.9s ease-out forwards; }
+@keyframes count { 0% { scale: 1.6; opacity: 0; } 20% { scale: 1; opacity: 1; } 100% { scale: 0.9; opacity: 0; } }
+
+/* ------------------------------------------------------------ podyum */
+.podium {
+  position: absolute;
+  left: 28px;
+  right: 28px;
+  top: 440px;
+  padding: 24px 22px 26px;
+  background: var(--glass);
+  border: 3px solid var(--glass-line);
+  border-radius: 26px;
+  text-align: center;
+  animation: pop-in 0.35s ease-out;
+}
+.podium h2 { margin: 0 0 18px; font: 400 64px/1 var(--display); letter-spacing: 0.03em; color: var(--signal); text-shadow: 0 4px 0 #000; }
+.steps { display: grid; grid-template-columns: repeat(3, 1fr); align-items: end; gap: 16px; }
+.step { display: grid; justify-items: center; gap: 8px; animation: rise 0.6s ease-out backwards; animation-delay: var(--d); }
+.step .medal { font-size: 64px; line-height: 1; }
+.step .who { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: 800 38px/1 var(--ui); }
+.step .plate.mini { height: 40px; font: 800 24px/1 var(--ui); align-items: center; }
+.step .plate.mini span { padding: 0 10px; white-space: nowrap; }
+.step .plate.mini em { min-width: 34px; font-size: 16px; }
+.step .plate.ghost { background: rgba(255, 255, 255, 0.15); color: var(--white); border-color: transparent; }
+.step .block {
+  width: 100%;
+  display: grid;
+  align-content: start;
+  justify-items: center;
+  padding-top: 10px;
+  background: var(--plate);
+  color: var(--ink);
+  border-radius: 12px 12px 0 0;
+  border-bottom: 10px solid var(--tr);
+}
+.step .block span { font: 400 84px/1 var(--display); }
+.step .block small { font: 800 26px var(--ui); color: var(--tr); }
+.step.p1 .block { height: 230px; }
+.step.p2 .block { height: 170px; }
+.step.p3 .block { height: 130px; }
+.awards { list-style: none; margin: 18px 0 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+.awards .plate { height: 46px; align-items: center; font: 800 26px var(--ui); }
+.awards .plate span { padding: 0 10px; }
+.awards .plate b { padding: 0 12px 0 0; color: var(--mint); }
+@keyframes rise { from { opacity: 0; translate: 0 60px; } to { opacity: 1; translate: 0 0; } }
+.hud.podium-on .cities, .hud.podium-on .gifts, .hud.podium-on .owner-card, .hud.podium-on .center, .hud.podium-on .feed { opacity: 0; }
+
+/* ------------------------------------------------------------ kontrol paneli (yayında görünmez) */
+.panel {
+  position: fixed;
+  right: max(12px, env(safe-area-inset-right, 0px));
+  bottom: max(12px, env(safe-area-inset-bottom, 0px));
+  z-index: 50;
+  display: grid;
+  justify-items: end;
+  gap: 8px;
+  max-width: calc(100vw - 24px);
+  font: 600 15px/1.2 var(--ui);
+}
+.panel button, .panel select, .panel input {
+  font: 700 15px/1 var(--ui);
+  color: var(--ink);
+  background: var(--plate);
+  border: 2px solid var(--ink);
+  border-radius: 8px;
+  padding: 8px 10px;
+  min-height: 36px;
+}
+.panel button { cursor: pointer; }
+.panel button:hover { background: var(--signal); }
+.panel :focus-visible { outline: 3px solid var(--signal); outline-offset: 2px; }
+.panel .toggle { background: var(--signal); box-shadow: 0 4px 0 rgba(0, 0, 0, 0.5); }
+.panel .body {
+  display: none;
+  width: min(420px, calc(100vw - 24px));
+  max-height: min(70vh, 560px);
+  overflow-y: auto;
+  padding: 12px;
+  background: rgba(13, 15, 20, 0.94);
+  border: 2px solid var(--glass-line);
+  border-radius: 14px;
+}
+.panel.open .body { display: grid; gap: 12px; }
+.panel h4 { margin: 0 0 6px; font: 400 16px/1 var(--display); letter-spacing: 0.06em; color: var(--signal); }
+.panel .row { display: flex; flex-wrap: wrap; gap: 6px; }
+.panel input { width: 120px; }
+.panel input.short { width: 70px; }
+.panel .src { display: flex; align-items: center; gap: 8px; font-weight: 700; }
+.panel .src .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--mint); }
+.panel .src.bad .dot { background: var(--rose); }
+body.panel-only .panel { position: static; margin: 16px; justify-items: stretch; }
+body.panel-only .panel .toggle { display: none; }
+body.panel-only { overflow: auto; }
+
+@media (prefers-reduced-motion: reduce) {
+  .banner, .banner.out, .step, .count.pop b, .feed li, .owner-card.flash, .podium { animation: none !important; }
+}
