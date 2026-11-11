@@ -29,16 +29,39 @@ iPad oyunu gösterir ve TikTok'ta **Oyun (ekran paylaşımı)** moduyla yayına 
 
 ### A1. Sunucuyu kur (bir kez, telefondan ~10 dakika)
 
-1. **render.com** adresine gir → *Get Started* → **GitHub ile giriş yap**. Render'ın `ciao2` reposuna erişmesine izin ver.
-2. Render panelinde **New → Blueprint** → `ciao2` reposunu seç.
-3. Dal (branch) olarak **`claude/practical-lovelace-5dgfne`** seç (bu dal ana dala birleştirilene kadar).
-4. Sorulan değerleri gir:
-   - `TIKTOK_USER`: TikTok kullanıcı adın (@ olmadan)
-   - `ADMIN_TOKEN`: kendi belirlediğin şifre (en az 10 karakter, kimseyle paylaşma)
-   - `SIGN_API_KEY`: boş bırak
-5. **Apply / Deploy**. Birkaç dakika sonra sunucunun adresi çıkar, ör. `https://plaka-yarisi-xxxx.onrender.com`.
+Repo herkese açık olduğu için **GitHub hesabı gerekmez**. Render'a kendi e-postan veya Google hesabınla kaydolman yeterli.
+
+1. **render.com** → *Get Started* → kendi **e-postan veya Google** hesabınla kaydol.
+2. **New → Web Service** → **Public Git Repository** sekmesi → şu adresi yapıştır → *Connect*:
+   `https://github.com/ciaodegen/ciao2`
+3. Ayarları şöyle doldur:
+
+   | Alan | Değer |
+   |---|---|
+   | Name | `plaka-yarisi` |
+   | Region | Frankfurt |
+   | Branch | `claude/practical-lovelace-5dgfne` |
+   | Language | Node |
+   | Build Command | `npm ci` |
+   | Start Command | `node server/index.js` |
+   | Instance Type | **Free** |
+
+4. **Environment Variables** bölümüne ekle:
+
+   | Ad | Değer |
+   |---|---|
+   | `TIKTOK_USER` | TikTok kullanıcı adın (@ olmadan) |
+   | `ADMIN_TOKEN` | kendi belirlediğin şifre (en az 10 karakter, kimseyle paylaşma) |
+   | `STORAGE` | `client` |
+   | `NODE_VERSION` | `22` |
+
+5. **Deploy Web Service**. Birkaç dakika sonra sayfanın üstünde sunucunun adresi çıkar, ör. `https://plaka-yarisi-xxxx.onrender.com`.
 
 > Ücretsiz planda sunucu 15 dakika kullanılmazsa uyur; ilk açılış ~1 dakika sürebilir. Yayından birkaç dakika önce aç.
+>
+> Kodda bir güncelleme olduğunda Render kendiliğinden almaz: Render'da servise gir → **Manual Deploy → Deploy latest commit**.
+>
+> Repoya GitHub ile erişimin varsa `render.yaml` sayesinde **New → Blueprint** ile de kurabilirsin; ayarlar otomatik dolar.
 
 ### A2. iPad'i hazırla (bir kez)
 
