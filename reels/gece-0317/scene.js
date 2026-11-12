@@ -2,7 +2,9 @@
 // Her kare renderFrame(t) ile deterministik çizilir; render.js kareleri ffmpeg'e aktarır.
 
 const W = 1080, H = 1920, FPS = 30;
-const T = { A: 0, ANSWER: 1.5, B: 3.0, C: 6.5, D: 9.3, E: 11.9, TAIL: 14.9, END: 15.3 };
+// Zamanlar timeline.py tarafından seslendirme sürelerinden hesaplanır (timeline.js).
+const TL = window.TL;
+const T = { A: 0, ANSWER: TL.ANSWER, B: TL.B, C: TL.C, D: TL.D, E: TL.E, TAIL: TL.TAIL, END: TL.END };
 window.DURATION = T.END;
 
 const cv = document.getElementById('c');
@@ -329,18 +331,18 @@ function sceneB(t) {
   const zk = easeOut(prog(lt, 0, 0.22));
   drawCam(t, { zoom: lerp(1.07, 2.6, zk), blur: lerp(0, 16, zk), dim: lerp(0, 0.55, zk), state: 'answered', rt: t, secs: 42 + Math.floor(t), zoomLabel: 'ZOOM 4.0×' });
   callCard(t, prog(lt, 0.08, 0.3));
-  bubble(['Dişim çok ağrıyor,', 'sabah yer var mı?'], 'L', 1060, prog(t, 3.35, 0.28), { label: 'ARAYAN' });
-  const ty = prog(t, 4.05, 0.15) * (t < 4.6 ? 1 : 0);
+  bubble(['Dişim çok ağrıyor,', 'sabah yer var mı?'], 'L', 1060, prog(t, TL.bubble1, 0.28), { label: 'ARAYAN' });
+  const ty = prog(t, TL.typing, 0.15) * (t < TL.bubble2 ? 1 : 0);
   typing(1310, ty, t);
-  bubble(['Geçmiş olsun.', '09:30\'a ayırdım ✓'], 'R', 1290, prog(t, 4.6, 0.28), { weight: 700, label: '???' });
+  bubble(['Geçmiş olsun.', '09:30\'a ayırdım ✓'], 'R', 1290, prog(t, TL.bubble2, 0.28), { weight: 700, label: '???' });
 }
 
 // ---------- SAHNE C: sabah, bildirimler (6.5 – 9.3) ----------
 const NOTIFS = [
-  { at: 6.8, time: '03:17', title: 'Yeni randevu', body: 'Dr. Ayşe · bugün 09:30' },
-  { at: 7.1, time: '04:02', title: 'Fiyat bilgisi verildi', body: 'İmplant fiyatı soruldu' },
-  { at: 7.4, time: '05:48', title: 'Yeni randevu', body: 'Cuma · 14:00' },
-  { at: 7.7, time: '06:31', title: 'Randevu ertelendi', body: 'Salı 11:00 → Çarşamba 15:00' },
+  { at: TL.notifs[0], time: '03:17', title: 'Yeni randevu', body: 'Dr. Ayşe · bugün 09:30' },
+  { at: TL.notifs[1], time: '04:02', title: 'Fiyat bilgisi verildi', body: 'İmplant fiyatı soruldu' },
+  { at: TL.notifs[2], time: '05:48', title: 'Yeni randevu', body: 'Cuma · 14:00' },
+  { at: TL.notifs[3], time: '06:31', title: 'Randevu ertelendi', body: 'Salı 11:00 → Çarşamba 15:00' },
 ];
 function handset(g, cx, cy, s) {
   g.save(); g.translate(cx, cy); g.rotate(-Math.PI / 4); g.fillStyle = '#111';
@@ -388,7 +390,7 @@ function sceneC(t) {
     ctx.fillText(n.body, x + 148, y + 121);
     ctx.restore();
   });
-  const p = pop(t, 8.3, 0.22);
+  const p = pop(t, TL.punch, 0.22);
   caption([[['Ben uyurken: ', '#fff'], ['4 müşteri', YEL]], [['0 cevapsız arama.', '#fff']]], 540, 1360, { size: 70, box: 'rgba(0,0,0,0.82)', ...p });
   // geçiş flaşı
   const fl = 1 - prog(lt, 0, 0.28);
@@ -396,12 +398,7 @@ function sceneC(t) {
 }
 
 // ---------- SAHNE D: MAAŞ / SİGORTA / İZİN / UYKU (9.3 – 11.9) ----------
-const WORDS = [
-  { w: 'MAAŞ', at: 9.3, strike: 9.5 },
-  { w: 'SİGORTA', at: 9.9, strike: 10.1 },
-  { w: 'İZİN', at: 10.5, strike: 10.7 },
-  { w: 'UYKU', at: 11.1, strike: 11.3 },
-];
+const WORDS = TL.words;
 function sceneD(t) {
   ctx.fillStyle = '#0c0c0e'; ctx.fillRect(0, 0, W, H);
   let shake = 0;
@@ -441,10 +438,10 @@ function sceneE(t) {
   ctx.fillStyle = glow; ctx.fillRect(0, 0, W, H);
   grain(t, 0.07);
   ctx.save(); ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-  let k = prog(t, 11.9, 0.2);
+  let k = prog(t, TL.tanisin, 0.2);
   ctx.globalAlpha = k; ctx.fillStyle = 'rgba(255,255,255,0.7)'; ctx.font = `600 52px ${SANS}`;
   ctx.fillText('Tanışın:', 540, 700 + (1 - easeOut(k)) * 20);
-  k = prog(t, 12.2, 0.3);
+  k = prog(t, TL.mimozai, 0.3);
   const s = lerp(0.8, 1, backOut(k));
   ctx.globalAlpha = clamp(k * 3);
   ctx.save(); ctx.translate(540, 850); ctx.scale(s, s);
@@ -452,14 +449,14 @@ function sceneE(t) {
   ctx.fillText('Mimozai', 0, 0);
   ctx.restore();
   ctx.letterSpacing = '0px';
-  k = prog(t, 12.5, 0.25);
+  k = prog(t, TL.tagline, 0.25);
   ctx.globalAlpha = k; ctx.fillStyle = 'rgba(255,255,255,0.92)'; ctx.font = `600 54px ${SANS}`;
   const dy = (1 - easeOut(k)) * 24;
   ctx.fillText('Sen uyurken bile', 540, 1010 + dy);
   ctx.fillText('işletmen için çalışan biri.', 540, 1080 + dy);
   ctx.restore();
   // CTA
-  const ck = prog(t, 13.1, 0.3);
+  const ck = prog(t, TL.cta, 0.3);
   if (ck > 0) {
     ctx.save(); ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
     ctx.font = `800 58px ${SANS}`;
@@ -468,7 +465,7 @@ function sceneE(t) {
     const cs = lerp(0.6, 1, backOut(ck));
     ctx.globalAlpha = clamp(ck * 3);
     ctx.translate(540, 1290); ctx.scale(cs, cs);
-    const breathe = 1 + 0.025 * Math.sin((t - 13.4) * 7) * (t > 13.4 ? 1 : 0);
+    const breathe = 1 + 0.025 * Math.sin((t - TL.cta - 0.3) * 7) * (t > TL.cta + 0.3 ? 1 : 0);
     ctx.scale(breathe, breathe);
     ctx.shadowColor = 'rgba(255,210,63,0.45)'; ctx.shadowBlur = 50;
     ctx.fillStyle = YEL; rr(ctx, -w / 2, -h / 2, w, h, h / 2); ctx.fill();
@@ -476,7 +473,7 @@ function sceneE(t) {
     ctx.fillStyle = '#111'; ctx.fillText(label, 0, 4);
     ctx.restore();
     ctx.save(); ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    ctx.globalAlpha = prog(t, 13.35, 0.25); ctx.fillStyle = 'rgba(255,255,255,0.8)'; ctx.font = `500 42px ${SANS}`;
+    ctx.globalAlpha = prog(t, TL.cta + 0.25, 0.25); ctx.fillStyle = 'rgba(255,255,255,0.8)'; ctx.font = `500 42px ${SANS}`;
     ctx.fillText('ücretsiz demo hattını kuralım', 540, 1420);
     ctx.restore();
   }

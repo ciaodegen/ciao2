@@ -1,20 +1,31 @@
-"""Mimozai Reels "GECE 03:17" için ses tasarımı (tamamen sentez, telifsiz).
+"""Mimozai Reels "GECE 03:17" için ses miksajı.
+Efektler ve müzik tamamen sentezdir (telifsiz); seslendirme vo/ klasöründeki
+ElevenLabs dosyalarından gelir. Zamanlamalar timeline.json'dan okunur
+(önce `python3 timeline.py` çalıştırın).
 Kullanım: python3 sound.py sound.wav
-Zamanlamalar scene.js içindeki T sabitleriyle aynıdır.
 """
+import json
+import os
+import subprocess
 import sys
 import wave
+
 import numpy as np
 from scipy.signal import butter, sosfilt, fftconvolve
 
+HERE = os.path.dirname(os.path.abspath(__file__))
+TL = json.load(open(os.path.join(HERE, 'timeline.json')))
+
 SR = 48000
-DUR = 15.3
+DUR = TL['END']
 N = int(DUR * SR)
 rng = np.random.default_rng(3)
 
-L = np.zeros(N)
-R = np.zeros(N)
-REV = np.zeros(N)  # reverb gönderimi (mono)
+# iki bus: müzik/efekt (sese göre kısılır) ve konuşma
+ML, MR = np.zeros(N), np.zeros(N)
+REV = np.zeros(N)
+VOX = np.zeros(N)
+VREV = np.zeros(N)
 
 
 def tt(d):
@@ -22,13 +33,12 @@ def tt(d):
 
 
 def filt(x, kind, f, order=2):
-    sos = butter(order, f, btype=kind, fs=SR, output='sos')
-    return sosfilt(sos, x)
+    return sosfilt(butter(order, f, btype=kind, fs=SR, output='sos'), x)
 
 
 def env_ar(n, a=0.005, r=0.01):
     e = np.ones(n)
-    na, nr = max(1, int(a * SR)), max(1, int(r * SR))
+    na, nr = max(1, min(n, int(a * SR))), max(1, min(n, int(r * SR)))
     e[:na] = np.linspace(0, 1, na)
     e[-nr:] *= np.linspace(1, 0, nr)
     return e
@@ -36,17 +46,26 @@ def env_ar(n, a=0.005, r=0.01):
 
 def place(sig, start, gain=1.0, pan=0.0, rev=0.0):
     i = int(round(start * SR))
-    if i >= N:
+    if i >= N or len(sig) == 0:
         return
     if i < 0:
-        sig = sig[-i:]
-        i = 0
+        sig, i = sig[-i:], 0
     s = sig[: N - i] * gain
     a = (pan + 1) * np.pi / 4
-    L[i:i + len(s)] += s * np.cos(a) * np.sqrt(2)
-    R[i:i + len(s)] += s * np.sin(a) * np.sqrt(2)
+    ML[i:i + len(s)] += s * np.cos(a) * np.sqrt(2)
+    MR[i:i + len(s)] += s * np.sin(a) * np.sqrt(2)
     if rev:
         REV[i:i + len(s)] += s * rev
+
+
+def fade(sig, fin=0.0, fout=0.0):
+    s = sig.copy()
+    a, b = int(fin * SR), int(fout * SR)
+    if a:
+        s[:a] *= np.linspace(0, 1, a)
+    if b:
+        s[-b:] *= np.linspace(1, 0, b)
+    return s
 
 
 # ---------------- ses kaynakları ----------------
@@ -62,11 +81,9 @@ def vibration(d):
 
 def trill(d):
     t = tt(d)
-    sw = (np.floor(t * 18) % 2).astype(float)
-    f = 1250 + 320 * sw
+    f = 1250 + 320 * (np.floor(t * 18) % 2)
     ph = 2 * np.pi * np.cumsum(f) / SR
-    s = np.sin(ph) + 0.25 * np.sin(2 * ph)
-    s = filt(s, 'bandpass', [600, 4500])
+    s = filt(np.sin(ph) + 0.25 * np.sin(2 * ph), 'bandpass', [600, 4500])
     return s * env_ar(len(t), 0.01, 0.04)
 
 
@@ -74,17 +91,15 @@ def click():
     n = int(0.012 * SR)
     s = filt(rng.standard_normal(n), 'highpass', 1500) * np.exp(-np.arange(n) / (0.002 * SR))
     t = tt(0.08)
-    s2 = np.sin(2 * np.pi * 90 * t) * np.exp(-t / 0.02)
-    out = np.zeros(len(t))
+    out = np.sin(2 * np.pi * 90 * t) * np.exp(-t / 0.02) * 0.6
     out[:n] += s
-    return out + s2 * 0.6
+    return out
 
 
 def kick(f0=150, f1=46, d=0.45, decay=0.16):
     t = tt(d)
     f = f1 + (f0 - f1) * np.exp(-t / 0.035)
-    ph = 2 * np.pi * np.cumsum(f) / SR
-    s = np.sin(ph) * np.exp(-t / decay)
+    s = np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-t / decay)
     n = int(0.004 * SR)
     s[:n] += rng.standard_normal(n) * 0.3
     return s
@@ -105,28 +120,23 @@ def bell(f, d=0.9, decay=0.28):
 def pop(f0=420, f1=980):
     t = tt(0.12)
     f = f1 + (f0 - f1) * np.exp(-t / 0.015)
-    ph = 2 * np.pi * np.cumsum(f) / SR
-    return np.sin(ph) * np.exp(-t / 0.035)
+    return np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-t / 0.035)
 
 
 def whoosh(d=0.35, lo=300, hi=3500, rise=0.6):
     t = tt(d)
     n = rng.standard_normal(len(t))
-    # tarama: düşük ve yüksek bant karışımını zamanla değiştir
     a = filt(n, 'bandpass', [lo, lo * 3])
     b = filt(n, 'bandpass', [hi / 3, hi])
     k = np.clip(t / (d * rise), 0, 1)
-    e = np.sin(np.pi * np.clip(t / d, 0, 1)) ** 1.5
-    return (a * (1 - k) + b * k) * e
+    return (a * (1 - k) + b * k) * np.sin(np.pi * np.clip(t / d, 0, 1)) ** 1.5
 
 
 def riser(d=0.6):
     t = tt(d)
     n = filt(rng.standard_normal(len(t)), 'highpass', 1200)
-    f = 300 * (4 ** (t / d))
-    s = np.sin(2 * np.pi * np.cumsum(f) / SR) * 0.3
-    e = (t / d) ** 2.2
-    return (n * 0.7 + s) * e
+    s = np.sin(2 * np.pi * np.cumsum(300 * (4 ** (t / d))) / SR) * 0.3
+    return (n * 0.7 + s) * (t / d) ** 2.2
 
 
 def pad(freqs, d, attack=0.15, release=0.04, cutoff=2200):
@@ -134,9 +144,8 @@ def pad(freqs, d, attack=0.15, release=0.04, cutoff=2200):
     s = np.zeros(len(t))
     for f in freqs:
         for det in (-0.12, 0.0, 0.13):
-            ff = f * (1 + det / 100)
-            ph = 2 * np.pi * ff * t + rng.uniform(0, 6.28)
-            s += 2 / np.pi * np.arctan(3 * np.sin(ph))  # yumuşak testere/kare
+            ph = 2 * np.pi * f * (1 + det / 100) * t + rng.uniform(0, 6.28)
+            s += 2 / np.pi * np.arctan(3 * np.sin(ph))
     s = filt(s / (len(freqs) * 3), 'lowpass', cutoff)
     e = np.ones(len(t))
     na, nr = int(attack * SR), int(release * SR)
@@ -150,8 +159,7 @@ def drone(d):
     s = (np.sin(2 * np.pi * 55 * t) + np.sin(2 * np.pi * 55.45 * t) + 0.45 * np.sin(2 * np.pi * 82.4 * t)
          + 0.25 * np.sin(2 * np.pi * 110.3 * t))
     s *= 0.8 + 0.2 * np.sin(2 * np.pi * 0.35 * t)
-    nz = filt(rng.standard_normal(len(t)), 'lowpass', 220) * 0.6
-    return (s / 2.7 + nz)
+    return s / 2.7 + filt(rng.standard_normal(len(t)), 'lowpass', 220) * 0.6
 
 
 def hiss(d):
@@ -160,100 +168,131 @@ def hiss(d):
     return filt(rng.standard_normal(len(t)), 'bandpass', [400, 5000]) + hum
 
 
-def fade(sig, fin=0.0, fout=0.0):
-    s = sig.copy()
-    a, b = int(fin * SR), int(fout * SR)
-    if a:
-        s[:a] *= np.linspace(0, 1, a)
-    if b:
-        s[-b:] *= np.linspace(1, 0, b)
-    return s
+# ---------------- seslendirme ----------------
+def load_vo(path, speed=1.0):
+    af = ['-af', f'atempo={speed}'] if abs(speed - 1) > 1e-3 else []
+    raw = subprocess.run(['ffmpeg', '-v', 'error', '-i', path, *af, '-f', 'f32le', '-ac', '1', '-ar', str(SR), '-'],
+                         capture_output=True, check=True).stdout
+    return np.frombuffer(raw, '<f4').astype(float)
 
 
-# ---------------- zaman çizelgesi ----------------
-ANSWER, B, C, D, E, TAIL = 1.5, 3.0, 6.5, 9.3, 11.9, 14.9
+def norm_rms(x, db):
+    r = np.sqrt(np.mean(x[np.abs(x) > 0.01] ** 2)) if np.any(np.abs(x) > 0.01) else 1
+    return x * (10 ** (db / 20) / (r + 1e-9))
 
-# A+B: gerilim zemini
+
+def process(x, role, n):
+    x = filt(x, 'highpass', 85)
+    if role == 'customer':      # telefon hattı
+        x = filt(x, 'bandpass', [320, 3300], order=4)
+        x = np.tanh(x * 3.0) / 3.0
+        x = x + filt(rng.standard_normal(len(x)), 'bandpass', [500, 3000]) * 0.0025
+        return norm_rms(x, -21.5)
+    if role == 'assistant':     # ürünün sesi: temiz ve yakın
+        return norm_rms(x, -19.5)
+    return norm_rms(x, -21 if n in (1, 2) else -19.5)
+
+
+for v in TL['vo']:
+    if not v['file']:
+        continue
+    x = load_vo(v['file'], v.get('speed', 1.0))[: int(v['dur'] * SR)]
+    x = process(fade(x, 0.0, 0.03), v['role'], v['n'])
+    i = int(round(v['start'] * SR))
+    x = x[: N - i]
+    VOX[i:i + len(x)] += x
+    VREV[i:i + len(x)] += x * (0.35 if v['n'] in (1, 2) else 0.08)
+
+# ---------------- efektler (timeline'a göre) ----------------
+A_, ANSWER, B, C, D, E, TAIL = 0, TL['ANSWER'], TL['B'], TL['C'], TL['D'], TL['E'], TL['TAIL']
+
 place(fade(drone(C), 0.0, 0.03), 0, 0.30)
 place(fade(hiss(C), 0.0, 0.03), 0, 0.012)
 
-# telefon titreşimi + zil (cevaplanınca kesilir)
-for s0 in (0.0, 0.75):
+s0 = 0.0
+while s0 < ANSWER - 0.05:
     dd = min(0.5, ANSWER - s0)
     place(vibration(dd), s0, 0.20)
-    place(trill(dd), s0, 0.09, rev=0.5)
+    place(trill(dd), s0, 0.08, rev=0.5)
+    s0 += 0.75
 place(click(), ANSWER, 0.5)
 place(bell(880, 0.25, 0.06), ANSWER + 0.06, 0.06, rev=0.3)
 
-# A→B yakınlaştırma
 place(whoosh(0.32, 200, 2500), B - 0.08, 0.25)
 place(kick(120, 40, 0.5, 0.2), B, 0.45)
 
-# kalp atışı (gerilim) — cevap gelene kadar
-for hb in (3.25, 3.95):
-    place(kick(80, 40, 0.3, 0.09), hb, 0.55)
-    place(kick(80, 40, 0.3, 0.07), hb + 0.17, 0.32)
+hb = B + 0.25
+while hb < TL['bubble2'] - 0.3:
+    place(kick(80, 40, 0.3, 0.09), hb, 0.5)
+    place(kick(80, 40, 0.3, 0.07), hb + 0.17, 0.3)
+    hb += 0.8
 
-# baloncuklar
-place(pop(380, 820), 3.35, 0.28, rev=0.15)
+place(pop(380, 820), TL['bubble1'], 0.25, rev=0.15)
 for i in range(3):
-    place(pop(1500, 1800)[: int(0.03 * SR)], 4.05 + i * 0.15, 0.05)
-place(pop(500, 1100), 4.6, 0.3, rev=0.2)
-place(bell(1318.5, 0.8, 0.22), 4.62, 0.10, rev=0.3)
-place(bell(1975.5, 0.8, 0.22), 4.70, 0.08, rev=0.3)
+    place(pop(1500, 1800)[: int(0.03 * SR)], TL['typing'] + i * 0.12, 0.05)
+place(pop(500, 1100), TL['bubble2'], 0.25, rev=0.2)
+place(bell(1318.5, 0.8, 0.22), TL['bubble2'] + 0.02, 0.08, rev=0.3)
+place(bell(1975.5, 0.8, 0.22), TL['bubble2'] + 0.10, 0.06, rev=0.3)
 
-# sabaha geçiş
 place(riser(0.6), C - 0.6, 0.18)
 place(bell(1046.5, 1.4, 0.5), C, 0.14, rev=0.4)
 place(bell(1568.0, 1.4, 0.5), C, 0.10, rev=0.4)
 place(pad([261.63, 329.63, 392.0, 493.88, 587.33], D - C, 0.12, 0.03), C, 0.22)
-
-# bildirim sesleri (yükselen)
-for at, f in zip((6.8, 7.1, 7.4, 7.7), (1046.5, 1318.5, 1568.0, 2093.0)):
-    place(bell(f, 0.7, 0.18), at, 0.16, pan=0.15, rev=0.35)
-place(bell(784.0, 0.9, 0.3), 8.3, 0.12, rev=0.3)
-place(bell(1174.7, 0.9, 0.3), 8.38, 0.10, rev=0.3)
-
-# hafif ritim (100 BPM = 0.6 sn)
+for at, f in zip(TL['notifs'], (1046.5, 1318.5, 1568.0, 2093.0)):
+    place(bell(f, 0.7, 0.18), at, 0.13, pan=0.15, rev=0.35)
+place(bell(784.0, 0.9, 0.3), TL['punch'], 0.10, rev=0.3)
+place(bell(1174.7, 0.9, 0.3), TL['punch'] + 0.08, 0.08, rev=0.3)
 for b in np.arange(C, D - 0.05, 0.6):
-    place(kick(), b, 0.30)
-    place(hat(), b + 0.3, 0.06, pan=0.2)
+    place(kick(), b, 0.28)
+    place(hat(), b + 0.3, 0.05, pan=0.2)
 
-# MAAŞ / SİGORTA / İZİN / UYKU
-for at, st in ((9.3, 9.5), (9.9, 10.1), (10.5, 10.7), (11.1, 11.3)):
-    place(whoosh(0.18, 600, 5000, 0.8), at - 0.05, 0.10)
-    place(whoosh(0.12, 1500, 9000, 0.3), st - 0.04, 0.22)
-    place(kick(160, 38, 0.6, 0.22), st, 0.6)
-place(kick(60, 30, 1.2, 0.5), 11.3, 0.5)
+for w in TL['words']:
+    place(whoosh(0.18, 600, 5000, 0.8), w['at'] - 0.05, 0.10)
+    place(whoosh(0.12, 1500, 9000, 0.3), w['strike'] - 0.04, 0.22)
+    place(kick(160, 38, 0.6, 0.22), w['strike'], 0.6)
+place(kick(60, 30, 1.2, 0.5), TL['words'][-1]['strike'], 0.5)
 
-# Mimozai açılışı
 place(riser(0.4), E - 0.4, 0.12)
 place(kick(140, 32, 1.2, 0.45), E, 0.7)
 place(pad([174.61, 220.0, 261.63, 329.63, 392.0], TAIL - E, 0.25, 0.04, 2600), E, 0.34)
 for i, f in enumerate((1046.5, 1318.5, 1568.0, 2093.0)):
-    place(bell(f, 0.9, 0.3), 12.2 + i * 0.07, 0.07, pan=-0.3 + i * 0.2, rev=0.5)
+    place(bell(f, 0.9, 0.3), TL['mimozai'] + i * 0.07, 0.07, pan=-0.3 + i * 0.2, rev=0.5)
 for b in np.arange(E + 0.6, TAIL - 0.05, 0.6):
-    place(kick(), b, 0.30)
-    place(hat(), b + 0.3, 0.06, pan=0.2)
-place(pop(450, 1050), 13.1, 0.3, rev=0.2)
-place(bell(1568.0, 0.8, 0.25), 13.12, 0.09, rev=0.3)
+    place(kick(), b, 0.28)
+    place(hat(), b + 0.3, 0.05, pan=0.2)
+place(pop(450, 1050), TL['cta'], 0.25, rev=0.2)
+place(bell(1568.0, 0.8, 0.25), TL['cta'] + 0.02, 0.08, rev=0.3)
 
-# kuyruk: başa dönmek için oda sesi + drone
 place(fade(drone(DUR - TAIL), 0.25, 0.0), TAIL, 0.30)
 place(fade(hiss(DUR - TAIL), 0.05, 0.0), TAIL, 0.012)
 
-# ---------------- reverb + master ----------------
+# ---------------- reverb, ducking, master ----------------
 ir_t = tt(1.1)
-ir = rng.standard_normal(len(ir_t)) * np.exp(-ir_t / 0.25)
-ir = filt(ir, 'lowpass', 5000)
+ir = filt(rng.standard_normal(len(ir_t)) * np.exp(-ir_t / 0.25), 'lowpass', 5000)
 ir /= np.sqrt(np.sum(ir ** 2))
 wet = fftconvolve(REV, ir)[:N] * 0.35
-L += wet
-R += wet
+ML += wet
+MR += wet
+VOX += fftconvolve(VREV, ir)[:N] * 0.3
 
-mix = np.stack([L, R], axis=1)
-mix = filt(mix.T, 'highpass', 28).T
-mix = np.tanh(mix * 1.3) / np.tanh(1.3)
+# konuşma varken müzik/efekt ~8 dB kısılır
+lvl = np.abs(VOX)
+k_att, k_rel = np.exp(-1 / (0.01 * SR)), np.exp(-1 / (0.35 * SR))
+envv = np.zeros(N)
+acc = 0.0
+step = 48  # hız için örnekleme adımı
+for i in range(0, N, step):
+    x = lvl[i:i + step].max()
+    k = k_att ** step if x > acc else k_rel ** step
+    acc = k * acc + (1 - k) * x
+    envv[i:i + step] = acc
+duck = 1 - 0.6 * np.clip(envv / 0.05, 0, 1)
+
+L = ML * duck + VOX
+R = MR * duck + VOX
+mix = np.stack([L, R])
+mix = filt(mix, 'highpass', 28)
+mix = np.tanh(mix * 1.2) / np.tanh(1.2)
 mix *= 0.89 / np.max(np.abs(mix))
 
 out = sys.argv[1] if len(sys.argv) > 1 else 'sound.wav'
@@ -261,5 +300,5 @@ with wave.open(out, 'wb') as w:
     w.setnchannels(2)
     w.setsampwidth(2)
     w.setframerate(SR)
-    w.writeframes((mix * 32767).astype('<i2').tobytes())
-print('yazıldı:', out, f'{DUR} sn')
+    w.writeframes((mix.T * 32767).astype('<i2').tobytes())
+print('yazıldı:', out, f'{DUR:.2f} sn', '(seslendirme YOK — tahmini zamanlama)' if TL['estimated'] else '')

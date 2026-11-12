@@ -1,3 +1,4 @@
 stills/
 sound.wav
 node_modules/
+__pycache__/
