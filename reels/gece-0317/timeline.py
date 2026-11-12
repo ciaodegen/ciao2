@@ -26,7 +26,7 @@ TEXT = {
     8: 'Yorumlara “gece” yaz… ücretsiz demo hattını kuralım!',
 }
 # Konuşma hızı (atempo). Ürünün sesi olan asistan doğal hızında bırakılır.
-SPEED = {'narrator': 1.07, 'customer': 1.05, 'assistant': 1.0}
+SPEED = {'narrator': 1.05, 'customer': 1.0, 'assistant': 1.0}
 ROLE = {3: 'customer', 4: 'assistant'}
 
 

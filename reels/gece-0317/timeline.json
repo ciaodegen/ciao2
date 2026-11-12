@@ -1,110 +1,110 @@
 {
- "ANSWER": 3.227,
- "B": 4.855,
- "bubble1": 5.155,
- "typing": 7.265,
- "bubble2": 7.545,
- "C": 11.474,
+ "ANSWER": 3.882,
+ "B": 6.515,
+ "bubble1": 6.815,
+ "typing": 9.186,
+ "bubble2": 9.466,
+ "C": 13.004,
  "notifs": [
-  11.774,
-  12.074,
-  12.374,
-  12.674
+  13.304,
+  13.604,
+  13.904,
+  14.204
  ],
- "punch": 13.533,
- "D": 15.036,
+ "punch": 15.959,
+ "D": 18.056,
  "words": [
   {
    "w": "MAAŞ",
-   "at": 15.17,
-   "strike": 15.743
+   "at": 18.176,
+   "strike": 18.525
   },
   {
    "w": "SİGORTA",
-   "at": 16.292,
-   "strike": 17.033
+   "at": 19.401,
+   "strike": 20.156
   },
   {
    "w": "İZİN",
-   "at": 17.6,
-   "strike": 17.902
+   "at": 20.992,
+   "strike": 21.708
   },
   {
    "w": "UYKU",
-   "at": 18.927,
-   "strike": 19.457
+   "at": 22.239,
+   "strike": 23.556
   }
  ],
- "E": 20.339,
- "tanisin": 20.454,
- "mimozai": 21.127,
- "tagline": 21.903,
- "cta": 24.691,
- "TAIL": 27.704,
- "END": 28.054,
+ "E": 24.454,
+ "tanisin": 24.542,
+ "mimozai": 25.39,
+ "tagline": 26.933,
+ "cta": 29.73,
+ "TAIL": 34.259,
+ "END": 34.609,
  "vo": [
   {
    "n": 1,
    "file": "/home/user/ciao2/reels/gece-0317/vo/01.mp3",
    "start": 0.15,
-   "dur": 3.027,
-   "speed": 1.07,
+   "dur": 3.682,
+   "speed": 1.05,
    "role": "narrator"
   },
   {
    "n": 2,
    "file": "/home/user/ciao2/reels/gece-0317/vo/02.mp3",
-   "start": 3.277,
-   "dur": 1.458,
-   "speed": 1.07,
+   "start": 3.932,
+   "dur": 2.463,
+   "speed": 1.05,
    "role": "narrator"
   },
   {
    "n": 3,
    "file": "/home/user/ciao2/reels/gece-0317/vo/03.mp3",
-   "start": 5.155,
-   "dur": 2.09,
-   "speed": 1.05,
+   "start": 6.815,
+   "dur": 2.351,
+   "speed": 1.0,
    "role": "customer"
   },
   {
    "n": 4,
    "file": "/home/user/ciao2/reels/gece-0317/vo/04.mp3",
-   "start": 7.545,
-   "dur": 3.709,
+   "start": 9.466,
+   "dur": 3.318,
    "speed": 1.0,
    "role": "assistant"
   },
   {
    "n": 5,
    "file": "/home/user/ciao2/reels/gece-0317/vo/05.mp3",
-   "start": 11.624,
-   "dur": 3.262,
-   "speed": 1.07,
+   "start": 13.154,
+   "dur": 4.752,
+   "speed": 1.05,
    "role": "narrator"
   },
   {
    "n": 6,
    "file": "/home/user/ciao2/reels/gece-0317/vo/06.mp3",
-   "start": 15.136,
-   "dur": 4.953,
-   "speed": 1.07,
+   "start": 18.156,
+   "dur": 6.048,
+   "speed": 1.05,
    "role": "narrator"
   },
   {
    "n": 7,
    "file": "/home/user/ciao2/reels/gece-0317/vo/07.mp3",
-   "start": 20.389,
-   "dur": 4.077,
-   "speed": 1.07,
+   "start": 24.504,
+   "dur": 5.029,
+   "speed": 1.05,
    "role": "narrator"
   },
   {
    "n": 8,
    "file": "/home/user/ciao2/reels/gece-0317/vo/08.mp3",
-   "start": 24.616,
-   "dur": 2.588,
-   "speed": 1.07,
+   "start": 29.683,
+   "dur": 4.076,
+   "speed": 1.05,
    "role": "narrator"
   }
  ],
