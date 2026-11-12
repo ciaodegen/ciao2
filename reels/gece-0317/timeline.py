@@ -16,14 +16,14 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 VO = os.path.join(HERE, 'vo')
 
 TEXT = {
-    1: 'Gece üç on yedi. İş yerimde kimse yoktu…',
-    2: '…ama biri telefonu açtı.',
-    3: 'Dişim çok ağrıyor, sabah yer var mı?',
-    4: 'Geçmiş olsun. Sabah dokuz buçuğa ayırdım.',
-    5: 'Ben uyurken dört müşteri aradı. Tek bir arama bile kaçmadı.',
-    6: 'Maaş istemiyor. Sigorta istemiyor. İzin istemiyor. Ve asla uyumuyor.',
-    7: 'Tanışın: Mimozai. Sen uyurken bile işletmen için çalışan biri.',
-    8: 'Yorumlara gece yaz, ücretsiz demo hattını kuralım.',
+    1: 'Gece üç on yedi… İş yerimde… kimse yoktu.',
+    2: '…ama biri… telefonu açtı.',
+    3: 'Dişim çok ağrıyor… sabah yer var mı?',
+    4: 'Geçmiş olsun! Sabah dokuz buçuğa ayırdım.',
+    5: 'Ben uyurken… dört müşteri aradı. Tek bir arama bile kaçmadı!',
+    6: 'Maaş istemiyor. Sigorta istemiyor. İzin istemiyor. Ve asla… uyumuyor.',
+    7: 'Tanışın: Mimoza ey-ay. Sen uyurken bile, işletmen için çalışan biri.',
+    8: 'Yorumlara “gece” yaz… ücretsiz demo hattını kuralım!',
 }
 # Konuşma hızı (atempo). Ürünün sesi olan asistan doğal hızında bırakılır.
 SPEED = {'narrator': 1.07, 'customer': 1.05, 'assistant': 1.0}
@@ -152,7 +152,7 @@ for w in tl['words']:
 tl['E'] = round(L[6].end + 0.25, 3)
 L[7].start = tl['E'] + 0.05
 tl['tanisin'] = round(L[7].start + L[7].lead, 3)
-tl['mimozai'] = L[7].at('Mimozai')
+tl['mimozai'] = L[7].at('Mimoza')
 tl['tagline'] = L[7].at('Sen')
 L[8].start = L[7].end + 0.15
 tl['cta'] = round(L[8].start + L[8].lead, 3)

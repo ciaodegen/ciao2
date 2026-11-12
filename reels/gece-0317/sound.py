@@ -12,6 +12,8 @@ import wave
 
 import numpy as np
 from scipy.signal import butter, sosfilt, fftconvolve
+from scipy.ndimage import minimum_filter1d
+import pyloudnorm as pyln
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 TL = json.load(open(os.path.join(HERE, 'timeline.json')))
@@ -176,21 +178,62 @@ def load_vo(path, speed=1.0):
     return np.frombuffer(raw, '<f4').astype(float)
 
 
-def norm_rms(x, db):
-    r = np.sqrt(np.mean(x[np.abs(x) > 0.01] ** 2)) if np.any(np.abs(x) > 0.01) else 1
-    return x * (10 ** (db / 20) / (r + 1e-9))
+METER = pyln.Meter(SR)
+
+
+def lufs(x):
+    try:
+        v = METER.integrated_loudness(np.stack([x, x], 1))
+        return v if np.isfinite(v) else None
+    except ValueError:  # 0.4 sn'den kısa
+        return None
+
+
+def to_lufs(x, target):
+    cur = lufs(x)
+    if cur is None:
+        r = np.sqrt(np.mean(x ** 2)) + 1e-9
+        return x * (10 ** ((target - 3) / 20) / r)
+    return x * 10 ** ((target - cur) / 20)
+
+
+def compress(x, thr_db=-26, ratio=3.0, att=0.005, rel=0.12):
+    """Basit RMS kompresör (konuşmayı tok ve öne çıkmış yapar)."""
+    e = np.sqrt(filt(x ** 2, 'lowpass', 30, order=1).clip(1e-12))
+    db = 20 * np.log10(e)
+    over = np.maximum(0, db - thr_db)
+    gr_db = -over * (1 - 1 / ratio)
+    # atak/bırakma yumuşatma
+    out = np.empty_like(gr_db)
+    a, r = np.exp(-1 / (att * SR)), np.exp(-1 / (rel * SR))
+    g = 0.0
+    step = 32
+    for i in range(0, len(gr_db), step):
+        tgt = gr_db[i:i + step].min()
+        k = (a ** step) if tgt < g else (r ** step)
+        g = k * g + (1 - k) * tgt
+        out[i:i + step] = g
+    return x * 10 ** (out / 20)
+
+
+def presence(x):
+    return x + 0.35 * filt(x, 'bandpass', [2500, 5500]) + 0.15 * filt(x, 'lowpass', 180)
+
+
+VO_TARGET = {'narrator': -15.0, 'whisper': -15.5, 'customer': -17.0, 'assistant': -14.5}
 
 
 def process(x, role, n):
     x = filt(x, 'highpass', 85)
     if role == 'customer':      # telefon hattı
-        x = filt(x, 'bandpass', [320, 3300], order=4)
-        x = np.tanh(x * 3.0) / 3.0
-        x = x + filt(rng.standard_normal(len(x)), 'bandpass', [500, 3000]) * 0.0025
-        return norm_rms(x, -21.5)
+        x = filt(x, 'bandpass', [320, 3400], order=4)
+        x = np.tanh(x * 2.5) / 2.5
+        x = compress(x, -28, 3.0)
+        return to_lufs(x, VO_TARGET['customer'])
+    x = compress(presence(x), -28 if n in (1, 2) else -26, 3.5 if n in (1, 2) else 3.0)
     if role == 'assistant':     # ürünün sesi: temiz ve yakın
-        return norm_rms(x, -19.5)
-    return norm_rms(x, -21 if n in (1, 2) else -19.5)
+        return to_lufs(x, VO_TARGET['assistant'])
+    return to_lufs(x, VO_TARGET['whisper' if n in (1, 2) else 'narrator'])
 
 
 for v in TL['vo']:
@@ -249,7 +292,7 @@ for b in np.arange(C, D - 0.05, 0.6):
 for w in TL['words']:
     place(whoosh(0.18, 600, 5000, 0.8), w['at'] - 0.05, 0.10)
     place(whoosh(0.12, 1500, 9000, 0.3), w['strike'] - 0.04, 0.22)
-    place(kick(160, 38, 0.6, 0.22), w['strike'], 0.6)
+    place(kick(160, 38, 0.6, 0.22), w['strike'], 0.5)
 place(kick(60, 30, 1.2, 0.5), TL['words'][-1]['strike'], 0.5)
 
 place(riser(0.4), E - 0.4, 0.12)
@@ -275,30 +318,55 @@ ML += wet
 MR += wet
 VOX += fftconvolve(VREV, ir)[:N] * 0.3
 
-# konuşma varken müzik/efekt ~8 dB kısılır
+# konuşma varken müzik/efekt ~12 dB kısılır
 lvl = np.abs(VOX)
 k_att, k_rel = np.exp(-1 / (0.01 * SR)), np.exp(-1 / (0.35 * SR))
 envv = np.zeros(N)
 acc = 0.0
-step = 48  # hız için örnekleme adımı
+step = 48
 for i in range(0, N, step):
     x = lvl[i:i + step].max()
     k = k_att ** step if x > acc else k_rel ** step
     acc = k * acc + (1 - k) * x
     envv[i:i + step] = acc
-duck = 1 - 0.6 * np.clip(envv / 0.05, 0, 1)
+duck = 1 - 0.75 * np.clip(envv / 0.04, 0, 1)
+MUS_GAIN = 0.75
 
-L = ML * duck + VOX
-R = MR * duck + VOX
-mix = np.stack([L, R])
+
+def limiter(st, ceiling_db=-1.0, look=0.005, rel=0.08):
+    """İleriye bakan tepe sınırlayıcı (stereo)."""
+    c = 10 ** (ceiling_db / 20)
+    peak = np.abs(st).max(axis=0)
+    g = np.minimum(1.0, c / np.maximum(peak, 1e-9))
+    g = minimum_filter1d(g, int(look * SR) * 2 + 1)
+    out = np.empty_like(g)
+    r = np.exp(-1 / (rel * SR))
+    cur = 1.0
+    stp = 16
+    for i in range(0, len(g), stp):
+        tgt = g[i:i + stp].min()
+        cur = tgt if tgt < cur else r ** stp * cur + (1 - r ** stp) * tgt
+        out[i:i + stp] = cur
+    d = int(look * SR)
+    out = np.concatenate([out[d:], np.full(d, out[-1])])  # gecikmeyi telafi et
+    return st * np.minimum(out, g)
+
+
+mix = np.stack([ML * duck * MUS_GAIN + VOX, MR * duck * MUS_GAIN + VOX])
 mix = filt(mix, 'highpass', 28)
-mix = np.tanh(mix * 1.2) / np.tanh(1.2)
-mix *= 0.89 / np.max(np.abs(mix))
+mix = limiter(mix, -1.5)
+for _ in range(2):  # -14 LUFS hedefi (Instagram/Reels)
+    cur = METER.integrated_loudness(mix.T)
+    mix = limiter(mix * 10 ** ((-14.0 - cur) / 20), -1.2)
+final_lufs = METER.integrated_loudness(mix.T)
+vox_l = METER.integrated_loudness(np.stack([VOX, VOX], 1))
+bg_l = METER.integrated_loudness(np.stack([ML * duck * MUS_GAIN, MR * duck * MUS_GAIN], 1))
 
 out = sys.argv[1] if len(sys.argv) > 1 else 'sound.wav'
 with wave.open(out, 'wb') as w:
     w.setnchannels(2)
     w.setsampwidth(2)
     w.setframerate(SR)
-    w.writeframes((mix.T * 32767).astype('<i2').tobytes())
-print('yazıldı:', out, f'{DUR:.2f} sn', '(seslendirme YOK — tahmini zamanlama)' if TL['estimated'] else '')
+    w.writeframes((np.clip(mix.T, -1, 1) * 32767).astype('<i2').tobytes())
+print('yazıldı:', out, f'{DUR:.2f} sn | final {final_lufs:.1f} LUFS | konuşma-arka plan farkı {vox_l - bg_l:.1f} dB',
+      '(seslendirme YOK — tahmini zamanlama)' if TL['estimated'] else '')
