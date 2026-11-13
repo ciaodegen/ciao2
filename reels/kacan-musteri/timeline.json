@@ -1,0 +1,79 @@
+{
+ "notifs": [
+  0.0,
+  0.3,
+  0.839,
+  1.378,
+  1.917
+ ],
+ "B": 2.564,
+ "countStart": 2.614,
+ "countEnd": 3.387,
+ "kacan": 3.791,
+ "C": 5.351,
+ "eq": 6.121,
+ "moneyStart": 7.634,
+ "moneyEnd": 8.739,
+ "rakip": 9.259,
+ "D": 10.401,
+ "mimoza": 10.697,
+ "her": 11.636,
+ "chips": [
+  12.953,
+  13.463,
+  14.078
+ ],
+ "cta": 15.095,
+ "END": 18.828,
+ "vo": [
+  {
+   "n": 1,
+   "file": "/home/user/ciao2/reels/kacan-musteri/vo/01.mp3",
+   "start": 0.12,
+   "dur": 2.394,
+   "speed": 1.04,
+   "role": "narrator"
+  },
+  {
+   "n": 2,
+   "file": "/home/user/ciao2/reels/kacan-musteri/vo/02.mp3",
+   "start": 2.714,
+   "dur": 2.487,
+   "speed": 1.04,
+   "role": "narrator"
+  },
+  {
+   "n": 3,
+   "file": "/home/user/ciao2/reels/kacan-musteri/vo/03.mp3",
+   "start": 5.451,
+   "dur": 2.035,
+   "speed": 1.04,
+   "role": "narrator"
+  },
+  {
+   "n": 4,
+   "file": "/home/user/ciao2/reels/kacan-musteri/vo/04.mp3",
+   "start": 7.586,
+   "dur": 2.615,
+   "speed": 1.04,
+   "role": "narrator"
+  },
+  {
+   "n": 5,
+   "file": "/home/user/ciao2/reels/kacan-musteri/vo/05.mp3",
+   "start": 10.501,
+   "dur": 4.394,
+   "speed": 1.04,
+   "role": "narrator"
+  },
+  {
+   "n": 6,
+   "file": "/home/user/ciao2/reels/kacan-musteri/vo/06.mp3",
+   "start": 15.045,
+   "dur": 3.082,
+   "speed": 1.0,
+   "role": "narrator"
+  }
+ ],
+ "estimated": false
+}
